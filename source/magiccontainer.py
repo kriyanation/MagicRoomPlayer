@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 import magicleaderboard, magictitlepage
+import ttkthemes
+from ttkthemes import ThemedTk
+
 
 
 class MagicApplication(tk.Tk):
@@ -45,7 +48,10 @@ class MagicApplication(tk.Tk):
 
 
 if __name__ == "__main__":
+
+
     app = MagicApplication()
+
     app.geometry("1280x800+200+200")
     app.bind("<KeyPress-r>", app.show_leader_board)
     app.bind("<KeyPress-o>", app.hide_leader_board)

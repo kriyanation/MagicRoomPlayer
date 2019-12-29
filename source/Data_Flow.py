@@ -50,14 +50,12 @@ def get_Quote():
     list_names = []
     for element in rows:
         list_names.append(element)
-    connection.commit()
-
 
 
     for element in list_names:
         count = int(element[0])
-   # print(str(count)+"count")
-    q_text_number = random.randint(1,count)
+    # print(str(count)+"count")
+    q_text_number = random.randint(1, count)
     cur = connection.cursor()
     sql = "select * from Magic_Quotes where Theme_ID = ?"
     cur.execute(sql, (q_text_number,))
@@ -70,8 +68,27 @@ def get_Quote():
     for element in list_quote:
         quote = element[1]
     print(quote)
+    connection.commit()
     connection.close()
     return quote
+
+def get_Running_Notes():
+    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+    cur = connection.cursor()
+    sql = "select Title_Running_Notes, Title_Notes_Language from Magic_Science_Lessons where Lesson_ID = ?"
+    cur.execute(sql, (5, ))
+    qret = cur.fetchone()
+    text = qret[0]
+    language = qret[1]
+
+    print(language+text)
+    connection.commit()
+    connection.close()
+    return(text, language)
+
+
+
+
 
 
 #get_Quote()
