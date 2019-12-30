@@ -3,7 +3,7 @@ from tkinter import ttk, font
 import Data_Flow
 import pyttsx3
 import vlc, sys, time
-import unicodedata
+import pageutils
 
 import PIL
 from PIL import Image, ImageTk
@@ -15,7 +15,7 @@ class MagicTitlePage(tk.Frame):
         self.quote_text = Data_Flow.get_Quote()
         self.quote_label = ttk.Label(self, font= ('TkDefaultFont', 14), foreground = 'blue', wraplength=800)
         self.counter = 0
-        self.animate_text( self.quote_text, self.counter,self.quote_label,150)
+        pageutils.animate_text( self, self.quote_text, self.counter,self.quote_label,150)
         self.quote_label.pack(anchor = tk.NW)
 
         args = []
@@ -39,7 +39,7 @@ class MagicTitlePage(tk.Frame):
         title_text = Data_Flow.get_Title()
         self.topic_label = ttk.Label(self, text = title_text,font= ('TkDefaultFont', 14), foreground = 'brown', wraplength=500)
         self.topic_label.pack(anchor = tk.CENTER)
-        title_image = Data_Flow.get_title_image()
+        title_image = "../images/"+Data_Flow.get_title_image()
         self.canvas = tk.Canvas(self,
                         width=600,
                         height=600)
@@ -49,7 +49,7 @@ class MagicTitlePage(tk.Frame):
         self.img = self.img.resize((500,500))
         self.img1 = ImageTk.PhotoImage(self.img)
         self.title_image_id = self.canvas.create_image(self.winfo_width()/2, 300, image=self.img1)
-        self.playtextsound(title_text)
+        pageutils.playtextsound(title_text)
 
     def title_video(self):
         self.title_video = Data_Flow.get_title_video()
@@ -67,7 +67,7 @@ class MagicTitlePage(tk.Frame):
 
         self.video_note_label = ttk.Label(self, text = video_notes ,font=self.appHighlightFont, foreground = "blue4", wraplength = 900)
         self.video_note_label.pack(anchor = tk.S, fill = tk.Y)
-        self.animate_text(video_notes,0,self.video_note_label,300)
+        pageutils.animate_text(self, video_notes,0,self.video_note_label,300)
 
 
     def OnConfigure(self, *unused):

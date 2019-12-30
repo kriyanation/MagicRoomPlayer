@@ -84,7 +84,7 @@ def get_Running_Notes():
     print(language+text)
     connection.commit()
     connection.close()
-    return(text, language)
+    return (text, language)
 
 
 
@@ -104,3 +104,20 @@ def class_info():
     connection.commit()
     connection.close()
     return list_names
+
+
+def get_factual_content():
+    list_factual_content = []
+    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+    cur = connection.cursor()
+    sql = ('select Factual_Term1, Factual_Term1_Description, Factual_Term2, Factual_Term2_Description, Factual_Term3'
+          ', Factual_Term3_Description, Factual_Image1, Factual_Image2, Factual_Image3 from Magic_Science_Lessons where Lesson_ID = ?')
+   # sql = 'select Factual_Term1, Factual_Term1_Description, Factual_Term2, Factual_Term2_Description, Factual_Term3, from Magic_Science_Lessons where Lesson_ID=5'
+    factual_info_c = cur.execute(sql,(5,))
+    factual_info = factual_info_c.fetchone()
+    print(factual_info)
+    factual_terms = [factual_info[0], factual_info[2], factual_info[4]]
+    factual_descriptions = [factual_info[1], factual_info[3], factual_info[5]]
+    factual_images = [factual_info[6], factual_info[7], factual_info[8]]
+    connection.close()
+    return (factual_terms, factual_descriptions, factual_images)

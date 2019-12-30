@@ -1,8 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
 import magicleaderboard, magictitlepage
+import scroll_bars
 import ttkthemes
 from ttkthemes import ThemedTk
+import magicfactualpage
 
 
 
@@ -10,8 +12,10 @@ class MagicApplication(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.title("Magic Room")
+        self.factual_page = magicfactualpage.MagicFactualPage(self)
 
         self.resizable(width= True, height= True)
+
 
         ttk.Label(self, text="SGV Magic Player", font=("TkDefaultFont", 18),
                   foreground = 'green').pack()
@@ -21,11 +25,19 @@ class MagicApplication(tk.Tk):
         self.keydown = 0
 
 
-        self.TitlePage.pack(side = tk.LEFT, expand=True, fill='both')
+        self.TitlePage.pack(side = tk.LEFT)
 
 
         self.LeaderBoard.pack(side = tk.RIGHT, fill=tk.BOTH)
         #self.TitlePage.pack(side=tk.LEFT, fill=tk.BOTH)
+        self.nextbutton = ttk.Button(text = "Next Step", command = self.show_factual_page)
+        self.nextbutton.pack(side = tk.BOTTOM, anchor = tk.SE)
+
+    def show_factual_page(self):
+        self.TitlePage.player.stop()
+        self.TitlePage.pack_forget()
+        self.factual_page.pack(side = tk.LEFT)
+
 
     def show_leader_board(self,event):
         #print("R Pressed")
