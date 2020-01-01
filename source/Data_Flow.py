@@ -140,3 +140,14 @@ def get_experiment_content():
     experiment_steps_total = experiment_info[0]
     connection.close()
     return experiment_steps, experiment_images, experiment_steps_total
+
+
+def get_application_video():
+    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+    cur = connection.cursor()
+    sql = 'select Application_Video_Link, Application_Video_Running_Notes from Magic_Science_Lessons where Lesson_ID=?'
+    video_info_c = cur.execute(sql, (5,))
+    video_info = video_info_c.fetchone()
+    connection.close()
+    return video_info
+
