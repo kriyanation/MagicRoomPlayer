@@ -115,9 +115,28 @@ def get_factual_content():
    # sql = 'select Factual_Term1, Factual_Term1_Description, Factual_Term2, Factual_Term2_Description, Factual_Term3, from Magic_Science_Lessons where Lesson_ID=5'
     factual_info_c = cur.execute(sql,(5,))
     factual_info = factual_info_c.fetchone()
-    print(factual_info)
+   # print(factual_info)
     factual_terms = [factual_info[0], factual_info[2], factual_info[4]]
     factual_descriptions = [factual_info[1], factual_info[3], factual_info[5]]
     factual_images = [factual_info[6], factual_info[7], factual_info[8]]
     connection.close()
     return (factual_terms, factual_descriptions, factual_images)
+
+
+def get_experiment_content():
+    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+    cur = connection.cursor()
+
+    sql = ('select Application_Steps_Number, Application_Step_Description_1, Application_Step_Description_2, Application_Step_Description_3,'
+        'Application_Step_Description_4,Application_Step_Description_5,Application_Step_Description_6,Application_Step_Description_7'
+        ',Application_Step_Description_8,Application_Steps_Widget_1,Application_Steps_Widget_2,Application_Steps_Widget_3,Application_Steps_Widget_4'
+        ',Application_Steps_Widget_5,Application_Steps_Widget_6,Application_Steps_Widget_7,Application_Steps_Widget_8 from Magic_Science_Lessons '
+        'where Lesson_ID = ?')
+    experiment_info_c = cur.execute(sql, (5,))
+    experiment_info = experiment_info_c.fetchone()
+    #print(experiment_info)
+    experiment_steps = [experiment_info[1], experiment_info[2], experiment_info[3],experiment_info[4],experiment_info[5],experiment_info[6],experiment_info[7],experiment_info[8]]
+    experiment_images = [experiment_info[9], experiment_info[10], experiment_info[11],experiment_info[12],experiment_info[13],experiment_info[14],experiment_info[15],experiment_info[16]]
+    experiment_steps_total = experiment_info[0]
+    connection.close()
+    return experiment_steps, experiment_images, experiment_steps_total
