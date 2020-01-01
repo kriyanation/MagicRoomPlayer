@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk, font, filedialog
 import Data_Flow
 import pyttsx3
-import vlc, sys, time
+import vlc, sys, time, subprocess
 import unicodedata
 import scroll_bars
 from tkinter.colorchooser import askcolor
@@ -20,6 +20,7 @@ DEFAULT_COLOR = 'black'
 class MagicApplicationVideo(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
+        self.parent = parent
         self.image_list = []
         self.image_canvas_list = []
         self.application_video_info = Data_Flow.get_application_video()
@@ -32,11 +33,13 @@ class MagicApplicationVideo(tk.Frame):
         self.labelframetwo = ttk.Labelframe(self, width = 1200, height = 300,text="Things to Note", relief=tk.RIDGE)
         self.play_button = ttk.Button(self.labelframeone, text="Play", command= self.play_video)
         self.pause_button = ttk.Button(self.labelframeone, text="Pause", command= self.pause_video)
-        self.video_frame = ttk.Frame(self.labelframeone, width = 1000, height= 500)
+        self.new_screen_button = ttk.Button(self.labelframeone, text="New Window", command=self.new_window)
+        self.video_frame = tk.Frame(self.labelframeone, width = 1000, height= 500)
 
         self.play_button.grid(row=0,column=0)
         self.pause_button.grid(row=0,column=1)
-        self.video_frame.grid(row=1,columnspan = 2)
+        self.new_screen_button.grid(row=0, column=2)
+        self.video_frame.grid(row=1,columnspan = 3)
         self.labelframeone.grid_propagate(False)
         self.labelframetwo.grid_propagate(False)
         self.labelframeone.grid(row=0, pady=20, padx = 20)
@@ -56,10 +59,18 @@ class MagicApplicationVideo(tk.Frame):
 
 
     def play_video(self):
-        self.player.play()
+         self.player.play()
+
+
+
+
+    def new_window(self):
+        self.player.stop()
+        subprocess.Popen(['vlc', '-vvv', self.video_link])
 
     def pause_video(self):
         self.player.pause()
+       #self.player.set_fullscreen(False)
 
     def OnConfigure(self, *unused):
         """Some widget configuration changed.
