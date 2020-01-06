@@ -12,8 +12,10 @@ _isLinux = sys.platform.startswith('linux')
 class MagicTitlePage(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
+        print(type(parent).__name__)
+        self.parent_window = parent
         self.quote_text = Data_Flow.get_Quote()
-        self.quote_label = ttk.Label(self, font= ('TkDefaultFont', 14), foreground = 'blue', wraplength=800)
+        self.quote_label = ttk.Label(self, font= ('TkDefaultFont', 14), foreground = 'blue', wraplength=parent.screen_width/1.5)
         self.counter = 0
         pageutils.animate_text( self, self.quote_text, self.counter,self.quote_label,150)
         self.quote_label.pack(anchor = tk.NW)
@@ -35,20 +37,20 @@ class MagicTitlePage(tk.Frame):
 
     def title_intro(self):
         self.playtextsound(self.quote_text)
-        time.sleep(3)
+        time.sleep(2)
         title_text = Data_Flow.get_Title()
-        self.topic_label = ttk.Label(self, text = title_text,font= ('TkDefaultFont', 14), foreground = 'brown', wraplength=500)
-        self.topic_label.pack(anchor = tk.CENTER)
+        self.topic_label = ttk.Label(self, text = title_text,font= ('TkDefaultFont', 16), foreground = 'brown', wraplength=self.parent_window.screen_width/2.5)
+        self.topic_label.pack(pady=30,anchor = tk.CENTER)
         title_image = "../images/"+Data_Flow.get_title_image()
         self.canvas = tk.Canvas(self,
-                        width=600,
-                        height=600)
-        self.canvas.pack( anchor = tk.CENTER, fill=tk.BOTH, expand = tk.YES)
+                        width=self.parent_window.screen_width/1.5,
+                        height=self.parent_window.screen_height/1.5)
+        self.canvas.pack( padx=10, anchor = tk.CENTER)
         self.canvas.bind("<B1-Motion>", self.paint)
         self.img = Image.open(title_image)
         self.img = self.img.resize((500,500))
         self.img1 = ImageTk.PhotoImage(self.img)
-        self.title_image_id = self.canvas.create_image(self.winfo_width()/2, 300, image=self.img1)
+        self.title_image_id = self.canvas.create_image(self.winfo_width()/2+150, self.parent_window.screen_height/4, image=self.img1)
         pageutils.playtextsound(title_text)
 
     def title_video(self):
@@ -67,7 +69,7 @@ class MagicTitlePage(tk.Frame):
 
         self.video_note_label = ttk.Label(self, text = video_notes ,font=self.appHighlightFont, foreground = "blue4", wraplength = 900)
         self.video_note_label.pack(anchor = tk.S, fill = tk.Y)
-        pageutils.animate_text(self, video_notes,0,self.video_note_label,300)
+        pageutils.animate_text(self, video_notes,0,self.video_note_label,self.parent_window.screen_width/3)
 
 
     def OnConfigure(self, *unused):

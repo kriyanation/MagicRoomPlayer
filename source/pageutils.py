@@ -1,4 +1,9 @@
 import pyttsx3
+from reportlab.pdfgen import canvas
+import Data_Flow, qrtools
+from qrtools import qrtools
+import shutil,os
+
 
 def animate_text(frame, text, counter, label, counter_max):
     #print(text)
@@ -15,3 +20,63 @@ def playtextsound(text,V='m'):
     engine.setProperty('rate', 150)
     engine.say(text)
     engine.runAndWait()
+
+
+def generate_ip_paper(lesson_id):
+    text_id = Data_Flow.get_ip_data()
+    text = text_id[1]
+    id = text_id[2]
+    cc = canvas.Canvas("../QP/ip"+str(id)+".pdf")
+    cc.setFont("Helvetica", 16)
+    cc.drawCentredString(300,820,"Science Test "+str(id))
+    cc.setFont("Helvetica", 10)
+    textobject = cc.beginText()
+    textobject.setTextOrigin(50, 800)
+    textobject.textLines(text)
+    cc.drawText(textobject)
+    cc.showPage()
+    cc.save()
+    return "ip"+str(id)+".pdf"
+
+def generate_ip_sheets(lesson_id):
+    text_id = Data_Flow.get_ip_data()
+    answer_key = text_id[0]
+    id = text_id[2]
+    number_of_questions=text_id[3]
+    qindex = 0
+    answer_list=answer_key.split(",")
+
+    class_info = Data_Flow.class_info()
+    os.mkdir("../AnswerSheets/tmp")
+
+    for element in class_info:
+        ip_sheet = canvas.Canvas("../AnswerSheets/ip" + str(id) + element[0]+".pdf")
+        xvalue =0
+        yvalue = 800
+        ip_sheet.setFont("Helvetica",16)
+        ip_sheet.drawCentredString(300,810,element[0]+" Lesson ID "+str(id))
+        for qindex in range(number_of_questions):
+            yvalue -= 100
+            xvalue = 0
+            for aindex in range(4):
+                qr = qrtools.QR(data = "Name="+element[0]+",Lesson_ID="+str(id)+"Answer="+str(qindex+1)+str(aindex+1)+"Correct="+answer_list[qindex])
+                image_name = "../AnswerSheets/tmp/qrcode"+element[0]+str(aindex)+str(qindex)+".png"
+                qr.encode(image_name)
+                xvalue += 120
+                ip_sheet.drawImage(image_name, xvalue,yvalue,width=80,height=80)
+                ip_sheet.drawString(xvalue+30,yvalue-15,str(aindex+1))
+                ip_sheet.rect(xvalue+23,yvalue-18,20,18)
+
+
+        ip_sheet.showPage()
+        ip_sheet.save()
+    shutil.rmtree("../AnswerSheets/tmp/")
+
+
+if __name__ == "__main__":
+    generate_ip_sheets(5)
+
+
+
+
+

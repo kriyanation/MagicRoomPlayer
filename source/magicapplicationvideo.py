@@ -21,20 +21,18 @@ class MagicApplicationVideo(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self.parent = parent
-        self.image_list = []
-        self.image_canvas_list = []
         self.application_video_info = Data_Flow.get_application_video()
         self.video_link = "../videos/"+self.application_video_info[0]
         self.video_notes = self.application_video_info[1]
 
 
 
-        self.labelframeone = ttk.Labelframe(self, width = 1200, height = 600, text="Insightful Video", relief=tk.RAISED)
-        self.labelframetwo = ttk.Labelframe(self, width = 1200, height = 300,text="Things to Note", relief=tk.RIDGE)
+        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2.5, text="Insightful Video", relief=tk.RAISED)
+        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2.5,text="Things to Note", relief=tk.RIDGE)
         self.play_button = ttk.Button(self.labelframeone, text="Play", command= self.play_video)
         self.pause_button = ttk.Button(self.labelframeone, text="Pause", command= self.pause_video)
         self.new_screen_button = ttk.Button(self.labelframeone, text="New Window", command=self.new_window)
-        self.video_frame = tk.Frame(self.labelframeone, width = 1000, height= 500)
+        self.video_frame = tk.Frame(self.labelframeone, width = parent.screen_width/1.8, height= parent.screen_height/3)
 
         self.play_button.grid(row=0,column=0)
         self.pause_button.grid(row=0,column=1)
@@ -55,7 +53,7 @@ class MagicApplicationVideo(tk.Frame):
         parent.update()
 
         self.fill_video_frame()
-        self.fill_notes_frame()
+        self.fill_notes_frame(parent.screen_width)
 
 
     def play_video(self):
@@ -84,11 +82,11 @@ class MagicApplicationVideo(tk.Frame):
         self.player.set_media(self.media)
         player_frame_info = self.video_frame.winfo_id()  # .winfo_visualid()?
         self.player.set_xwindow(player_frame_info)
-        self.player.play()
+       # self.player.play()
 
-    def fill_notes_frame(self):
+    def fill_notes_frame(self,width):
         self.notes_label = ttk.Label(self.labelframetwo, text=self.video_notes,
-                                         font=("TkCaptionFont", 14),foreground="blue", wraplength=900)
+                                         font=("TkCaptionFont", 14),foreground="blue", wraplength=width/1.8)
         self.notes_button = ttk.Button(self.labelframetwo, text="Voice Notes", command = lambda:pageutils.playtextsound(self.video_notes))
         self.notes_button.grid(row=0, column=1)
         self.notes_label.grid(row=1)

@@ -26,16 +26,16 @@ class MagicFactualPage(tk.Frame):
         factual_content_images = factual_content_list[2]
 
 
-        self.labelframeone = ttk.Labelframe(self, width = 1200, height = 500, text="Did you know?", relief=tk.RIDGE)
-        self.labelframetwo = ttk.Labelframe(self, width = 1200, height = 500,text="Did you know?", relief=tk.RIDGE)
-        self.labelframethree = ttk.Labelframe(self,width =1200, height = 500, text="Did you know?", relief=tk.RIDGE)
+        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2, text="Did you know?", relief=tk.RIDGE)
+        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2,text="Did you know?", relief=tk.RIDGE)
+        self.labelframethree = ttk.Labelframe(self,width = parent.screen_width/1.5, height = parent.screen_height/2, text="Did you know?", relief=tk.RIDGE)
         self.factual_term_label_one = ttk.Label(self.labelframeone, text = factual_content_terms[0], foreground = 'brown', font=("TkCaptionFont", 14))
         self.factual_term_label_two = ttk.Label(self.labelframetwo,text=factual_content_terms[1], foreground = 'brown', font=("TkCaptionFont", 14))
         self.factual_term_label_three = ttk.Label(self.labelframethree,text=factual_content_terms[2], foreground = 'brown', font=("TkCaptionFont", 14))
 
-        self.factual_description_label_one = ttk.Label(self.labelframeone, text=factual_content_descriptions[0], foreground='blue', font=("TkFixedFont",12),wraplength = 700)
-        self.factual_description_label_two = ttk.Label(self.labelframetwo,text=factual_content_descriptions[1], foreground='blue', font=("TkFixedFont",12),wraplength = 700)
-        self.factual_description_label_three = ttk.Label(self.labelframethree,text=factual_content_descriptions[2], foreground='blue', font=("TkFixedFont",12),wraplength = 700)
+        self.factual_description_label_one = ttk.Label(self.labelframeone, text=factual_content_descriptions[0], foreground='blue', font=("TkFixedFont",12),wraplength = parent.screen_width/2.5)
+        self.factual_description_label_two = ttk.Label(self.labelframetwo,text=factual_content_descriptions[1], foreground='blue', font=("TkFixedFont",12),wraplength = parent.screen_width/2.5)
+        self.factual_description_label_three = ttk.Label(self.labelframethree,text=factual_content_descriptions[2], foreground='blue', font=("TkFixedFont",12),wraplength = parent.screen_width/2.5)
 
 
 
@@ -46,14 +46,14 @@ class MagicFactualPage(tk.Frame):
         factual_image2 = "../images/" + factual_content_images[1]
         factual_image3 = "../images/" + factual_content_images[2]
         self.canvas_image1 = tk.Canvas(self.labelframeone,
-                        width=500,
-                        height=300)
+                        width=parent.screen_width/3.5,
+                        height=parent.screen_height/3)
         self.canvas_image2 = tk.Canvas(self.labelframetwo,
-                                       width=500,
-                                       height=300)
+                                   width=parent.screen_width / 3.5,
+                                   height=parent.screen_height / 3)
         self.canvas_image3 = tk.Canvas(self.labelframethree,
-                                       width=500,
-                                       height=300)
+                                   width=parent.screen_width / 3.5,
+                                   height=parent.screen_height / 3)
 
         self.canvas_image1.bind("<B1-Motion>", self.paint)
         self.canvas_image2.bind("<B1-Motion>", self.paint)
@@ -70,9 +70,9 @@ class MagicFactualPage(tk.Frame):
         self.fimage1_display = ImageTk.PhotoImage(self.fimage1)
         self.fimage2_display = ImageTk.PhotoImage(self.fimage2)
         self.fimage3_display = ImageTk.PhotoImage(self.fimage3)
-        self.image1_id = self.canvas_image1.create_image(300, 100, image=self.fimage1_display)
-        self.image2_id = self.canvas_image2.create_image(300, 200, image=self.fimage2_display)
-        self.image3_id = self.canvas_image3.create_image(300, 200, image=self.fimage3_display)
+        self.image1_id = self.canvas_image1.create_image(parent.screen_width/6, parent.screen_height/10, image=self.fimage1_display)
+        self.image2_id = self.canvas_image2.create_image(parent.screen_width/6, parent.screen_height/10, image=self.fimage2_display)
+        self.image3_id = self.canvas_image3.create_image(parent.screen_width/6, parent.screen_height/10, image=self.fimage3_display)
 
         self.voicebutton1 = ttk.Button(self.labelframeone, text="Read Aloud", command=lambda: pageutils.playtextsound(factual_content_descriptions[0],'f'))
         self.voicebutton2 = ttk.Button(self.labelframetwo,text="Read Aloud", command=lambda: pageutils.playtextsound(factual_content_descriptions[1],'m'))

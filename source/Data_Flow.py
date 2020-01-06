@@ -151,3 +151,21 @@ def get_application_video():
     connection.close()
     return video_info
 
+
+def get_ip_data():
+    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+    cur = connection.cursor()
+    sql = 'select Answer_Key,IP_Questions, Lesson_ID, NumberOfQuestions from Magic_Science_Lessons where Lesson_ID=?'
+    ip_info_c = cur.execute(sql, (5,))
+    ip_info = ip_info_c.fetchone()
+    connection.close()
+    return ip_info
+
+def get_application_mode():
+    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+    cur = connection.cursor()
+    sql = 'select Application_Mode from Magic_Science_Lessons where Lesson_ID=?'
+    ap_info_c = cur.execute(sql, (5,))
+    ap_info = ap_info_c.fetchone()[0]
+    connection.close()
+    return ap_info

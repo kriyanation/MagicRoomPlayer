@@ -5,7 +5,7 @@ class MagicLeaderBoard(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 
-        self.leaderboard = ttk.LabelFrame(self, text = "Class Leaderboard")
+        self.leaderboard = ttk.LabelFrame(self, text = "Class Leaderboard", width=parent.screen_width/4, height=parent.screen_height)
         self.leaderboard.grid(row=0, column=0, sticky=tk.W + tk.E)
         self.headernamelabel = ttk.Label(self.leaderboard, text="Name", font = ('TkDefaultFont', 16), foreground = 'blue')
         self.headerbadgelabel = ttk.Label(self.leaderboard, text="Badge", font=('TkDefaultFont', 16), foreground='blue')

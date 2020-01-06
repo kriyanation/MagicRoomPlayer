@@ -28,21 +28,21 @@ class MagicExperimentPage(tk.Frame):
         print(self.experiment_content_terms)
         self.experiment_content_images = self.experiment_content_list[1]
         print(self.experiment_content_images)
-        self.labelframeone = ttk.Labelframe(self, width = 1200, height = 500, text="Let us do this !", relief=tk.RIDGE)
-        self.labelframetwo = ttk.Labelframe(self, width = 1200, height = 300,text="Step by Step we can change the world !", relief=tk.RIDGE)
+        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2, text="Let us do this !", relief=tk.RIDGE)
+        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2.5,text="Step by Step we can change the world !", relief=tk.RIDGE)
         self.canvas_experiment = tk.Canvas(self.labelframeone,
-                                       width=1000,
-                                       height=400,bg="white")
+                                       width=parent.screen_width/1.6,
+                                       height=parent.screen_height/2.2,bg="white")
         self.labelframeone.grid_propagate(False)
         self.labelframetwo.grid_propagate(False)
         self.labelframeone.grid(row=0, pady=40, padx = 20)
         self.labelframetwo.grid(row=1, pady= 40, padx = 20)
 
-        self.fill_steps_frame()
-        self.fill_canvas_frame()
+        self.fill_steps_frame(parent.screen_width,parent.screen_height)
+        self.fill_canvas_frame(parent.screen_width,parent.screen_height)
 
 
-    def fill_steps_frame(self):
+    def fill_steps_frame(self,width,height):
          self.index = 1
          self.step_one_label = ttk.Label(self.labelframetwo, text="Step 1", foreground='brown',
                                          font=("TkCaptionFont", 14))
@@ -52,9 +52,9 @@ class MagicExperimentPage(tk.Frame):
          self.step_one_label.grid(row=1, column=0)
          self.step_one_desc_label.grid(row=1, column=1,sticky=tk.W, padx = 50)
          self.stepbutton.grid(row=0, column = 0, sticky=tk.NW)
-         self.stepbutton.configure(command=self.addnewstep)
+         self.stepbutton.configure(command=lambda: self.addnewstep(width,height))
          imagefile = "../images/" + self.experiment_content_images[0]
-         imageid = self.draw_image(imagefile, 950, 300)
+         imageid = self.draw_image(imagefile, width/1.8, height/3.2)
 
 
     def move_animate(self, canvas,imageid, finalx, finaly):
@@ -74,7 +74,7 @@ class MagicExperimentPage(tk.Frame):
         if x >= finalx and y >= finaly:
             return
         self.labelframeone.after(50,lambda: self.move_animate(canvas,imageid,finalx,finaly))
-    def fill_canvas_frame(self):
+    def fill_canvas_frame(self,width,height):
         self.image_button = tk.Button(self.labelframeone, text='Add New Image', command=self.use_image)
         self.image_button.grid(row=0, column=0)
 
@@ -109,7 +109,7 @@ class MagicExperimentPage(tk.Frame):
         img = filedialog.askopenfilename(initialdir="../images", title="Select image file",
                                          filetypes=(
                                              ("jpeg files", "*.jpg"), ("png files", "*.png"), ("gif files", "*.gif")))
-        self.draw_image(img,300,200)
+        self.draw_image(img,self.winfo_width()/3,self.winfo_height()/3)
 
         self.move_flag = False
     def draw_image(self, imagefile,xpos, ypos):
@@ -232,7 +232,7 @@ class MagicExperimentPage(tk.Frame):
 
 
 
-    def addnewstep(self):
+    def addnewstep(self,width,height):
         self.step_labels = []
         self.step_descriptions = []
         if self.index < self.experiment_content_list[2]:
@@ -246,7 +246,7 @@ class MagicExperimentPage(tk.Frame):
             self.step_descriptions.append(desc_label)
             imagefile = "../images/"+self.experiment_content_images[self.index]
             imageid = self.draw_image(imagefile,50, 50)
-            self.move_animate(self.canvas_experiment, imageid, 900, 300)
+            self.move_animate(self.canvas_experiment, imageid, width/1.8, height/3.2)
             self.move_flag = False
 
 
