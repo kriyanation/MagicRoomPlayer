@@ -14,10 +14,10 @@ def animate_text(frame, text, counter, label, counter_max):
     frame.after(100, lambda: animate_text(frame, text, counter + 1, label, counter_max))
 
 
-def playtextsound(text,V='m'):
+def playtextsound(text,V='m',L='english'):
     engine = pyttsx3.init(driverName='espeak')
-    engine.setProperty('voice', 'english+'+V+'2')
-    engine.setProperty('rate', 150)
+    engine.setProperty('voice', L+'+'+V+'3')
+    engine.setProperty('rate', 130)
     engine.say(text)
     engine.runAndWait()
 

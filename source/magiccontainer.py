@@ -14,11 +14,19 @@ class MagicApplication(tk.Tk):
 
 
         self.title("Magic Room")
+        #self.backgroundimage = tk.PhotoImage(file="../images/sky.png")
+        #self.backgroundlabel = tk.Label(self, image=self.backgroundimage)
+        #self.backgroundlabel.place(x=0,y=0,relwidth=1,relheight=1)
+        self.configure(background='dark slate gray')
+
 
         self.page_index = 0
         self.resizable(width= True, height= True)
-        ttk.Label(self, text="SGV Magic Player", font=("TkDefaultFont", 18),
-                  foreground = 'green').pack(side = tk.TOP)
+        s = ttk.Style()
+        s.configure('Green.TButton', background='dark slate gray',foreground='PeachPuff2')
+        s.map('Green.TButton',background=[('active','!disabled','dark olive green'),('pressed','PeachPuff2')], foreground=[('pressed','PeachPuff2'),('active','PeachPuff2')])
+        #[('pressed' ,'dark olive green'),('active','white')],foreground=[('pressed','PeachPuff2'),('active', 'PeachPuff2')])
+        ttk.Label(self, text="SGV Magic Player",background='dark slate gray', font=("courier", 22,'bold','italic'),foreground = 'PeachPuff2').pack(side = tk.TOP)
         self.screen_width = self.winfo_screenwidth()
         self.screen_height = self.winfo_screenheight()
 
@@ -34,7 +42,7 @@ class MagicApplication(tk.Tk):
         self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
         self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
         #self.TitlePage.pack(side=tk.LEFT, fill=tk.BOTH)
-        self.nextbutton = ttk.Button(text = "Next Step", command = lambda: self.show_next_page(self.page_index))
+        self.nextbutton = ttk.Button(text = "Next Step", command = lambda: self.show_next_page(self.page_index),style='Green.TButton')
         self.nextbutton.pack(side = tk.BOTTOM, anchor = tk.SE)
 
 
@@ -85,6 +93,7 @@ class MagicApplication(tk.Tk):
                 self.application_experiment_page.pack_forget()
                 self.independent_practice = magicindependentpractice.MagicIndenpendentPractice(self)
                 self.independent_practice.pack(side=tk.LEFT)
+            self.page_index += 1
 
 
 
@@ -122,6 +131,7 @@ if __name__ == "__main__":
     app = MagicApplication()
     screen_width = app.winfo_screenwidth()
     screen_height = app.winfo_screenheight()
+
 
     app.geometry(str(screen_width)+'x'+str(screen_height)+'+5+5')
     app.bind("<KeyPress-r>", app.show_leader_board)

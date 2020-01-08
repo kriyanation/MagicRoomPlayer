@@ -20,19 +20,31 @@ DEFAULT_COLOR = 'black'
 class MagicApplicationVideo(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
+
         self.parent = parent
+        self.configure(background='dark slate gray')
+        s = ttk.Style(self)
+        s.configure('Red.TLabelframe', background='dark slate gray')
+        s.configure('Red.TLabelframe.Label', font=('courier', 12, 'bold', 'italic'))
+        s.configure('Red.TLabelframe.Label', foreground='PeachPuff2')
+        s.configure('Red.TLabelframe.Label', background='dark slate gray')
+
+        s.configure('Green.TButton', background='dark slate gray', foreground='PeachPuff2')
+        s.configure('Horizontal.Green.TScale', background='dark slate gray', foreground='PeachPuff2')
+        s.map('Green.TButton', background=[('active', '!disabled', 'dark olive green'), ('pressed', 'PeachPuff2')],
+              foreground=[('pressed', 'PeachPuff2'), ('active', 'PeachPuff2')])
         self.application_video_info = Data_Flow.get_application_video()
-        self.video_link = "../videos/"+self.application_video_info[0]
+        self.video_link = self.application_video_info[0]
         self.video_notes = self.application_video_info[1]
 
 
 
-        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2.5, text="Insightful Video", relief=tk.RAISED)
-        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2.5,text="Things to Note", relief=tk.RIDGE)
-        self.play_button = ttk.Button(self.labelframeone, text="Play", command= self.play_video)
-        self.pause_button = ttk.Button(self.labelframeone, text="Pause", command= self.pause_video)
-        self.new_screen_button = ttk.Button(self.labelframeone, text="New Window", command=self.new_window)
-        self.video_frame = tk.Frame(self.labelframeone, width = parent.screen_width/1.8, height= parent.screen_height/3)
+        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2.5, text="Insightful Video", relief=tk.RAISED,style='Red.TLabelframe')
+        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2.5,text="Things to Note", relief=tk.RIDGE,style= 'Red.TLabelframe')
+        self.play_button = ttk.Button(self.labelframeone, text="Play", command= self.play_video,style='Green.TButton')
+        self.pause_button = ttk.Button(self.labelframeone, text="Pause", command= self.pause_video,style='Green.TButton')
+        self.new_screen_button = ttk.Button(self.labelframeone, text="New Window", command=self.new_window,style='Green.TButton')
+        self.video_frame = tk.Frame(self.labelframeone, width = parent.screen_width/1.8, height= parent.screen_height/3,background='dark slate gray')
 
         self.play_button.grid(row=0,column=0)
         self.pause_button.grid(row=0,column=1)
@@ -86,8 +98,8 @@ class MagicApplicationVideo(tk.Frame):
 
     def fill_notes_frame(self,width):
         self.notes_label = ttk.Label(self.labelframetwo, text=self.video_notes,
-                                         font=("TkCaptionFont", 14),foreground="blue", wraplength=width/1.8)
-        self.notes_button = ttk.Button(self.labelframetwo, text="Voice Notes", command = lambda:pageutils.playtextsound(self.video_notes))
+                                         font=("TkCaptionFont", 14),foreground="PeachPuff2", wraplength=width/1.8,background='dark slate gray')
+        self.notes_button = ttk.Button(self.labelframetwo, text="Voice Notes", command = lambda:pageutils.playtextsound(self.video_notes,'f','tamil'),style='Green.TButton')
         self.notes_button.grid(row=0, column=1)
         self.notes_label.grid(row=1)
 
@@ -99,6 +111,8 @@ class MagicApplicationVideo(tk.Frame):
 
 if __name__== "__main__":
         app = tk.Tk()
+        app.screen_width= 1000
+        app.screen_height = 1000
         app.geometry("800x800")
         frame = MagicApplicationVideo(app)
 

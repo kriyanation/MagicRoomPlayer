@@ -24,7 +24,17 @@ class MagicIndenpendentPractice(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 
+        self.configure(background='dark slate gray')
+        s = ttk.Style(self)
+        s.configure('Red.TLabelframe', background='dark slate gray')
+        s.configure('Red.TLabelframe.Label', font=('courier', 12, 'bold', 'italic'))
+        s.configure('Red.TLabelframe.Label', foreground='PeachPuff2')
+        s.configure('Red.TLabelframe.Label', background='dark slate gray')
 
+        s.configure('Green.TButton', background='dark slate gray', foreground='PeachPuff2')
+        s.configure('Horizontal.Green.TScale', background='dark slate gray', foreground='PeachPuff2')
+        s.map('Green.TButton', background=[('active', '!disabled', 'dark olive green'), ('pressed', 'PeachPuff2')],
+              foreground=[('pressed', 'PeachPuff2'), ('active', 'PeachPuff2')])
 
         self.cameraoff = False
         self.frame = None
@@ -40,11 +50,11 @@ class MagicIndenpendentPractice(tk.Frame):
         self.ip_answer_key = self.ip_info[0]
         self.ip_questions = self.ip_info[1]
         self.lesson_id = self.ip_info[2]
-        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2, text="Independent Practice", relief=tk.RAISED)
-        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2,text="Evaluate", relief=tk.RIDGE)
-        self.play_button = ttk.Button(self.labelframetwo, text="Camera On", command= lambda: self.play_video())
-        self.qp_button = ttk.Button(self.labelframetwo, text="Question Paper", command= lambda: self.gen_question_paper(self.lesson_id))
-        self.qp_answer_button = ttk.Button(self.labelframetwo,text="Easy Evaluate Sheets", command = lambda: self.gen_ip_sheets(self.lesson_id))
+        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2, text="Independent Practice", relief=tk.RAISED,style='Red.TLabelframe')
+        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/3,text="Evaluate", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.play_button = ttk.Button(self.labelframetwo, text="Camera On", command= lambda: self.play_video(),style='Green.TButton')
+        self.qp_button = ttk.Button(self.labelframetwo, text="Question Paper", command= lambda: self.gen_question_paper(self.lesson_id),style='Green.TButton')
+        self.qp_answer_button = ttk.Button(self.labelframetwo,text="Easy Evaluate Sheets", command = lambda: self.gen_ip_sheets(self.lesson_id),style='Green.TButton')
         self.play_button.grid(row=0,column=0,padx=20)
         self.qp_button.grid(row=0,column=1,padx=20)
         self.qp_answer_button.grid(row=0, column=2, padx=20)
@@ -53,10 +63,10 @@ class MagicIndenpendentPractice(tk.Frame):
         self.labelframeone.grid(row=0, pady=20, padx = 20)
         self.labelframetwo.grid(row=1, pady= 20, padx = 20)
         self.notes_label = ttk.Label(self.labelframeone, text=self.ip_questions,
-                                     font=("TkCaptionFont", 16), foreground="dark olive green", wraplength=parent.screen_width/1.8)
-        self.status_label = ttk.Label(self.labelframetwo, textvariable=self.status_text, font=("TkCaptionFont", 12), foreground="red")
+                                     font=("TkCaptionFont", 14,'italic'), foreground="PeachPuff2",background='dark slate gray', wraplength=parent.screen_width/1.8,anchor=tk.CENTER)
+        self.status_label = ttk.Label(self.labelframetwo, textvariable=self.status_text, font=("TkCaptionFont", 12), foreground="PeachPuff2",background='dark slate gray')
         self.status_label.grid(row=1, columnspan=3)
-        self.notes_label.grid(row=0)
+        self.notes_label.grid(row=0,sticky=tk.NSEW,padx = 100, pady=30)
 
 
         parent.wm_protocol("WM_DELETE_WINDOW", self.onClose)
