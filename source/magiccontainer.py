@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import magicleaderboard, magictitlepage, magicapplicationexperiment,magicapplicationvideo,magicindependentpractice
-import scroll_bars
+
 import Data_Flow
 
 import magicfactualpage
@@ -11,13 +11,12 @@ import magicfactualpage
 class MagicApplication(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-
         self.title("Magic Room")
-        #self.backgroundimage = tk.PhotoImage(file="../images/sky.png")
-        #self.backgroundlabel = tk.Label(self, image=self.backgroundimage)
-        #self.backgroundlabel.place(x=0,y=0,relwidth=1,relheight=1)
         self.configure(background='dark slate gray')
+        self.lbbutton_hide = ttk.Button(text="Hide LeaderBoard", command=self.hide_leader_board,
+                                        style='Green.TButton')
+        self.lbbutton_show = ttk.Button(text="Show LeaderBoard", command=self.show_leader_board,
+                                        style='Green.TButton')
 
 
         self.page_index = 0
@@ -31,20 +30,29 @@ class MagicApplication(tk.Tk):
         self.screen_height = self.winfo_screenheight()
 
         self.TitlePage = magictitlepage.MagicTitlePage(self)
-        #self.factual_page = magicfactualpage.MagicFactualPage(self)
-        #self.application_experiment_page = magicapplicationexperiment.MagicExperimentPage(self)
-        #self.application_video_page = magicapplicationvideo.MagicApplicationVideo(self)
-        #self.independent_practice = magicindependentpractice.MagicIndenpendentPractice(self)
         self.keydown = 0
         print(str(self.screen_width) + ',' + str(self.screen_height))
         self.pack_propagate(False)
         self.TitlePage.pack(side = tk.LEFT, anchor= tk.N)
         self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
-        self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
-        #self.TitlePage.pack(side=tk.LEFT, fill=tk.BOTH)
-        self.nextbutton = ttk.Button(text = "Next Step", command = lambda: self.show_next_page(self.page_index),style='Green.TButton')
-        self.nextbutton.pack(side = tk.BOTTOM, anchor = tk.SE)
 
+        self.nextbutton = ttk.Button(text = "Next Step", command = lambda: self.show_next_page(self.page_index),style='Green.TButton')
+        self.nextbutton.pack(side = tk.TOP, anchor = tk.NE)
+        self.lbbutton_hide.pack(side=tk.TOP, anchor=tk.NE,pady=10)
+        self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE,pady=10)
+
+
+
+    def hide_leader_board(self):
+        self.LeaderBoard.pack_forget()
+        self.lbbutton_hide.pack_forget()
+        self.lbbutton_show.pack(side=tk.TOP, anchor=tk.NE,pady=10)
+        print('hi')
+
+    def show_leader_board(self):
+        self.lbbutton_show.pack_forget()
+        self.lbbutton_hide.pack(side=tk.TOP,anchor=tk.NE,pady=10)
+        self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE,pady=10)
 
 
 
@@ -102,13 +110,7 @@ class MagicApplication(tk.Tk):
         self.screen_height = self.winfo_height()
         print(str(self.screen_width) + ',' + str(self.screen_height))
 
-    def show_leader_board(self,event):
-        #print("R Pressed")
 
-        self.LeaderBoard.pack(side=tk.RIGHT, fill=tk.BOTH)
-    def hide_leader_board(self, event):
-        #print("o pressed")
-        self.LeaderBoard.pack_forget()
 
     def show_title_text(self, event):
         print("Down pressed")
@@ -134,9 +136,10 @@ if __name__ == "__main__":
 
 
     app.geometry(str(screen_width)+'x'+str(screen_height)+'+5+5')
-    app.bind("<KeyPress-r>", app.show_leader_board)
-    app.bind("<KeyPress-o>", app.hide_leader_board)
+
+
+
     app.bind("<KeyPress-Down>", app.show_title_text)
     app.bind('<Configure>',app.Configure)
-
     app.mainloop()
+

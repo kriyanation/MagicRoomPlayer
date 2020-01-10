@@ -7,10 +7,10 @@ from multiprocessing import Process
 from PIL import Image
 from PIL import ImageTk
 import threading
-import imutils
+
 import cv2
 import time
-from imutils.video import VideoStream
+
 import cv2practice
 import pageutils
 

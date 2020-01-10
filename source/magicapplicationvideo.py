@@ -4,7 +4,7 @@ import Data_Flow
 import pyttsx3
 import vlc, sys, time, subprocess
 import unicodedata
-import scroll_bars
+
 from tkinter.colorchooser import askcolor
 
 import PIL

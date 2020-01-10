@@ -4,7 +4,7 @@ import Data_Flow
 import pyttsx3
 import vlc, sys, time
 import unicodedata
-import scroll_bars
+
 
 import PIL
 from PIL import Image, ImageTk
