@@ -3,23 +3,29 @@ from reportlab.pdfgen import canvas
 import Data_Flow, qrtools
 from qrtools import qrtools
 import shutil,os
+import subprocess
+import tkinter as tk
 
 
-def animate_text(frame, text, counter, label, counter_max):
+def animate_text(frame, text, counter, textwidget, counter_max):
     #print(text)
-    label.config(text=text[:counter])
-    if counter > counter_max:
+    textwidget.insert(float(counter+1),text[counter])
+    if counter >= counter_max:
         # self.playtextsound(quote_text)
+        textwidget.configure(state="disabled")
         return
-    frame.after(100, lambda: animate_text(frame, text, counter + 1, label, counter_max))
+    frame.after(100, lambda: animate_text(frame, text, counter + 1, textwidget, counter_max))
 
 
 def playtextsound(text,V='m',L='english'):
-    engine = pyttsx3.init(driverName='espeak')
+    '''engine = pyttsx3.init(driverName='espeak')
     engine.setProperty('voice', L+'+'+V+'3')
     engine.setProperty('rate', 130)
     engine.say(text)
-    engine.runAndWait()
+    engine.runAndWait()'''
+    voiceoutput = subprocess.check_output('espeak-ng \"'+text+'\"',shell=True)
+    print("sound"+str(voiceoutput))
+
 
 
 def generate_ip_paper(lesson_id):

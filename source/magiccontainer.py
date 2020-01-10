@@ -26,7 +26,7 @@ class MagicApplication(tk.Tk):
         s.configure('Green.TButton', background='dark slate gray',foreground='PeachPuff2')
         s.map('Green.TButton',background=[('active','!disabled','dark olive green'),('pressed','PeachPuff2')], foreground=[('pressed','PeachPuff2'),('active','PeachPuff2')])
         #[('pressed' ,'dark olive green'),('active','white')],foreground=[('pressed','PeachPuff2'),('active', 'PeachPuff2')])
-        ttk.Label(self, text="SGV Magic Player",background='dark slate gray', font=("courier", 22,'bold','italic'),foreground = 'PeachPuff2').pack(side = tk.TOP)
+        ttk.Label(self, text="Magic Player",background='dark slate gray', font=("courier",18,'bold'),foreground = 'PeachPuff2').pack(side = tk.TOP)
         self.screen_width = self.winfo_screenwidth()
         self.screen_height = self.winfo_screenheight()
 

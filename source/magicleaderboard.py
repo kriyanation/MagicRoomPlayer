@@ -11,8 +11,20 @@ class MagicLeaderBoard(tk.Frame):
         s.configure('Red.TLabelframe.Label', foreground='PeachPuff2')
         s.configure('Red.TLabelframe.Label', background='dark slate gray')
 
-        self.leaderboard = ttk.LabelFrame(self, text = "Class Leaderboard", width=parent.screen_width/4, height=parent.screen_height,borderwidth=8,relief=tk.GROOVE,style='Red.TLabelframe')
+        s.configure('TScrollbar', background='dark slate gray', foreground='dark slate gray')
+        s.map('TScrollbar', background=[('active', '!disabled', 'dark olive green'), ('disabled', 'dark slate gray')],
+              foreground=[('active', 'PeachPuff2'), ('disabled', 'dark slate gray')])
 
+       # self.leaderboard = ttk.LabelFrame(self, text = "Class Leaderboard", width=parent.screen_width/4, height=parent.screen_height,borderwidth=8,relief=tk.GROOVE,style='Red.TLabelframe')
+        self.leaderboard = tk.Text(self, width=100,
+                                          height=300, borderwidth=8, relief=tk.GROOVE,
+                                          background='dark slate gray', foreground='PeachPuff2')
+
+        self.scrollbar = ttk.Scrollbar(self)
+        self.leaderboard.config(yscrollcommand=self.scrollbar.set)
+        self.scrollbar.grid(row=0,column=3,sticky="nsew")
+
+        self.scrollbar.config(command=self.leaderboard.yview, style='TScrollbar')
         self.leaderboard.grid(row=0, column=0, sticky=tk.W + tk.E)
         self.headernamelabel = ttk.Label(self.leaderboard, text="Name", font = ('TkDefaultFont', 16),background='dark slate gray', foreground = 'PeachPuff2')
         self.headerbadgelabel = ttk.Label(self.leaderboard, text="Badge", font=('TkDefaultFont', 16),background='dark slate gray', foreground='PeachPuff2')
@@ -40,5 +52,6 @@ class MagicLeaderBoard(tk.Frame):
             self.databadgelabel.grid(row=rowindex, column=1, padx=10, pady=3)
             self.datapointslabel.grid(row=rowindex, column=2, padx=10, pady=3)
             rowindex += 1
+        self.leaderboard.configure(state="disabled")
 
 
