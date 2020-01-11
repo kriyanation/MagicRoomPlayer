@@ -1,5 +1,6 @@
 import sqlite3
 import random
+from tkinter import StringVar
 TEST_ROW = 5
 def get_Title():
     connection = sqlite3.connect("/home/ram/MagicRoom.db")
@@ -169,3 +170,32 @@ def get_application_mode():
     ap_info = ap_info_c.fetchone()[0]
     connection.close()
     return ap_info
+
+
+def save_leader_board_data(list_points):
+    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+    cur = connection.cursor()
+
+    for element in list_points:
+        sql = "select Badge_A_Threshold, Badge_B_Threshold, Badge_C_Threshold from Magic_Class_Info where Name=?"
+        badge_info_c = cur.execute(sql, (element[0],))
+        badge_info = badge_info_c.fetchone()
+        badge_a = badge_info[0]
+        badge_b = badge_info[1]
+        badge_c= badge_info[2]
+        var = StringVar()
+        var = element[1]
+        value = var.get()
+        badge = ''
+        if int(value) > badge_a:
+            badge = 'a'
+        elif int(value) > badge_b:
+            badge ='b'
+        elif int(value) > badge_c:
+            badge = 'c'
+        sql='update Magic_Class_Info set Points = ? , Badge = ? where Name=?'
+        print(value,element[0])
+        cur.execute(sql,(int(value), badge, element[0]))
+
+    connection.commit()
+    connection.close()

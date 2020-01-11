@@ -36,16 +36,16 @@ class MagicFactualPage(tk.Frame):
         factual_content_images = factual_content_list[2]
 
 
-        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
-        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2,text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
-        self.labelframethree = ttk.Labelframe(self,width = parent.screen_width/1.5, height = parent.screen_height/2, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/2.0, height = parent.screen_height/1.5, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/2.0, height = parent.screen_height/1.5,text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.labelframethree = ttk.Labelframe(self,width = parent.screen_width/2.0, height = parent.screen_height/1.5, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
         self.factual_term_label_one = ttk.Label(self.labelframeone, text = factual_content_terms[0], background = 'dark slate gray',foreground = 'ivory2', font=("TkCaptionFont", 15,'bold'))
         self.factual_term_label_two = ttk.Label(self.labelframetwo,text=factual_content_terms[1], background = 'dark slate gray',foreground = 'ivory2', font=("TkCaptionFont", 15,'bold'))
         self.factual_term_label_three = ttk.Label(self.labelframethree,text=factual_content_terms[2],background = 'dark slate gray', foreground = 'ivory2', font=("TkCaptionFont", 15,'bold'))
 
-        self.factual_description_label_one = ttk.Label(self.labelframeone, text=factual_content_descriptions[0], background='dark slate gray',foreground='PeachPuff2', font=("TkFixedFont",12),wraplength = parent.screen_width/2.5)
-        self.factual_description_label_two = ttk.Label(self.labelframetwo,text=factual_content_descriptions[1],background='dark slate gray', foreground='PeachPuff2', font=("TkFixedFont",12),wraplength = parent.screen_width/2.5)
-        self.factual_description_label_three = ttk.Label(self.labelframethree,text=factual_content_descriptions[2], background='dark slate gray', foreground='PeachPuff2', font=("TkFixedFont",12),wraplength = parent.screen_width/2.5)
+        self.factual_description_label_one = ttk.Label(self.labelframeone, text=factual_content_descriptions[0], background='dark slate gray',foreground='PeachPuff2', font=("TkFixedFont",12),wraplength = 280)
+        self.factual_description_label_two = ttk.Label(self.labelframetwo,text=factual_content_descriptions[1],background='dark slate gray', foreground='PeachPuff2', font=("TkFixedFont",12),wraplength = 280)
+        self.factual_description_label_three = ttk.Label(self.labelframethree,text=factual_content_descriptions[2], background='dark slate gray', foreground='PeachPuff2', font=("TkFixedFont",12),wraplength = 280)
 
 
 
@@ -57,14 +57,15 @@ class MagicFactualPage(tk.Frame):
         factual_image3 = factual_content_images[2]
         self.canvas_image1 = tk.Canvas(self.labelframeone,
                         width=parent.screen_width/2.5,
-                        height=parent.screen_height/3,bg='dark slate gray',borderwidth=3
+                        height=parent.screen_height/2.5,bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
                                                          )
         self.canvas_image2 = tk.Canvas(self.labelframetwo,
                                    width=parent.screen_width / 2.5,
-                                   height=parent.screen_height / 3, bg='dark slate gray',borderwidth=3)
+                                   height=parent.screen_height / 2.5, bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
+                                       )
         self.canvas_image3 = tk.Canvas(self.labelframethree,
                                    width=parent.screen_width / 2.5,
-                                   height=parent.screen_height / 3,bg='dark slate gray',borderwidth=3)
+                                   height=parent.screen_height / 2.5,bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
 
         self.canvas_image1.bind("<B1-Motion>", lambda event, c=self.canvas_image1: self.paint(event,c))
         self.canvas_image1.bind('<ButtonRelease-1>', self.reset)
@@ -99,14 +100,14 @@ class MagicFactualPage(tk.Frame):
 
     def add_factual_panel(self,labelframe,label, description, canvas, button,index):
         labelframe.grid_propagate(False)
-        labelframe.grid(row=index, column=0, padx=60, pady=150)
+        labelframe.grid(row=0, column=0, padx=60, pady=0)
         label.grid(row=0,column=0, padx=30)
         description.grid(row=0, column=1)
-        canvas.grid(row=1,column=0, columnspan=2, padx=150,pady = 15, sticky=tk.NSEW)
-        button.grid(row=0, column=2, sticky=tk.E)
+        canvas.grid(row=1, column=0, columnspan=3, padx=150, pady=15, sticky=tk.NSEW)
+        button.grid(row=2, column=0, padx = 5,sticky=tk.SW)
         if index == 0 or index == 1:
             self.nextfactbutton = ttk.Button(self,text="Next One !", command =lambda: self.nextfact(index),style='Green.TButton')
-            self.nextfactbutton.grid(row = 2, column = 1)
+            self.nextfactbutton.grid(row = 1, column = 0,pady=10)
 
     def nextfact(self, index):
         if index == 0:

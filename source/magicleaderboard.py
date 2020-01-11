@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk,StringVar
 import Data_Flow
 class MagicLeaderBoard(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -11,6 +11,10 @@ class MagicLeaderBoard(tk.Frame):
         s.configure('Red.TLabelframe.Label', foreground='PeachPuff2')
         s.configure('Red.TLabelframe.Label', background='dark slate gray')
 
+        s.configure('Green.TButton', background='dark slate gray', foreground='PeachPuff2')
+        s.map('Green.TButton', background=[('active', '!disabled', 'dark olive green'), ('pressed', 'PeachPuff2')],
+              foreground=[('pressed', 'PeachPuff2'), ('active', 'PeachPuff2')])
+
         s.configure('TScrollbar', background='dark slate gray', foreground='dark slate gray')
         s.map('TScrollbar', background=[('active', '!disabled', 'dark olive green'), ('disabled', 'dark slate gray')],
               foreground=[('active', 'PeachPuff2'), ('disabled', 'dark slate gray')])
@@ -19,6 +23,13 @@ class MagicLeaderBoard(tk.Frame):
         self.leaderboard = tk.Text(self, width=100,
                                           height=300, borderwidth=8, relief=tk.GROOVE,
                                           background='dark slate gray', foreground='PeachPuff2')
+        self.dataframe= tk.Frame(self.leaderboard)
+        self.dataframe.configure(background='dark slate gray')
+        self.refreshbutton = ttk.Button(self.dataframe,text="Refresh",style='Green.TButton',command=self.refresh_data,cursor="arrow")
+        self.savebutton = ttk.Button(self.dataframe,text="Save",style='Green.TButton',command=self.save_data,cursor="arrow")
+        self.dataframe.grid(row=0,column=0,columnspan=3)
+        self.refreshbutton.grid(row=0,column=0)
+        self.savebutton.grid(row=0,column=1,padx=5)
 
         self.scrollbar = ttk.Scrollbar(self)
         self.leaderboard.config(yscrollcommand=self.scrollbar.set)
@@ -28,30 +39,54 @@ class MagicLeaderBoard(tk.Frame):
         self.leaderboard.grid(row=0, column=0, sticky=tk.W + tk.E)
         self.headernamelabel = ttk.Label(self.leaderboard, text="Name", font = ('TkDefaultFont', 16),background='dark slate gray', foreground = 'PeachPuff2')
         self.headerbadgelabel = ttk.Label(self.leaderboard, text="Badge", font=('TkDefaultFont', 16),background='dark slate gray', foreground='PeachPuff2')
-        self.headerpointslabel = ttk.Label(self.leaderboard, text="Points", font=('TkDefaultFont', 16),background='dark slate gray', foreground='PeachPuff2')
+        self.headerpointslabel = ttk.Label(self.leaderboard, text="Points", font=('TkDefaultFont', 16),background='dark slate gray', foreground='PeachPuff2',)
 
-        self.headernamelabel.grid(row=0, column=0, padx=10, pady=2)
-        self.headerbadgelabel.grid(row=0, column=1,padx=10, pady=2)
-        self.headerpointslabel.grid(row=0, column=2,padx=10, pady=2)
+        self.headernamelabel.grid(row=1, column=0, padx=10, pady=2)
+        self.headerbadgelabel.grid(row=1, column=1,padx=10, pady=2)
+        self.headerpointslabel.grid(row=1, column=2,padx=10, pady=2)
+        self.refresh_data()
 
+    def refresh_data(self):
+
+        self.spinboxvalue = []
+        self.list_points = []
+        self.leaderboard.configure(state="normal")
         list_names = Data_Flow.class_info()
-        rowindex = 1
-        self.badge_image_medal = tk.PhotoImage(file= '../images/medal.png' )
-        self.badge_image_normal = tk.PhotoImage(file= '../images/premium-badge.png' )
+        rowindex = 2
+        self.badge_image_medala = tk.PhotoImage(file= '../images/medala.png' )
+        self.badge_image_medalb = tk.PhotoImage(file= '../images/medalb.png' )
+        self.badge_image_medalc = tk.PhotoImage(file='../images/medalc.png')
         for element in list_names:
             self.datanamelabel = ttk.Label(self.leaderboard, text=element[0].strip(), font = ('TkDefaultFont', 12),
                                            foreground = 'PeachPuff2',wraplength = 100,background='dark slate gray')
-            if element[1].strip() == 'm':
-                self.databadgelabel = ttk.Label(self.leaderboard, image=self.badge_image_medal,background='dark slate gray')
+            if element[1].strip() == 'a':
+                self.databadgelabel = ttk.Label(self.leaderboard, image=self.badge_image_medala,background='dark slate gray')
+            elif element[1].strip() == 'b':
+                self.databadgelabel = ttk.Label(self.leaderboard, image=self.badge_image_medalb,background='dark slate gray')
             else:
-                self.databadgelabel = ttk.Label(self.leaderboard, image=self.badge_image_normal,background='dark slate gray')
+                self.databadgelabel = ttk.Label(self.leaderboard, image=self.badge_image_medalc,
+                                                background='dark slate gray')
 
-            self.datapointslabel = ttk.Label(self.leaderboard, text=element[2], font=('TkDefaultFont', 12),
-                                           foreground='PeachPuff2',background='dark slate gray')
+            points = StringVar()
+            points.set(str(element[2]))
+            self.spinboxvalue.append(points)
+            print("rowindex"+str(rowindex))
+            self.datapointspinner = ttk.Spinbox(self.leaderboard,background='dark slate gray',foreground='dark slate gray',font=('TkDefaultFont', 12),
+                                                from_=0,to=100,textvariable=self.spinboxvalue[rowindex-2],wrap=True,width=2)
+
+            self.list_points.append((element[0],self.spinboxvalue[rowindex-2]))
+
+           # self.datapointslabel = ttk.Label(self.leaderboard, text=element[2], font=('TkDefaultFont', 12),
+           #                                foreground='PeachPuff2',background='dark slate gray')
             self.datanamelabel.grid(row=rowindex, column=0, padx=10, pady=3,sticky=tk.W)
             self.databadgelabel.grid(row=rowindex, column=1, padx=10, pady=3)
-            self.datapointslabel.grid(row=rowindex, column=2, padx=10, pady=3)
+            self.datapointspinner.grid(row=rowindex, column=2, padx=10, pady=3)
             rowindex += 1
-        self.leaderboard.configure(state="disabled")
+            self.leaderboard.configure(state="disabled")
+
+    def save_data(self):
+        Data_Flow.save_leader_board_data(self.list_points)
+
+
 
 

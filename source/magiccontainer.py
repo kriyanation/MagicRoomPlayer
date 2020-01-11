@@ -63,7 +63,7 @@ class MagicApplication(tk.Tk):
             self.TitlePage.pack_forget()
             self.LeaderBoard.pack_forget()
             self.factual_page = magicfactualpage.MagicFactualPage(self)
-            self.factual_page.pack(side = tk.LEFT)
+            self.factual_page.pack(side = tk.LEFT,anchor=tk.N)
             self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
             self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
             self.page_index += 1
@@ -108,7 +108,7 @@ class MagicApplication(tk.Tk):
     def  Configure(self,event):
         self.screen_width = self.winfo_width()
         self.screen_height = self.winfo_height()
-        print(str(self.screen_width) + ',' + str(self.screen_height))
+       # print(str(self.screen_width) + ',' + str(self.screen_height))
 
 
 
