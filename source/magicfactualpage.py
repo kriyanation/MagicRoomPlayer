@@ -89,9 +89,11 @@ class MagicFactualPage(tk.Frame):
         self.image2_id = self.canvas_image2.create_image(parent.screen_width/6.5, parent.screen_height/7, image=self.fimage2_display)
         self.image3_id = self.canvas_image3.create_image(parent.screen_width/6.5, parent.screen_height/7, image=self.fimage3_display)
 
-        self.voicebutton1 = ttk.Button(self.labelframeone, text="Read Aloud", command=lambda: pageutils.playtextsound(factual_content_descriptions[0],'f'),style='Green.TButton')
-        self.voicebutton2 = ttk.Button(self.labelframetwo,text="Read Aloud", command=lambda: pageutils.playtextsound(factual_content_descriptions[1],'m'),style='Green.TButton')
-        self.voicebutton3 = ttk.Button(self.labelframethree, text="Read Aloud", command=lambda: pageutils.playtextsound(factual_content_descriptions[2],'f'),style='Green.TButton')
+        self.buttonimage = tk.PhotoImage(file="../images/speaker.png")
+
+        self.voicebutton1 = ttk.Button(self.labelframeone, image=self.buttonimage, command=lambda: pageutils.playtextsound(factual_content_descriptions[0],'f'),style='Green.TButton')
+        self.voicebutton2 = ttk.Button(self.labelframetwo,image=self.buttonimage, command=lambda: pageutils.playtextsound(factual_content_descriptions[1],'m'),style='Green.TButton')
+        self.voicebutton3 = ttk.Button(self.labelframethree, image=self.buttonimage, command=lambda: pageutils.playtextsound(factual_content_descriptions[2],'f','kannada'),style='Green.TButton')
 
         self.add_factual_panel(self.labelframeone,self.factual_term_label_one, self.factual_description_label_one,self.canvas_image1, self.voicebutton1,0)
         self.old_x, self.old_y = None, None

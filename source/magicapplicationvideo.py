@@ -39,12 +39,12 @@ class MagicApplicationVideo(tk.Frame):
 
 
 
-        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2.5, text="Insightful Video", relief=tk.RAISED,style='Red.TLabelframe')
-        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2.5,text="Things to Note", relief=tk.RIDGE,style= 'Red.TLabelframe')
+        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/2.0, height = parent.screen_height/2.5, text="Insightful Video", relief=tk.RAISED,style='Red.TLabelframe')
+        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/2.0, height = parent.screen_height/2.5,text="Things to Note", relief=tk.RIDGE,style= 'Red.TLabelframe')
         self.play_button = ttk.Button(self.labelframeone, text="Play", command= self.play_video,style='Green.TButton')
         self.pause_button = ttk.Button(self.labelframeone, text="Pause", command= self.pause_video,style='Green.TButton')
         self.new_screen_button = ttk.Button(self.labelframeone, text="New Window", command=self.new_window,style='Green.TButton')
-        self.video_frame = tk.Frame(self.labelframeone, width = parent.screen_width/1.8, height= parent.screen_height/3,background='dark slate gray')
+        self.video_frame = tk.Frame(self.labelframeone, width = parent.screen_width/2.2, height= parent.screen_height/3,background='dark slate gray')
 
         self.play_button.grid(row=0,column=0)
         self.pause_button.grid(row=0,column=1)
@@ -52,8 +52,8 @@ class MagicApplicationVideo(tk.Frame):
         self.video_frame.grid(row=1,columnspan = 3)
         self.labelframeone.grid_propagate(False)
         self.labelframetwo.grid_propagate(False)
-        self.labelframeone.grid(row=0, pady=20, padx = 20)
-        self.labelframetwo.grid(row=1, pady= 20, padx = 20)
+        self.labelframeone.grid(row=0, pady=0, padx = 20)
+        self.labelframetwo.grid(row=1, pady= 10, padx = 20)
 
         args = []
         if _isLinux:
@@ -97,15 +97,23 @@ class MagicApplicationVideo(tk.Frame):
        # self.player.play()
 
     def fill_notes_frame(self,width):
-        self.notes_label = ttk.Label(self.labelframetwo, text=self.video_notes,
-                                         font=("TkCaptionFont", 14),foreground="PeachPuff2", wraplength=width/1.8,background='dark slate gray')
-        self.notes_button = ttk.Button(self.labelframetwo, text="Voice Notes", command = lambda:pageutils.playtextsound(self.video_notes,'f','tamil'),style='Green.TButton')
-        self.notes_button.grid(row=0, column=1)
-        self.notes_label.grid(row=1)
+        self.buttonimage = tk.PhotoImage(file="../images/speaker.png")
 
+        self.notes_button = ttk.Button(self.labelframetwo, image=self.buttonimage, command = lambda:pageutils.playtextsound(self.video_notes,'f','tamil'),style='Green.TButton')
+        self.notes_button.grid(row=0, column=0)
+        self.notes_frame = tk.Frame(self.labelframetwo)
+        self.notes_frame.configure(background='dark slate gray')
+        self.notes_text = tk.Text(self.notes_frame,
+                                  font=("TkCaptionFont", 14), foreground="PeachPuff2", width=75, height=15,
+                                  background='dark slate gray')
+        self.notes_text.insert(1.0, self.video_notes)
+        self.notes_text.grid(row=0)
+        self.scrollbar = ttk.Scrollbar(self.notes_frame)
+        self.notes_text.config(yscrollcommand=self.scrollbar.set)
+        self.scrollbar.config(command=self.notes_text.yview, style='TScrollbar')
 
-
-
+        self.scrollbar.grid(row=0,column=1,sticky="nsew")
+        self.notes_frame.grid(row=1,column=0)
 
 
 

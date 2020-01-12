@@ -1,9 +1,18 @@
 import sqlite3
 import random
+import configparser
 from tkinter import StringVar
-TEST_ROW = 5
+TEST_ROW = 15
+
+config = configparser.RawConfigParser()
+config.read('magic.cfg')
+db = config.get("section1",'dataroot')
+imageroot = config.get("section1",'image_root')
+videoroot = config.get("section1",'video_root')
+
 def get_Title():
-    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+
+    connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = "select Lesson_Title from Magic_Science_Lessons where Lesson_ID = ?"
     cur.execute(sql, (TEST_ROW, ))
@@ -18,7 +27,7 @@ def get_Title():
 #get_Title()
 
 def get_title_image():
-    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+    connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = "select Title_Image from Magic_Science_Lessons where Lesson_ID = ?"
     cur.execute(sql, (TEST_ROW, ))
@@ -26,10 +35,10 @@ def get_title_image():
     print(text)
     connection.commit()
     connection.close()
-    return text
+    return imageroot+text
 
 def get_title_video():
-    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+    connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = "select Title_Video from Magic_Science_Lessons where Lesson_ID = ?"
     cur.execute(sql, (TEST_ROW, ))
@@ -37,13 +46,13 @@ def get_title_video():
     #print(text)
     connection.commit()
     connection.close()
-    return text
+    return videoroot+text
 
 get_title_image()
 
 
 def get_Quote():
-    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+    connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = "select count(*) from Magic_Quotes"
     cur.execute(sql)
@@ -74,7 +83,7 @@ def get_Quote():
     return quote
 
 def get_Running_Notes():
-    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+    connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = "select Title_Running_Notes, Title_Notes_Language from Magic_Science_Lessons where Lesson_ID = ?"
     cur.execute(sql, (TEST_ROW, ))
@@ -95,7 +104,7 @@ def get_Running_Notes():
 #get_Quote()
 def class_info():
     list_names = []
-    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+    connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = "select * from Magic_Class_Info"
     cur.execute(sql)
@@ -109,7 +118,7 @@ def class_info():
 
 def get_factual_content():
     list_factual_content = []
-    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+    connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = ('select Factual_Term1, Factual_Term1_Description, Factual_Term2, Factual_Term2_Description, Factual_Term3'
           ', Factual_Term3_Description, Factual_Image1, Factual_Image2, Factual_Image3 from Magic_Science_Lessons where Lesson_ID = ?')
@@ -119,13 +128,13 @@ def get_factual_content():
    # print(factual_info)
     factual_terms = [factual_info[0], factual_info[2], factual_info[4]]
     factual_descriptions = [factual_info[1], factual_info[3], factual_info[5]]
-    factual_images = [factual_info[6], factual_info[7], factual_info[8]]
+    factual_images = [imageroot+factual_info[6], imageroot+factual_info[7], imageroot+factual_info[8]]
     connection.close()
     return (factual_terms, factual_descriptions, factual_images)
 
 
 def get_experiment_content():
-    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+    connection = sqlite3.connect(db)
     cur = connection.cursor()
 
     sql = ('select Application_Steps_Number, Application_Step_Description_1, Application_Step_Description_2, Application_Step_Description_3,'
@@ -137,24 +146,25 @@ def get_experiment_content():
     experiment_info = experiment_info_c.fetchone()
     #print(experiment_info)
     experiment_steps = [experiment_info[1], experiment_info[2], experiment_info[3],experiment_info[4],experiment_info[TEST_ROW],experiment_info[6],experiment_info[7],experiment_info[8]]
-    experiment_images = [experiment_info[9], experiment_info[10], experiment_info[11],experiment_info[12],experiment_info[13],experiment_info[14],experiment_info[15],experiment_info[16]]
+    experiment_images = [imageroot+experiment_info[9], imageroot+experiment_info[10], imageroot+experiment_info[11],imageroot+experiment_info[12],imageroot+experiment_info[13],imageroot+experiment_info[14],imageroot+experiment_info[15],imageroot+experiment_info[16]]
     experiment_steps_total = experiment_info[0]
     connection.close()
     return experiment_steps, experiment_images, experiment_steps_total
 
 
 def get_application_video():
-    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+    connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = 'select Application_Video_Link, Application_Video_Running_Notes from Magic_Science_Lessons where Lesson_ID=?'
     video_info_c = cur.execute(sql, (TEST_ROW,))
     video_info = video_info_c.fetchone()
+    video_link = videoroot+video_info[0]
     connection.close()
-    return video_info
+    return (video_link,video_info[1])
 
 
 def get_ip_data():
-    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+    connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = 'select Answer_Key,IP_Questions, Lesson_ID, NumberOfQuestions from Magic_Science_Lessons where Lesson_ID=?'
     ip_info_c = cur.execute(sql, (TEST_ROW,))
@@ -163,7 +173,7 @@ def get_ip_data():
     return ip_info
 
 def get_application_mode():
-    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+    connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = 'select Application_Mode from Magic_Science_Lessons where Lesson_ID=?'
     ap_info_c = cur.execute(sql, (TEST_ROW,))
@@ -173,7 +183,7 @@ def get_application_mode():
 
 
 def save_leader_board_data(list_points):
-    connection = sqlite3.connect("/home/ram/MagicRoom.db")
+    connection = sqlite3.connect(db)
     cur = connection.cursor()
 
     for element in list_points:

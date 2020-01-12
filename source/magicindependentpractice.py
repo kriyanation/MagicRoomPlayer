@@ -50,20 +50,20 @@ class MagicIndenpendentPractice(tk.Frame):
         self.ip_answer_key = self.ip_info[0]
         self.ip_questions = self.ip_info[1]
         self.lesson_id = self.ip_info[2]
-        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2, text="Independent Practice", relief=tk.RAISED,style='Red.TLabelframe')
-        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/3,text="Evaluate", relief=tk.RIDGE,style='Red.TLabelframe')
-        self.play_button = ttk.Button(self.labelframetwo, text="Camera On", command= lambda: self.play_video(),style='Green.TButton')
-        self.qp_button = ttk.Button(self.labelframetwo, text="Question Paper", command= lambda: self.gen_question_paper(self.lesson_id),style='Green.TButton')
-        self.qp_answer_button = ttk.Button(self.labelframetwo,text="Easy Evaluate Sheets", command = lambda: self.gen_ip_sheets(self.lesson_id),style='Green.TButton')
+        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/2.0, height = parent.screen_height/2, text="Independent Practice", relief=tk.RAISED,style='Red.TLabelframe')
+        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/2.0, height = parent.screen_height/3,text="Evaluate", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.play_button = ttk.Button(self.labelframetwo, text="Take a Picture", command= lambda: self.play_video(),style='Green.TButton')
+        self.qp_button = ttk.Button(self.labelframetwo, text="Print Question Paper", command= lambda: self.gen_question_paper(self.lesson_id),style='Green.TButton')
+        self.qp_answer_button = ttk.Button(self.labelframetwo,text="Easy Answer Sheets", command = lambda: self.gen_ip_sheets(self.lesson_id),style='Green.TButton')
         self.play_button.grid(row=0,column=0,padx=20)
         self.qp_button.grid(row=0,column=1,padx=20)
         self.qp_answer_button.grid(row=0, column=2, padx=20)
         self.labelframeone.grid_propagate(False)
         self.labelframetwo.grid_propagate(False)
-        self.labelframeone.grid(row=0, pady=20, padx = 20)
-        self.labelframetwo.grid(row=1, pady= 20, padx = 20)
+        self.labelframeone.grid(row=0, pady=0, padx = 20,)
+        self.labelframetwo.grid(row=1, pady= 10, padx = 20)
         self.notes_label = ttk.Label(self.labelframeone, text=self.ip_questions,
-                                     font=("TkCaptionFont", 14,'italic'), foreground="PeachPuff2",background='dark slate gray', wraplength=parent.screen_width/1.8,anchor=tk.CENTER)
+                                     font=("TkCaptionFont", 14,'italic'), foreground="PeachPuff2",background='dark slate gray', wraplength=600,anchor=tk.CENTER)
         self.status_label = ttk.Label(self.labelframetwo, textvariable=self.status_text, font=("TkCaptionFont", 12), foreground="PeachPuff2",background='dark slate gray')
         self.status_label.grid(row=1, columnspan=3)
         self.notes_label.grid(row=0,sticky=tk.NSEW,padx = 100, pady=30)

@@ -17,13 +17,13 @@ def animate_text(frame, text, counter, textwidget, counter_max):
     frame.after(100, lambda: animate_text(frame, text, counter + 1, textwidget, counter_max))
 
 
-def playtextsound(text,V='m',L='english'):
+def playtextsound(text,V='m',L='en'):
     '''engine = pyttsx3.init(driverName='espeak')
     engine.setProperty('voice', L+'+'+V+'3')
     engine.setProperty('rate', 130)
     engine.say(text)
     engine.runAndWait()'''
-    voiceoutput = subprocess.check_output('espeak-ng \"'+text+'\"',shell=True)
+    voiceoutput = subprocess.check_output('espeak-ng -s150 -v'+L+'+f2 \"'+text+'\"',shell=True)
     print("sound"+str(voiceoutput))
 
 

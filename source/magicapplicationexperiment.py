@@ -39,21 +39,23 @@ class MagicExperimentPage(tk.Frame):
         print(self.experiment_content_terms)
         self.experiment_content_images = self.experiment_content_list[1]
         print(self.experiment_content_images)
-        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/2, text="Let us do this !", relief=tk.RIDGE,style='Red.TLabelframe')
-        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/1.5, height = parent.screen_height/3.2,text="Step by Step we can change the world !", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/2, height = parent.screen_height/2, text="Let us do this !", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/2, height = parent.screen_height/3.5,text="Step by Step we can change the world !", relief=tk.RIDGE,style='Red.TLabelframe')
         self.canvas_experiment = tk.Canvas(self.labelframeone,
-                                       width=parent.screen_width/1.6,
+                                       width=parent.screen_width/2.2,
                                        height=parent.screen_height/2.5,bg="white")
         self.labelframeone.grid_propagate(False)
         self.labelframetwo.grid_propagate(False)
-        self.labelframeone.grid(row=0, pady=40, padx = 20)
-        self.labelframetwo.grid(row=1, pady= 40, padx = 20)
+        self.labelframeone.grid(row=0, pady=20, padx = 20)
+        self.labelframetwo.grid(row=1, pady= 20, padx = 20)
+        self.sound_flag = True
 
         self.fill_steps_frame(parent.screen_width,parent.screen_height)
         self.fill_canvas_frame(parent.screen_width,parent.screen_height)
 
 
     def fill_steps_frame(self,width,height):
+
          self.index = 1
          self.step_one_label = ttk.Label(self.labelframetwo, text="Step 1", foreground='ivory2',
                                          font=("TkCaptionFont", 14), background='dark slate gray')
@@ -61,12 +63,24 @@ class MagicExperimentPage(tk.Frame):
 
          self.stepbutton = ttk.Button(self.labelframetwo, text= "Next Step",style='Green.TButton')
          self.step_one_label.grid(row=1, column=0)
-         self.step_one_desc_label.grid(row=1, column=1,sticky=tk.W, padx = 50)
+         self.step_one_desc_label.grid(row=1, column=1,columnspan=2,sticky=tk.W, padx = 50)
          self.stepbutton.grid(row=0, column = 0, sticky=tk.NW)
-         self.stepbutton.configure(command=lambda: self.addnewstep(width,height))
-         imagefile = self.experiment_content_images[0]
-         imageid = self.draw_image(imagefile, width/1.8, height/3.2)
 
+         imagefile = self.experiment_content_images[0]
+         imageid = self.draw_image(imagefile, width/2.4, height/3.2)
+         self.audiobutton = ttk.Button(self.labelframetwo, text="Voice-On", style='Green.TButton',command= self.play_step_audio)
+
+         self.audiooffbutton = ttk.Button(self.labelframetwo, text="Voice-Off", style='Green.TButton',
+                                  command= self.stop_step_audio)
+         self.audiobutton.grid(row =0,padx = 20,column=1,sticky=tk.NW)
+         self.audiooffbutton.grid(row=0, column=3, sticky=tk.NW)
+
+         self.stepbutton.configure(command=lambda: self.addnewstep(width, height))
+
+    def play_step_audio(self):
+        self.sound_flag = True
+    def stop_step_audio(self):
+        self.sound_flag = False
 
     def move_animate(self, canvas,imageid, finalx, finaly):
         x, y = canvas.coords(imageid)
@@ -257,8 +271,10 @@ class MagicExperimentPage(tk.Frame):
             self.step_descriptions.append(desc_label)
             imagefile = self.experiment_content_images[self.index]
             imageid = self.draw_image(imagefile,50, 50)
-            self.move_animate(self.canvas_experiment, imageid, width/1.8, height/3.2)
+            self.move_animate(self.canvas_experiment, imageid, width/2.4, height/3.2)
             self.move_flag = False
+            if self.sound_flag:
+                 pageutils.playtextsound(self.experiment_content_terms[self.index])
 
 
         self.index += 1
