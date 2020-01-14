@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, font, filedialog
 import Data_Flow
-import pyttsx3
+
 import vlc, sys, time
 import unicodedata
 
@@ -39,15 +39,15 @@ class MagicExperimentPage(tk.Frame):
         print(self.experiment_content_terms)
         self.experiment_content_images = self.experiment_content_list[1]
         print(self.experiment_content_images)
-        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/2, height = parent.screen_height/2, text="Let us do this !", relief=tk.RIDGE,style='Red.TLabelframe')
-        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/2, height = parent.screen_height/3.5,text="Step by Step we can change the world !", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/1.9, height = parent.screen_height/2.1, text="Let us do this !", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/1.9, height = parent.screen_height/3.6,text="Step by Step we can change the world !", relief=tk.RIDGE,style='Red.TLabelframe')
         self.canvas_experiment = tk.Canvas(self.labelframeone,
                                        width=parent.screen_width/2.2,
-                                       height=parent.screen_height/2.5,bg="white")
+                                       height=parent.screen_height/2.6,bg="white")
         self.labelframeone.grid_propagate(False)
         self.labelframetwo.grid_propagate(False)
-        self.labelframeone.grid(row=0, pady=20, padx = 20)
-        self.labelframetwo.grid(row=1, pady= 20, padx = 20)
+        self.labelframeone.grid(row=0, pady=5, padx = 20)
+        self.labelframetwo.grid(row=1, pady= 5, padx = 20)
         self.sound_flag = True
 
         self.fill_steps_frame(parent.screen_width,parent.screen_height)
@@ -122,7 +122,7 @@ class MagicExperimentPage(tk.Frame):
         self.clear_button.grid(row=0, column=6)
 
 
-        self.canvas_experiment.grid(row=1, pady=20, padx=40, columnspan = 7)
+        self.canvas_experiment.grid(row=1, pady=5, padx=40, columnspan = 7)
         self.setup_canvas()
 
 

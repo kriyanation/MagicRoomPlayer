@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, font, filedialog
 import Data_Flow
-import pyttsx3
+
 import vlc, sys, time, subprocess
 import unicodedata
 

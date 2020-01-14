@@ -36,7 +36,7 @@ class MagicTitlePage(tk.Frame):
         self.counter = 0
         pageutils.animate_text( self.quoteframe, self.quote_text, self.counter,self.quote_textwidget,len(self.quote_text)-1)
 
-        self.quote_textwidget.pack(pady=10)
+        self.quote_textwidget.pack(pady=5)
         self.buttonimage = tk.PhotoImage(file="../images/speaker.png")
 
         self.quote_audio_button = ttk.Button(self.quoteframe,text="hello", image = self.buttonimage,command=lambda: self.play_quote_audio(self.quote_text),
@@ -49,7 +49,7 @@ class MagicTitlePage(tk.Frame):
         self.show_video_button = ttk.Button(self, text="Show Video",
                                              command= self.show_video_intro,
                                              style='Green.TButton')
-        self.show_video_button.pack(pady=10)
+        self.show_video_button.pack(pady=5)
 
         args = []
         if _isLinux:
@@ -107,7 +107,7 @@ class MagicTitlePage(tk.Frame):
 
 
         self.topic_label = ttk.Label(self.labelframeone, text = title_text,font= ('TkDefaultFont', 16), foreground = 'PeachPuff2',background = 'dark slate gray', wraplength=self.parent_window.screen_width/2.5)
-        self.topic_label.pack(pady=30,anchor = tk.CENTER)
+        self.topic_label.pack(pady=10,anchor = tk.CENTER)
 
         title_image = Data_Flow.get_title_image()
         self.canvas = tk.Canvas(self.labelframeone,
@@ -152,7 +152,7 @@ class MagicTitlePage(tk.Frame):
        # b = '\u0B9A\u0BC1\u0BB5\u0BBE\u0B9A'
         b = '\u0936\u094D\u0935\u0938\u0928\20\u092A\u094D\u0930\u0923\u093E\u0932\u0940'
 
-        self.video_note_text = tk.Text(self,pady=30, borderwidth=0,highlightthickness=0,relief=tk.SUNKEN,wrap= tk.WORD,font=self.appHighlightFont, foreground = "PeachPuff2",background ='dark slate gray', width=50, height=30)
+        self.video_note_text = tk.Text(self,pady=10, borderwidth=0,highlightthickness=0,relief=tk.SUNKEN,wrap= tk.WORD,font=self.appHighlightFont, foreground = "PeachPuff2",background ='dark slate gray', width=50, height=30)
         pageutils.animate_text(self, video_notes, 0, self.video_note_text, len(video_notes) - 1)
         self.scrollbar = ttk.Scrollbar(self)
         self.video_note_text.config(yscrollcommand=self.scrollbar.set)
@@ -184,12 +184,7 @@ class MagicTitlePage(tk.Frame):
             return
         self.after(100, lambda: self.animate_text(text,counter + 1,label,counter_max))
 
-    def playtextsound(self,text):
-        engine = pyttsx3.init(driverName='espeak')
-        engine.setProperty('voice', 'english+m2')
-        engine.setProperty('rate', 150)
-        engine.say(text)
-        engine.runAndWait()
+
 
 
 

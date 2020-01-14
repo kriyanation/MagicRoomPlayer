@@ -22,6 +22,7 @@ class MagicApplication(tk.Tk):
         self.page_index = 0
         self.resizable(width= True, height= True)
         s = ttk.Style()
+        s.theme_use('clam')
         s.configure('Green.TButton', background='dark slate gray',foreground='PeachPuff2')
         s.map('Green.TButton',background=[('active','!disabled','dark olive green'),('pressed','PeachPuff2')], foreground=[('pressed','PeachPuff2'),('active','PeachPuff2')])
         #[('pressed' ,'dark olive green'),('active','white')],foreground=[('pressed','PeachPuff2'),('active', 'PeachPuff2')])
@@ -41,8 +42,8 @@ class MagicApplication(tk.Tk):
 
         self.nextbutton = ttk.Button(text = "Next Step", command = lambda: self.show_next_page(self.page_index),style='Green.TButton')
         self.nextbutton.pack(side = tk.TOP, anchor = tk.NE)
-        self.lbbutton_hide.pack(side=tk.TOP, anchor=tk.NE,pady=10)
-        self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE,pady=10)
+        self.lbbutton_hide.pack(side=tk.TOP, anchor=tk.NE,pady=5)
+        self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE,pady=5)
 
 
 
@@ -50,13 +51,13 @@ class MagicApplication(tk.Tk):
     def hide_leader_board(self):
         self.LeaderBoard.pack_forget()
         self.lbbutton_hide.pack_forget()
-        self.lbbutton_show.pack(side=tk.TOP, anchor=tk.NE,pady=10)
-        print('hi')
+        self.lbbutton_show.pack(side=tk.TOP, anchor=tk.NE,pady=5)
+
 
     def show_leader_board(self):
         self.lbbutton_show.pack_forget()
-        self.lbbutton_hide.pack(side=tk.TOP,anchor=tk.NE,pady=10)
-        self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE,pady=10)
+        self.lbbutton_hide.pack(side=tk.TOP,anchor=tk.NE,pady=5)
+        self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE,pady=5)
 
 
 

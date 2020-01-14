@@ -50,8 +50,8 @@ class MagicIndenpendentPractice(tk.Frame):
         self.ip_answer_key = self.ip_info[0]
         self.ip_questions = self.ip_info[1]
         self.lesson_id = self.ip_info[2]
-        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/2.0, height = parent.screen_height/2, text="Independent Practice", relief=tk.RAISED,style='Red.TLabelframe')
-        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/2.0, height = parent.screen_height/3,text="Evaluate", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/2.0, height = parent.screen_height/2.1, text="Independent Practice", relief=tk.RAISED,style='Red.TLabelframe')
+        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/2.0, height = parent.screen_height/3.1,text="Evaluate", relief=tk.RIDGE,style='Red.TLabelframe')
         self.play_button = ttk.Button(self.labelframetwo, text="Take a Picture", command= lambda: self.play_video(),style='Green.TButton')
         self.qp_button = ttk.Button(self.labelframetwo, text="Print Question Paper", command= lambda: self.gen_question_paper(self.lesson_id),style='Green.TButton')
         self.qp_answer_button = ttk.Button(self.labelframetwo,text="Easy Answer Sheets", command = lambda: self.gen_ip_sheets(self.lesson_id),style='Green.TButton')
