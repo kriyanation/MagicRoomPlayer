@@ -1,4 +1,4 @@
-import pyttsx3
+
 from reportlab.pdfgen import canvas
 import Data_Flow, qrtools
 from qrtools import qrtools
@@ -35,7 +35,7 @@ def generate_ip_paper(lesson_id):
     cc = canvas.Canvas("../QP/ip"+str(id)+".pdf")
     cc.setFont("Helvetica", 16)
     cc.drawCentredString(300,820,"Science Test "+str(id))
-    cc.setFont("Helvetica", 10)
+    cc.setFont("Lohit Tamil", 10)
     textobject = cc.beginText()
     textobject.setTextOrigin(50, 800)
     textobject.textLines(text)
