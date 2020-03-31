@@ -35,9 +35,9 @@ class MagicFactualPage(tk.Frame):
         factual_content_images = factual_content_list[2]
 
 
-        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/2, height = parent.screen_height/1.5, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
-        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/2, height = parent.screen_height/1.5,text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
-        self.labelframethree = ttk.Labelframe(self,width = parent.screen_width/2, height = parent.screen_height/1.5, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/1.9, height = parent.screen_height/1.5, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/1.9, height = parent.screen_height/1.5,text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.labelframethree = ttk.Labelframe(self,width = parent.screen_width/1.9, height = parent.screen_height/1.5, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
         self.factual_term_label_one = ttk.Label(self.labelframeone, text = factual_content_terms[0], background = 'dark slate gray',foreground = 'ivory2', font=("TkCaptionFont", 15,'bold'))
         self.factual_term_label_two = ttk.Label(self.labelframetwo,text=factual_content_terms[1], background = 'dark slate gray',foreground = 'ivory2', font=("TkCaptionFont", 15,'bold'))
         self.factual_term_label_three = ttk.Label(self.labelframethree,text=factual_content_terms[2],background = 'dark slate gray', foreground = 'ivory2', font=("TkCaptionFont", 15,'bold'))
