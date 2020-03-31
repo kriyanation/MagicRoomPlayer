@@ -1,12 +1,14 @@
+# -*- coding: utf8 -*-
 import tkinter as tk
 from tkinter import ttk, font
 import Data_Flow
-
+from tamil.txt2unicode import tscii2unicode, unicode2tscii, unicode2auto, auto2unicode
+import unicodedata
 import vlc, sys, time
 import pageutils,subprocess
 
 import PIL
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk,ImageFont
 _isLinux = sys.platform.startswith('linux')
 
 class MagicTitlePage(tk.Frame):
@@ -144,16 +146,21 @@ class MagicTitlePage(tk.Frame):
         self.controlframe.pack()
         self.canvas.pack(padx=10, anchor=tk.CENTER)
         player_frame_info = self.canvas.winfo_id()  # .winfo_visualid()?
-        self.player.set_xwindow(player_frame_info)
+        #self.player.set_xwindow(player_frame_info)
         #self.player.play()
         video_notes_info = Data_Flow.get_Running_Notes()
         video_notes = video_notes_info[0]
-        self.appHighlightFont = font.Font(family='Comic Sans', size=14)
+        vidnotes = unicodedata.normalize('NFKD',video_notes)
+        self.fnt = ImageFont.truetype("Kavivanar-Regular.ttf", 15)
+        self.title_image_id = self.canvas.create_text(self.winfo_width() / 2 + 450,
+                                                       self.parent_window.screen_height / 4, text=vidnotes, font="Kavivanar-Regular.ttf")
+
+        #self.appHighlightFont = font.Font(self.fnt)
        # b = '\u0B9A\u0BC1\u0BB5\u0BBE\u0B9A'
         b = '\u0936\u094D\u0935\u0938\u0928\20\u092A\u094D\u0930\u0923\u093E\u0932\u0940'
 
-        self.video_note_text = tk.Text(self,pady=10, borderwidth=0,highlightthickness=0,relief=tk.SUNKEN,wrap= tk.WORD,font=self.appHighlightFont, foreground = "PeachPuff2",background ='dark slate gray', width=50, height=30)
-        pageutils.animate_text(self, video_notes, 0, self.video_note_text, len(video_notes) - 1)
+        self.video_note_text = tk.Text(self,pady=10, borderwidth=0,highlightthickness=0,relief=tk.SUNKEN,wrap= tk.WORD,font = ("Arima Madurai",15), foreground = "PeachPuff2",background ='dark slate gray', width=50, height=30)
+        pageutils.animate_text(self, vidnotes, 0, self.video_note_text, len(vidnotes) - 1)
         self.scrollbar = ttk.Scrollbar(self)
         self.video_note_text.config(yscrollcommand=self.scrollbar.set)
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)

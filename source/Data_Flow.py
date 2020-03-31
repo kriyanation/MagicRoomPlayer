@@ -2,7 +2,7 @@ import sqlite3
 import random
 import configparser
 from tkinter import StringVar
-TEST_ROW = 15
+TEST_ROW = 5
 
 config = configparser.RawConfigParser()
 config.read('magic.cfg')
@@ -22,7 +22,18 @@ def get_Title():
     connection.close()
     return text
 
-
+def get_Lessons():
+    connection = sqlite3.connect(db)
+    cur = connection.cursor()
+    sql = "select Lesson_ID, Lesson_Title from Magic_Science_Lessons"
+    cur.execute(sql)
+    rows = cur.fetchall()
+    list_lessons = []
+    for element in rows:
+        list_lessons.append(element)
+    connection.commit()
+    connection.close()
+    return list_lessons
 
 #get_Title()
 
@@ -158,6 +169,9 @@ def get_application_video():
     sql = 'select Application_Video_Link, Application_Video_Running_Notes from Magic_Science_Lessons where Lesson_ID=?'
     video_info_c = cur.execute(sql, (TEST_ROW,))
     video_info = video_info_c.fetchone()
+    f = open("demofile3.txt", "w")
+    f.write("Woops! I have deleted the content!"+video_info[1])
+    f.close()
     video_link = videoroot+video_info[0]
     connection.close()
     return (video_link,video_info[1])

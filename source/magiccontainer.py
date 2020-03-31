@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import magicleaderboard, magictitlepage, magicapplicationexperiment,magicapplicationvideo,magicindependentpractice
 
-import Data_Flow
+import Data_Flow, LessonList
 
 import magicfactualpage
 
@@ -11,12 +11,19 @@ import magicfactualpage
 class MagicApplication(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         self.title("Learning Room")
         self.configure(background='dark slate gray')
         self.lbbutton_hide = ttk.Button(text="Hide LeaderBoard", command=self.hide_leader_board,
                                         style='Green.TButton')
         self.lbbutton_show = ttk.Button(text="Show LeaderBoard", command=self.show_leader_board,
                                         style='Green.TButton')
+
+        app = LessonList.MagicLessonList(bg='dark slate gray', fg='white', buttonbg='dark olive green', selectmode=tk.SINGLE,
+                              buttonfg='snow',parent=self)
+        self.wait_window(app)
+        print(self.selected_lessons)
+        Data_Flow.TEST_ROW=self.selected_lessons[0]
 
 
         self.page_index = 0

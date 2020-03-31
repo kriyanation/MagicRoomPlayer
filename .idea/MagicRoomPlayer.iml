@@ -5,6 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/source" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
+    <content url="file://$MODULE_DIR$/../MagicRoomRecap" />
     <orderEntry type="jdk" jdkName="Python 3.8 (MagicRoomPlayer)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
