@@ -103,7 +103,7 @@ class MagicApplicationVideo(tk.Frame):
         device = config.get("section1", 'device_type')
         if (device == 'rpi'):
             self.notes_text = tk.Text(self.notes_frame,
-                                  font=("TkCaptionFont", 11), foreground="PeachPuff2", width=60, height=11,
+                                  font=("TkCaptionFont", 11), foreground="PeachPuff2", width=55, height=11,
                                   background='dark slate gray',wrap= tk.WORD)
         else:
             self.notes_text = tk.Text(self.notes_frame,
