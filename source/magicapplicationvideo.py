@@ -40,7 +40,7 @@ class MagicApplicationVideo(tk.Frame):
 
 
         self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/1.8, height = parent.screen_height/2.5, text="Insightful Video", relief=tk.RAISED,style='Red.TLabelframe')
-        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/1.8, height = parent.screen_height/2.5,text="Things to Note", relief=tk.RIDGE,style= 'Red.TLabelframe')
+        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/1.8, height = parent.screen_height/2.7,text="Things to Note", relief=tk.RIDGE,style= 'Red.TLabelframe')
         self.play_button = ttk.Button(self.labelframeone, text="Play", command= self.play_video,style='Green.TButton')
         self.pause_button = ttk.Button(self.labelframeone, text="Pause", command= self.pause_video,style='Green.TButton')
         self.new_screen_button = ttk.Button(self.labelframeone, text="New Window", command=self.new_window,style='Green.TButton')
@@ -104,8 +104,8 @@ class MagicApplicationVideo(tk.Frame):
         self.notes_frame = tk.Frame(self.labelframetwo)
         self.notes_frame.configure(background='dark slate gray')
         self.notes_text = tk.Text(self.notes_frame,
-                                  font=("TkCaptionFont", 14), foreground="PeachPuff2", width=74, height=14,
-                                  background='dark slate gray')
+                                  font=("TkCaptionFont", 12), foreground="PeachPuff2", width=74, height=12,
+                                  background='dark slate gray',wrap= tk.WORD)
         self.notes_text.insert(1.0, self.video_notes)
         self.notes_text.grid(row=0)
         self.scrollbar = ttk.Scrollbar(self.notes_frame)
