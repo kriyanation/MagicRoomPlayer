@@ -63,7 +63,7 @@ class MagicIndenpendentPractice(tk.Frame):
         self.labelframeone.grid(row=0, pady=0, padx = 20,)
         self.labelframetwo.grid(row=1, pady= 10, padx = 20)
         self.notes_label = ttk.Label(self.labelframeone, text=self.ip_questions,
-                                     font=("TkCaptionFont", 12,'italic'), foreground="PeachPuff2",background='dark slate gray', wraplength=500,anchor=tk.CENTER)
+                                     font=("TkCaptionFont", 10,'italic'), foreground="PeachPuff2",background='dark slate gray', wraplength=500,anchor=tk.CENTER)
         self.status_label = ttk.Label(self.labelframetwo, textvariable=self.status_text, font=("TkCaptionFont", 10), foreground="PeachPuff2",background='dark slate gray')
         self.status_label.grid(row=1, columnspan=3)
         self.notes_label.grid(row=0,sticky=tk.NSEW,padx = 20, pady=30)
