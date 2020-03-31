@@ -1,9 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, font, filedialog
-import Data_Flow
+import Data_Flow, configparser
 
-import vlc, sys, time
-import unicodedata
+import  sys
 
 from tkinter.colorchooser import askcolor
 
@@ -16,6 +15,8 @@ _isLinux = sys.platform.startswith('linux')
 
 DEFAULT_PEN_SIZE = 5.0
 DEFAULT_COLOR = 'black'
+config = configparser.RawConfigParser()
+config.read('magic.cfg')
 
 class MagicExperimentPage(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -100,26 +101,27 @@ class MagicExperimentPage(tk.Frame):
             return
         self.labelframeone.after(50,lambda: self.move_animate(canvas,imageid,finalx,finaly))
     def fill_canvas_frame(self,width,height):
-        self.image_button = ttk.Button(self.labelframeone, text='Add New Image', command=self.use_image,style='Green.TButton')
+        self.image_button = ttk.Button(self.labelframeone, text='Add Image', command=self.use_image,style='Green.TButton')
         self.image_button.grid(row=0, column=0)
 
-        self.image_act_button = ttk.Button(self.labelframeone, text='Images Activate', command=self.use_image_act,style='Green.TButton')
+        self.image_act_button = ttk.Button(self.labelframeone, text='Move Image', command=self.use_image_act,style='Green.TButton')
         self.image_act_button.grid(row=0, column=1)
 
-        self.pen_button = ttk.Button(self.labelframeone, text='pen', command=self.use_pen,style='Green.TButton')
+        self.pen_button = ttk.Button(self.labelframeone, text='Pen', command=self.use_pen,style='Green.TButton')
         self.pen_button.grid(row=0, column=2)
 
 
-        self.color_button = ttk.Button(self.labelframeone, text='color', command=self.choose_color,style='Green.TButton')
+        self.color_button = ttk.Button(self.labelframeone, text='Color', command=self.choose_color,style='Green.TButton')
         self.color_button.grid(row=0, column=3)
 
-        self.eraser_button = ttk.Button(self.labelframeone, text='eraser', command=self.use_eraser,style='Green.TButton')
+        self.eraser_button = ttk.Button(self.labelframeone, text='Eraser', command=self.use_eraser,style='Green.TButton')
         self.eraser_button.grid(row=0, column=4)
-
-        self.choose_size_button = tk.Scale(self.labelframeone,orient=tk.HORIZONTAL, from_=1,to=10,background='dark slate gray', foreground='PeachPuff2')
-        self.choose_size_button.grid(row=0, column=5)
-        self.clear_button = ttk.Button(self.labelframeone, text='Clear', command=self.clear,style='Green.TButton')
-        self.clear_button.grid(row=0, column=6)
+        device = config.get("section1", 'device_type')
+        if (device == 'laptop'):
+            self.choose_size_button = tk.Scale(self.labelframeone,orient=tk.HORIZONTAL, from_=1,to=10,background='dark slate gray', foreground='PeachPuff2')
+            self.choose_size_button.grid(row=0, column=5)
+            self.clear_button = ttk.Button(self.labelframeone, text='Clear', command=self.clear,style='Green.TButton')
+            self.clear_button.grid(row=0, column=6)
 
 
         self.canvas_experiment.grid(row=1, pady=5, padx=40, columnspan = 7)
