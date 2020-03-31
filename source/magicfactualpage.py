@@ -1,19 +1,17 @@
 import tkinter as tk
-from tkinter import ttk, font
-import Data_Flow
+from tkinter import ttk
+import Data_Flow, configparser
 
 
-import vlc, sys, time
-import unicodedata
+import  sys
 
-
-import PIL
 from PIL import Image, ImageTk
 
 import pageutils
 
 _isLinux = sys.platform.startswith('linux')
-
+config = configparser.RawConfigParser()
+config.read('magic.cfg')
 class MagicFactualPage(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
@@ -37,9 +35,9 @@ class MagicFactualPage(tk.Frame):
         factual_content_images = factual_content_list[2]
 
 
-        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/2.0, height = parent.screen_height/1.5, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
-        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/2.0, height = parent.screen_height/1.5,text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
-        self.labelframethree = ttk.Labelframe(self,width = parent.screen_width/2.0, height = parent.screen_height/1.5, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/2, height = parent.screen_height/1.5, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/2, height = parent.screen_height/1.5,text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.labelframethree = ttk.Labelframe(self,width = parent.screen_width/2, height = parent.screen_height/1.5, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
         self.factual_term_label_one = ttk.Label(self.labelframeone, text = factual_content_terms[0], background = 'dark slate gray',foreground = 'ivory2', font=("TkCaptionFont", 15,'bold'))
         self.factual_term_label_two = ttk.Label(self.labelframetwo,text=factual_content_terms[1], background = 'dark slate gray',foreground = 'ivory2', font=("TkCaptionFont", 15,'bold'))
         self.factual_term_label_three = ttk.Label(self.labelframethree,text=factual_content_terms[2],background = 'dark slate gray', foreground = 'ivory2', font=("TkCaptionFont", 15,'bold'))
@@ -61,11 +59,11 @@ class MagicFactualPage(tk.Frame):
                         height=parent.screen_height/2.5,bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
                                                          )
         self.canvas_image2 = tk.Canvas(self.labelframetwo,
-                                   width=parent.screen_width / 2.5,
-                                   height=parent.screen_height / 2.5, bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
+                                   width=parent.screen_width / 2.6,
+                                   height=parent.screen_height / 2.6, bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
                                        )
         self.canvas_image3 = tk.Canvas(self.labelframethree,
-                                   width=parent.screen_width / 2.5,
+                                   width=parent.screen_width / 2.6,
                                    height=parent.screen_height / 2.5,bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
 
         self.canvas_image1.bind("<B1-Motion>", lambda event, c=self.canvas_image1: self.paint(event,c))
@@ -74,21 +72,30 @@ class MagicFactualPage(tk.Frame):
         self.canvas_image2.bind('<ButtonRelease-1>', self.reset)
         self.canvas_image3.bind("<B1-Motion>", lambda event, c=self.canvas_image3: self.paint(event,c))
         self.canvas_image3.bind('<ButtonRelease-1>', self.reset)
-        image1 = Image.open(factual_image1)
-        image1.thumbnail((400,400))
-        image2 = Image.open(factual_image2)
-        image2.thumbnail((400, 400))
-        image3 = Image.open(factual_image3)
-        image3.thumbnail((400, 400))
+        device = config.get("section1", 'device_type')
+        if (device == 'rpi'):
+            image1 = Image.open(factual_image1)
+            image1.thumbnail((300,300))
+            image2 = Image.open(factual_image2)
+            image2.thumbnail((300, 300))
+            image3 = Image.open(factual_image3)
+            image3.thumbnail((300, 300))
+        else:
+            image1 = Image.open(factual_image1)
+            image1.thumbnail((400, 400))
+            image2 = Image.open(factual_image2)
+            image2.thumbnail((400, 400))
+            image3 = Image.open(factual_image3)
+            image3.thumbnail((400, 400))
         self.fimage1 = image1 # Image.open("../images/image1_thumbnail")
         self.fimage2 = image2
         self.fimage3 = image3
         self.fimage1_display = ImageTk.PhotoImage(self.fimage1)
         self.fimage2_display = ImageTk.PhotoImage(self.fimage2)
         self.fimage3_display = ImageTk.PhotoImage(self.fimage3)
-        self.image1_id = self.canvas_image1.create_image(parent.screen_width/6.5, parent.screen_height/7, image=self.fimage1_display)
-        self.image2_id = self.canvas_image2.create_image(parent.screen_width/6.5, parent.screen_height/7, image=self.fimage2_display)
-        self.image3_id = self.canvas_image3.create_image(parent.screen_width/6.5, parent.screen_height/7, image=self.fimage3_display)
+        self.image1_id = self.canvas_image1.create_image(parent.screen_width/6.7, parent.screen_height/7, image=self.fimage1_display)
+        self.image2_id = self.canvas_image2.create_image(parent.screen_width/6.7, parent.screen_height/7, image=self.fimage2_display)
+        self.image3_id = self.canvas_image3.create_image(parent.screen_width/6.7, parent.screen_height/7, image=self.fimage3_display)
 
         self.buttonimage = tk.PhotoImage(file="../images/speaker.png")
 

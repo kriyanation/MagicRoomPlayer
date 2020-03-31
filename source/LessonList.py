@@ -20,12 +20,12 @@ class MagicLessonList(Toplevel):
         self.configure(background=bg)
         self.grab_set()
 
-        self.choice_label = ttk.Label(self, text="Select your lessons for the flash card game ",
+        self.choice_label = ttk.Label(self, text="Select the Lesson to Learn",
                                       font=("Comic Sans", 14, 'bold'), background=bg, foreground=fg)
         self.scroll_frame = ttk.Frame(self)
         self.choice_list = tk.Listbox(self.scroll_frame, selectmode=selectmode, background=bg,
                                       selectbackground='sienna', selectforeground='white',foreground=fg, bd=0)
-        self.lesson_button = ttk.Button(self, text="Select Lessons",
+        self.lesson_button = ttk.Button(self, text="Select Lesson",
                                         style='Blue.TButton',command=self.select_lesson)
 
         self.lesson_list = Data_Flow.get_Lessons()
