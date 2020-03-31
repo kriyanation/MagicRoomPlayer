@@ -117,11 +117,13 @@ class MagicExperimentPage(tk.Frame):
         self.eraser_button = ttk.Button(self.labelframeone, text='Eraser', command=self.use_eraser,style='Green.TButton')
         self.eraser_button.grid(row=0, column=4)
         device = config.get("section1", 'device_type')
+        self.choose_size_button = tk.Scale(self.labelframeone, orient=tk.HORIZONTAL, from_=1, to=10,
+                                           background='dark slate gray', foreground='PeachPuff2')
+        self.clear_button = ttk.Button(self.labelframeone, text='Clear', command=self.clear, style='Green.TButton')
+
         if (device == 'laptop'):
-            self.choose_size_button = tk.Scale(self.labelframeone,orient=tk.HORIZONTAL, from_=1,to=10,background='dark slate gray', foreground='PeachPuff2')
-            self.choose_size_button.grid(row=0, column=5)
-            self.clear_button = ttk.Button(self.labelframeone, text='Clear', command=self.clear,style='Green.TButton')
-            self.clear_button.grid(row=0, column=6)
+             self.choose_size_button.grid(row=0, column=5)
+             self.clear_button.grid(row=0, column=6)
 
 
         self.canvas_experiment.grid(row=1, pady=5, padx=40, columnspan = 7)
