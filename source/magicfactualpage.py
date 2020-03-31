@@ -55,15 +55,15 @@ class MagicFactualPage(tk.Frame):
         factual_image2 = factual_content_images[1]
         factual_image3 = factual_content_images[2]
         self.canvas_image1 = tk.Canvas(self.labelframeone,
-                        width=parent.screen_width/2.8,
+                        width=parent.screen_width/2.9,
                         height=parent.screen_height/2.5,bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
                                                          )
         self.canvas_image2 = tk.Canvas(self.labelframetwo,
-                                   width=parent.screen_width / 2.8,
+                                   width=parent.screen_width / 2.9,
                                    height=parent.screen_height / 2.6, bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
                                        )
         self.canvas_image3 = tk.Canvas(self.labelframethree,
-                                   width=parent.screen_width / 2.8,
+                                   width=parent.screen_width / 2.9,
                                    height=parent.screen_height / 2.5,bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
 
         self.canvas_image1.bind("<B1-Motion>", lambda event, c=self.canvas_image1: self.paint(event,c))
