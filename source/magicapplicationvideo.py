@@ -2,13 +2,7 @@ import tkinter as tk
 from tkinter import ttk, font, filedialog
 import Data_Flow
 
-import vlc, sys, time, subprocess
-import unicodedata
-
-from tkinter.colorchooser import askcolor
-
-import PIL
-from PIL import Image, ImageTk
+import vlc, sys,subprocess, configparser
 
 import pageutils
 
@@ -16,6 +10,9 @@ _isLinux = sys.platform.startswith('linux')
 
 DEFAULT_PEN_SIZE = 5.0
 DEFAULT_COLOR = 'black'
+
+config = configparser.RawConfigParser()
+config.read('magic.cfg')
 
 class MagicApplicationVideo(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -103,9 +100,15 @@ class MagicApplicationVideo(tk.Frame):
         self.notes_button.grid(row=0, column=0)
         self.notes_frame = tk.Frame(self.labelframetwo)
         self.notes_frame.configure(background='dark slate gray')
-        self.notes_text = tk.Text(self.notes_frame,
-                                  font=("TkCaptionFont", 12), foreground="PeachPuff2", width=74, height=12,
+        device = config.get("section1", 'device_type')
+        if (device == 'rpi'):
+            self.notes_text = tk.Text(self.notes_frame,
+                                  font=("TkCaptionFont", 11), foreground="PeachPuff2", width=65, height=8,
                                   background='dark slate gray',wrap= tk.WORD)
+        else:
+            self.notes_text = tk.Text(self.notes_frame,
+                                      font=("TkCaptionFont", 14), foreground="PeachPuff2", width=75, height=13,
+                                      background='dark slate gray', wrap=tk.WORD)
         self.notes_text.insert(1.0, self.video_notes)
         self.notes_text.grid(row=0)
         self.scrollbar = ttk.Scrollbar(self.notes_frame)
