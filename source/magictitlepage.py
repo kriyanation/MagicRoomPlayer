@@ -120,14 +120,19 @@ class MagicTitlePage(tk.Frame):
         self.canvas.bind("<B1-Motion>", self.paint)
         self.canvas.bind('<ButtonRelease-1>', self.reset)
         self.img = Image.open(title_image)
+
         device = config.get("section1",'device_type')
         if (device == 'rpi'):
             self.img = self.img.resize((300,300))
+            self.img1 = ImageTk.PhotoImage(self.img)
+            self.title_image_id = self.canvas.create_image(self.winfo_width() / 2 + 250,
+                                                           self.parent_window.screen_height / 4.2, image=self.img1)
+
         else:
             self.img = self.img.resize((400, 400))
-        self.img1 = ImageTk.PhotoImage(self.img)
-        self.title_image_id = self.canvas.create_image(self.winfo_width()/2+450, self.parent_window.screen_height/4, image=self.img1)
-
+            self.img1 = ImageTk.PhotoImage(self.img)
+            self.title_image_id = self.canvas.create_image(self.winfo_width() / 2 + 450,
+                                                           self.parent_window.screen_height / 4, image=self.img1)
 
     def title_video(self):
         self.canvas.pack_forget()
