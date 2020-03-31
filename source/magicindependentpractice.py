@@ -75,7 +75,7 @@ class MagicIndenpendentPractice(tk.Frame):
         p = Process(target=cv2practice.video_cam_play)
         p.start()
         #p.join()  #
-        self.status_text.set("Camera opened in another window, to save an image to images folder use 's' key.")
+        self.status_text.set("To save an image to images folder use 's' key.")
         return
 
 
