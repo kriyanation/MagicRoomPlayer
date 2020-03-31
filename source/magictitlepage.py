@@ -2,7 +2,6 @@
 import tkinter as tk
 from tkinter import ttk, font
 import Data_Flow
-from tamil.txt2unicode import tscii2unicode, unicode2tscii, unicode2auto, auto2unicode
 import unicodedata
 import vlc, sys, time
 import pageutils,subprocess
