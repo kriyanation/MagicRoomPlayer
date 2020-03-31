@@ -4,11 +4,13 @@ from tkinter import ttk, font
 import Data_Flow
 import unicodedata
 import vlc, sys, time
-import pageutils,subprocess
+import pageutils,subprocess,configparser
 
 import PIL
 from PIL import Image, ImageTk,ImageFont
 _isLinux = sys.platform.startswith('linux')
+config = configparser.RawConfigParser()
+config.read('magic.cfg')
 
 class MagicTitlePage(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -118,7 +120,11 @@ class MagicTitlePage(tk.Frame):
         self.canvas.bind("<B1-Motion>", self.paint)
         self.canvas.bind('<ButtonRelease-1>', self.reset)
         self.img = Image.open(title_image)
-        self.img = self.img.resize((400,400))
+        device = config.get("section1",'device_type')
+        if (device == 'rpi'):
+            self.img = self.img.resize((300,300))
+        else:
+            self.img = self.img.resize((400, 400))
         self.img1 = ImageTk.PhotoImage(self.img)
         self.title_image_id = self.canvas.create_image(self.winfo_width()/2+450, self.parent_window.screen_height/4, image=self.img1)
 
