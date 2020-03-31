@@ -66,7 +66,7 @@ class MagicIndenpendentPractice(tk.Frame):
                                      font=("TkCaptionFont", 14,'italic'), foreground="PeachPuff2",background='dark slate gray', wraplength=600,anchor=tk.CENTER)
         self.status_label = ttk.Label(self.labelframetwo, textvariable=self.status_text, font=("TkCaptionFont", 12), foreground="PeachPuff2",background='dark slate gray')
         self.status_label.grid(row=1, columnspan=3)
-        self.notes_label.grid(row=0,sticky=tk.NSEW,padx = 100, pady=30)
+        self.notes_label.grid(row=0,sticky=tk.NSEW,padx = 20, pady=30)
 
 
         parent.wm_protocol("WM_DELETE_WINDOW", self.onClose)
