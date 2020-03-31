@@ -23,7 +23,7 @@ class MagicApplication(tk.Tk):
                               buttonfg='snow',parent=self)
         self.wait_window(app)
         print(self.selected_lessons)
-        Data_Flow.TEST_ROW=self.selected_lessons[0]
+        Data_Flow.TEST_ROW=self.selected_lessons[0]+1
 
 
         self.page_index = 0

@@ -156,21 +156,21 @@ class MagicTitlePage(tk.Frame):
         self.controlframe.pack()
         self.canvas.pack(padx=10, anchor=tk.CENTER)
         player_frame_info = self.canvas.winfo_id()  # .winfo_visualid()?
-        #self.player.set_xwindow(player_frame_info)
+        self.player.set_xwindow(player_frame_info)
         #self.player.play()
         video_notes_info = Data_Flow.get_Running_Notes()
         video_notes = video_notes_info[0]
-        vidnotes = unicodedata.normalize('NFKD',video_notes)
-        self.fnt = ImageFont.truetype("Kavivanar-Regular.ttf", 15)
-        self.title_image_id = self.canvas.create_text(self.winfo_width() / 2 + 450,
-                                                       self.parent_window.screen_height / 4, text=vidnotes, font="Kavivanar-Regular.ttf")
+
+
+       # self.title_image_id = self.canvas.create_text(self.winfo_width() / 2 + 450,
+        #                                               self.parent_window.screen_height / 4, text=video_notes)
 
         #self.appHighlightFont = font.Font(self.fnt)
        # b = '\u0B9A\u0BC1\u0BB5\u0BBE\u0B9A'
         b = '\u0936\u094D\u0935\u0938\u0928\20\u092A\u094D\u0930\u0923\u093E\u0932\u0940'
 
-        self.video_note_text = tk.Text(self,pady=10, borderwidth=0,highlightthickness=0,relief=tk.SUNKEN,wrap= tk.WORD,font = ("Arima Madurai",15), foreground = "PeachPuff2",background ='dark slate gray', width=50, height=30)
-        pageutils.animate_text(self, vidnotes, 0, self.video_note_text, len(vidnotes) - 1)
+        self.video_note_text = tk.Text(self,pady=10, borderwidth=0,highlightthickness=0,relief=tk.SUNKEN,wrap= tk.WORD,font = ("comic sans",15), foreground = "PeachPuff2",background ='dark slate gray', width=50, height=30)
+        pageutils.animate_text(self, video_notes, 0, self.video_note_text, len(video_notes) - 1)
         self.scrollbar = ttk.Scrollbar(self)
         self.video_note_text.config(yscrollcommand=self.scrollbar.set)
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
