@@ -9,6 +9,7 @@ class MagicLessonList(Toplevel):
         self.parent = parent
 
         s = ttk.Style(self)
+        s.theme_use('clam')
         s.configure('Red.TLabelframe', background=bg)
         s.configure('Red.TLabelframe.Label', font=('courier', 14, 'bold', 'italic'))
         s.configure('Red.TLabelframe.Label', foreground=fg)

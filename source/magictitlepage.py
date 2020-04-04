@@ -1,16 +1,23 @@
 # -*- coding: utf8 -*-
+import os
 import tkinter as tk
 from tkinter import ttk, font
 import Data_Flow
 import unicodedata
 import vlc, sys, time
 import pageutils,subprocess,configparser
+from pathlib import Path
+from tkinter import messagebox
 
 import PIL
 from PIL import Image, ImageTk,ImageFont
 _isLinux = sys.platform.startswith('linux')
 config = configparser.RawConfigParser()
-config.read('magic.cfg')
+two_up = Path(__file__).parents[2]
+print(str(two_up)+'/magic.cfg')
+config.read(str(two_up)+'/magic.cfg')
+imageroot = config.get("section1",'image_root')
+
 
 class MagicTitlePage(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -101,22 +108,49 @@ class MagicTitlePage(tk.Frame):
     def play_quote_audio(self,text):
         pageutils.playtextsound(text)
 
+    def open_image_window(self,title_image):
+        #subprocess.run([title_image], check=False)
+        if sys.platform == "win32":
+            os.startfile(title_image)
+        else:
+            opener = "open" if sys.platform == "darwin" else "xdg-open"
+            subprocess.call([opener, title_image])
+
+    def save_image_window(self):
+        # subprocess.run([title_image], check=False)
+        self.canvas.postscript(file='title_image'+self.title_text+".eps")
+        image = Image.open('title_image'+self.title_text+".eps")
+        image.save(imageroot+'saved_images/title_image'+self.title_text+'.png','png')
+        os.remove('title_image'+self.title_text+".eps")
+        messagebox.showinfo("Information","Image saved under saved_images folder")
+
 
     def title_intro(self):
 
 
-        title_text = Data_Flow.get_Title()
+        self.title_text = Data_Flow.get_Title()
 
 
 
-        self.topic_label = ttk.Label(self.labelframeone, text = title_text,font= ('TkDefaultFont', 16), foreground = 'PeachPuff2',background = 'dark slate gray', wraplength=self.parent_window.screen_width/2.5)
+        self.topic_label = ttk.Label(self.labelframeone, text = self.title_text,font= ('TkDefaultFont', 16), foreground = 'PeachPuff2',background = 'dark slate gray', wraplength=self.parent_window.screen_width/2.5)
         self.topic_label.pack(pady=10,anchor = tk.CENTER)
 
         title_image = Data_Flow.get_title_image()
+        self.image_frame = tk.Frame(self.labelframeone)
+        self.image_frame.configure(background='dark slate gray')
+        self.new_window_image_button = ttk.Button(self.image_frame, text="View in New Window",
+                                                  command=lambda: self.open_image_window(title_image), style='Green.TButton')
+        self.image_save_button = ttk.Button(self.image_frame, text="Save Canvas",
+                                                  style='Green.TButton')
+
+        self.new_window_image_button.pack(pady=10, side=tk.LEFT)
+        self.image_save_button.pack(padx=10, side=tk.LEFT)
+        self.image_frame.pack()
         self.canvas = tk.Canvas(self.labelframeone,
                         width=self.parent_window.screen_width/2.0,
                         height=self.parent_window.screen_height/2.2,background='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
         self.canvas.pack( padx=10, anchor = tk.CENTER)
+        self.image_save_button.configure(command=self.save_image_window)
         self.canvas.bind("<B1-Motion>", self.paint)
         self.canvas.bind('<ButtonRelease-1>', self.reset)
         self.img = Image.open(title_image)

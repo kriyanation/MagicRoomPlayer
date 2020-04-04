@@ -34,7 +34,7 @@ def generate_ip_paper(lesson_id):
     id = text_id[2]
     cc = canvas.Canvas("../QP/ip"+str(id)+".pdf")
     cc.setFont("Helvetica", 16)
-    cc.drawCentredString(300,820,"Science Test "+str(id))
+    cc.drawCentredString(300,820,"A Learning Assessment for "+str(id))
     cc.setFont("Helvetica", 10)
     textobject = cc.beginText()
     textobject.setTextOrigin(50, 800)

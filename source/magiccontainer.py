@@ -1,3 +1,4 @@
+import multiprocessing
 import tkinter as tk
 from tkinter import ttk
 import magicleaderboard, magictitlepage, magicapplicationexperiment,magicapplicationvideo,magicindependentpractice
@@ -131,7 +132,7 @@ class MagicApplication(tk.Tk):
 
 if __name__ == "__main__":
 
-
+    multiprocessing.freeze_support()
     app = MagicApplication()
     screen_width = app.winfo_screenwidth()
     screen_height = app.winfo_screenheight()
