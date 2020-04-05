@@ -146,7 +146,7 @@ class MagicExperimentPage(tk.Frame):
              self.clear_button.grid(row=0, column=6)
 
 
-        self.canvas_experiment.grid(row=1, pady=5, padx=40, columnspan = 7)
+        self.canvas_experiment.grid(row=1, pady=5, padx=20, columnspan = 7)
         self.image_save_button.grid(row=1,column=8,sticky=tk.N)
 
         self.setup_canvas()

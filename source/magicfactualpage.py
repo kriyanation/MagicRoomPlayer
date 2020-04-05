@@ -149,7 +149,7 @@ class MagicFactualPage(tk.Frame):
         label.grid(row=0,column=1,sticky=tk.NSEW)
         description.grid(row=1, padx=10, column=1,sticky=tk.NSEW)
         self.image_frame.grid(row=2,column=0,columnspan=3,sticky=tk.NSEW)
-        canvas.grid(row=3, column=0, columnspan=3, padx=150, pady=15, sticky=tk.NSEW)
+        canvas.grid(row=3, column=0, columnspan=3, padx=150, pady=5, sticky=tk.NSEW)
         button.grid(row=4, column=0, padx = 5,sticky=tk.SW)
         if index == 0 or index == 1:
             self.nextfactbutton = ttk.Button(self,text="Next One !", command =lambda: self.nextfact(index),style='Green.TButton')
