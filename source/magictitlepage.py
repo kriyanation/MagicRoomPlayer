@@ -13,7 +13,7 @@ import PIL
 from PIL import Image, ImageTk,ImageFont
 _isLinux = sys.platform.startswith('linux')
 config = configparser.RawConfigParser()
-two_up = Path(__file__).parents[2]
+two_up = Path(__file__).resolve().parents[2]
 print(str(two_up)+'/magic.cfg')
 config.read(str(two_up)+'/magic.cfg')
 imageroot = config.get("section1",'image_root')
@@ -121,6 +121,7 @@ class MagicTitlePage(tk.Frame):
         self.canvas.postscript(file='title_image'+self.title_text+".eps")
         image = Image.open('title_image'+self.title_text+".eps")
         image.save(imageroot+'saved_images/title_image'+self.title_text+'.png','png')
+        image.close()
         os.remove('title_image'+self.title_text+".eps")
         messagebox.showinfo("Information","Image saved under saved_images folder")
 

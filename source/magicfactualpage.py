@@ -14,7 +14,7 @@ import pageutils
 
 _isLinux = sys.platform.startswith('linux')
 config = configparser.RawConfigParser()
-two_up = Path(__file__).parents[2]
+two_up = Path(__file__).resolve().parents[2]
 print(str(two_up)+'/magic.cfg')
 db=config.read(str(two_up)+'/magic.cfg')
 imageroot = config.get("section1",'image_root')
@@ -62,15 +62,15 @@ class MagicFactualPage(tk.Frame):
         self.factual_image3 = factual_content_images[2]
         self.canvas_image1 = tk.Canvas(self.labelframeone,
                         width=parent.screen_width/2.9,
-                        height=parent.screen_height/2.5,bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
+                        height=parent.screen_height/2.4,bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
                                                          )
         self.canvas_image2 = tk.Canvas(self.labelframetwo,
                                    width=parent.screen_width / 2.9,
-                                   height=parent.screen_height / 2.6, bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
+                                   height=parent.screen_height / 2.4, bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
                                        )
         self.canvas_image3 = tk.Canvas(self.labelframethree,
                                    width=parent.screen_width / 2.9,
-                                   height=parent.screen_height / 2.5,bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
+                                   height=parent.screen_height / 2.4,bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
 
         self.canvas_image1.bind("<B1-Motion>", lambda event, c=self.canvas_image1: self.paint(event,c))
         self.canvas_image1.bind('<ButtonRelease-1>', self.reset)
@@ -120,6 +120,7 @@ class MagicFactualPage(tk.Frame):
         canvas.postscript(file='fact_image'+factualterm+".eps")
         image = Image.open('fact_image'+factualterm+".eps")
         image.save(imageroot+'saved_images/fact_image'+factualterm+'.png','png')
+        image.close()
         os.remove('fact_image'+factualterm+".eps")
         messagebox.showinfo("Information","Image saved under saved_images folder")
 

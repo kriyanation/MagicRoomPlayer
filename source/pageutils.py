@@ -1,7 +1,7 @@
 
 from reportlab.pdfgen import canvas
-import Data_Flow, qrtools
-from qrtools import qrtools
+import Data_Flow
+
 import shutil,os
 import subprocess
 import tkinter as tk
@@ -65,9 +65,9 @@ def generate_ip_sheets(lesson_id):
             yvalue -= 100
             xvalue = 0
             for aindex in range(4):
-                qr = qrtools.QR(data = "Name="+element[0]+",Lesson_ID="+str(id)+"Answer="+str(qindex+1)+str(aindex+1)+"Correct="+answer_list[qindex])
+             #   qr = qrtools.QR(data = "Name="+element[0]+",Lesson_ID="+str(id)+"Answer="+str(qindex+1)+str(aindex+1)+"Correct="+answer_list[qindex])
                 image_name = "../AnswerSheets/tmp/qrcode"+element[0]+str(aindex)+str(qindex)+".png"
-                qr.encode(image_name)
+              #  qr.encode(image_name)
                 xvalue += 120
                 ip_sheet.drawImage(image_name, xvalue,yvalue,width=80,height=80)
                 ip_sheet.drawString(xvalue+30,yvalue-15,str(aindex+1))

@@ -66,6 +66,7 @@ class MagicExperimentPage(tk.Frame):
         canvas.postscript(file='apply_image'+str(factualterm)+".eps")
         image = Image.open('apply_image'+str(factualterm)+".eps")
         image.save(imageroot+'saved_images/apply_image'+str(factualterm)+'.png','png')
+        image.close()
         os.remove('apply_image'+str(factualterm)+".eps")
         messagebox.showinfo("Information","Image saved under saved_images folder")
 

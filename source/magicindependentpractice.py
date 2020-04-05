@@ -20,7 +20,7 @@ DEFAULT_PEN_SIZE = 5.0
 DEFAULT_COLOR = 'black'
 
 config = configparser.RawConfigParser()
-two_up = Path(__file__).parents[2]
+two_up = Path(__file__).resolve().parents[2]
 print(str(two_up)+'/magic.cfg')
 config.read(str(two_up)+'/magic.cfg')
 imageroot = config.get("section1",'image_root')
@@ -77,10 +77,10 @@ class MagicIndenpendentPractice(tk.Frame):
         parent.wm_protocol("WM_DELETE_WINDOW", self.onClose)
 
     def play_video(self):
+        self.status_text.set("To save an image to images folder use \'s\' key.\\n Saved in \'classroom_images\' folder")
         p = Process(target=cv2practice.video_cam_play(imageroot))
         p.start()
         #p.join()  #
-        self.status_text.set("To save an image to images folder use \'s\' key.\\n Saved in \'classroom_images\' folder")
         return
 
 
@@ -90,8 +90,9 @@ class MagicIndenpendentPractice(tk.Frame):
         self.status_text.set("IP Sheets for the class generated in the AnswerSheets folder")
 
     def gen_question_paper(self,lessonid):
-        pageutils.generate_ip_paper(lessonid,imageroot)
+
         self.status_text.set("Question Paper generated in the \'QuestionPapers\' folder")
+        pageutils.generate_ip_paper(lessonid, imageroot)
 
 
 
