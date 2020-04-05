@@ -1,7 +1,7 @@
 import cv2, time
 
 
-def video_cam_play():
+def video_cam_play(imageroot):
 
     cap = cv2.VideoCapture(0)
 
@@ -20,7 +20,7 @@ def video_cam_play():
         if c == 27:
             break
         if c == ord('s'):
-           cv2.imwrite("../images/pic"+str(round(time.time()))+".png",frame)
+           cv2.imwrite(imageroot+"saved_images/classroom_images/"+str(round(time.time()))+".png",frame)
 
     cap.release()
     cv2.destroyAllWindows()

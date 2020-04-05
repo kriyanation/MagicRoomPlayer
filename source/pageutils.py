@@ -28,11 +28,11 @@ def playtextsound(text,V='m',L='en'):
 
 
 
-def generate_ip_paper(lesson_id):
+def generate_ip_paper(lesson_id,imageroot):
     text_id = Data_Flow.get_ip_data()
     text = text_id[1]
     id = text_id[2]
-    cc = canvas.Canvas("../QP/ip"+str(id)+".pdf")
+    cc = canvas.Canvas(imageroot+"Question_Papers/ip"+str(id)+".pdf")
     cc.setFont("Helvetica", 16)
     cc.drawCentredString(300,820,"A Learning Assessment for "+str(id))
     cc.setFont("Helvetica", 10)

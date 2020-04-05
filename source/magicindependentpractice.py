@@ -1,12 +1,11 @@
 import os
 import tkinter as tk
 from tkinter import ttk, StringVar
-import Data_Flow
+import Data_Flow,configparser
+from pathlib import Path
 import  sys
 from multiprocessing import Process
-from PIL import Image
-from PIL import ImageTk
-import threading
+
 
 import cv2
 import time
@@ -19,6 +18,12 @@ _isLinux = sys.platform.startswith('linux')
 
 DEFAULT_PEN_SIZE = 5.0
 DEFAULT_COLOR = 'black'
+
+config = configparser.RawConfigParser()
+two_up = Path(__file__).parents[2]
+print(str(two_up)+'/magic.cfg')
+config.read(str(two_up)+'/magic.cfg')
+imageroot = config.get("section1",'image_root')
 
 class MagicIndenpendentPractice(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -72,10 +77,10 @@ class MagicIndenpendentPractice(tk.Frame):
         parent.wm_protocol("WM_DELETE_WINDOW", self.onClose)
 
     def play_video(self):
-        p = Process(target=cv2practice.video_cam_play)
+        p = Process(target=cv2practice.video_cam_play(imageroot))
         p.start()
         #p.join()  #
-        self.status_text.set("To save an image to images folder use 's' key.")
+        self.status_text.set("To save an image to images folder use \'s\' key.\\n Saved in \'classroom_images\' folder")
         return
 
 
@@ -85,8 +90,8 @@ class MagicIndenpendentPractice(tk.Frame):
         self.status_text.set("IP Sheets for the class generated in the AnswerSheets folder")
 
     def gen_question_paper(self,lessonid):
-        pageutils.generate_ip_paper(lessonid)
-        self.status_text.set("Question Paper generated in the QP folder")
+        pageutils.generate_ip_paper(lessonid,imageroot)
+        self.status_text.set("Question Paper generated in the \'QuestionPapers\' folder")
 
 
 
