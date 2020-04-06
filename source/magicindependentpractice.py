@@ -78,6 +78,7 @@ class MagicIndenpendentPractice(tk.Frame):
 
     def play_video(self):
         self.status_text.set("To save an image to images folder use \'s\' key.\\n Saved in \'classroom_images\' folder")
+        time.sleep(5)
         p = Process(target=cv2practice.video_cam_play(imageroot))
         p.start()
         #p.join()  #

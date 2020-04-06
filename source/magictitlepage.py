@@ -40,7 +40,7 @@ class MagicTitlePage(tk.Frame):
         self.quote_text = Data_Flow.get_Quote()
         self.quote_textwidget = tk.Text(self.quoteframe, borderwidth=0,highlightthickness=0,relief=tk.FLAT,wrap=tk.WORD,font= ('TkDefaultFont',12), bd=2,foreground = 'PeachPuff2', width=60,height=2,background=
                                      'dark slate gray')
-        self.labelframeone = ttk.Labelframe(self, width=parent.screen_width / 2.0, height=parent.screen_height / 2.2,
+        self.labelframeone = ttk.Labelframe(self, width=parent.screen_width / 2.0, height=parent.screen_height / 2.1,
                                             text="Introduction", relief=tk.RIDGE, style='Red.TLabelframe')
 
         self.counter = 0
