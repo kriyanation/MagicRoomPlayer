@@ -69,16 +69,14 @@ class MagicIndenpendentPractice(tk.Frame):
         self.labelframetwo.grid(row=1, pady= 10, padx = 20)
         self.notes_label = ttk.Label(self.labelframeone, text=self.ip_questions,
                                      font=("TkCaptionFont", 10,'italic'), foreground="PeachPuff2",background='dark slate gray', wraplength=500,anchor=tk.CENTER)
-        self.status_label = ttk.Label(self.labelframetwo, textvariable=self.status_text, font=("TkCaptionFont", 10), foreground="PeachPuff2",background='dark slate gray')
-        self.status_label.grid(row=1, columnspan=3)
+        self.status_label = ttk.Label(self.labelframetwo, textvariable=self.status_text, font=("TkCaptionFont", 14), foreground="PeachPuff2",background='dark slate gray')
+        self.status_label.grid(row=1, columnspan=3,pady=50)
         self.notes_label.grid(row=0,sticky=tk.NSEW,padx = 20, pady=30)
-
+        self.status_text.set("To save an image to images folder use \'s\' key.\nSaved in \'classroom_images\' folder")
 
         parent.wm_protocol("WM_DELETE_WINDOW", self.onClose)
 
     def play_video(self):
-        self.status_text.set("To save an image to images folder use \'s\' key.\\n Saved in \'classroom_images\' folder")
-        time.sleep(5)
         p = Process(target=cv2practice.video_cam_play(imageroot))
         p.start()
         #p.join()  #
