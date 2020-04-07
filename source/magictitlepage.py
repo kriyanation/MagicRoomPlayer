@@ -60,12 +60,14 @@ class MagicTitlePage(tk.Frame):
                                              command= self.show_video_intro,
                                              style='Green.TButton')
         self.show_video_button.pack(pady=5)
+        self.Instance = vlc.Instance(args)
+        self.player = self.Instance.media_player_new()
 
         args = []
         if _isLinux:
             args.append('--no-xlib')
-        self.Instance = vlc.Instance(args)
-        self.player = self.Instance.media_player_new()
+
+
 
 
 
@@ -170,6 +172,8 @@ class MagicTitlePage(tk.Frame):
                                                            self.parent_window.screen_height / 4, image=self.img1)
 
     def title_video(self):
+        self.canvas.delete("all")
+        self.image_frame.pack_forget()
         self.canvas.pack_forget()
         self.title_video = Data_Flow.get_title_video()
         self.media = self.Instance.media_new(str(self.title_video))  # Path, unicode
@@ -191,7 +195,10 @@ class MagicTitlePage(tk.Frame):
         self.controlframe.pack()
         self.canvas.pack(padx=10, anchor=tk.CENTER)
         player_frame_info = self.canvas.winfo_id()  # .winfo_visualid()?
-        self.player.set_xwindow(player_frame_info)
+        if(_isLinux):
+            self.player.set_xwindow(player_frame_info)
+        else:
+            self.player.set_hwnd(player_frame_info)
         #self.player.play()
         video_notes_info = Data_Flow.get_Running_Notes()
         video_notes = video_notes_info[0]

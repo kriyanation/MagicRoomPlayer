@@ -90,7 +90,10 @@ class MagicApplicationVideo(tk.Frame):
         self.media = self.Instance.media_new(str(self.video_link))  # Path, unicode
         self.player.set_media(self.media)
         player_frame_info = self.video_frame.winfo_id()  # .winfo_visualid()?
-        self.player.set_xwindow(player_frame_info)
+        if (_isLinux):
+            self.player.set_xwindow(player_frame_info)
+        else:
+            self.player.set_hwnd(player_frame_info)
        # self.player.play()
 
     def fill_notes_frame(self,width):

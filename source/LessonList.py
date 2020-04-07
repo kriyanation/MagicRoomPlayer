@@ -42,7 +42,7 @@ class MagicLessonList(Toplevel):
         self.scrollbar.grid(row=0, column=1, sticky=tk.NSEW)
 
     def select_lesson(self):
-        self.parent.selected_lessons = self.choice_list.curselection()
+        self.parent.selected_lessons = self.lesson_list[self.choice_list.curselection()[0]]
         self.destroy()
 
 

@@ -62,7 +62,7 @@ def get_title_video():
     connection.close()
     return videoroot+text
 
-get_title_image()
+
 
 
 def get_Quote():
