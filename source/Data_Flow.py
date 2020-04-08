@@ -159,7 +159,7 @@ def get_experiment_content():
     experiment_info_c = cur.execute(sql, (TEST_ROW,))
     experiment_info = experiment_info_c.fetchone()
     #print(experiment_info)
-    experiment_steps = [experiment_info[1], experiment_info[2], experiment_info[3],experiment_info[4],experiment_info[TEST_ROW],experiment_info[6],experiment_info[7],experiment_info[8]]
+    experiment_steps = [experiment_info[1], experiment_info[2], experiment_info[3],experiment_info[4],experiment_info[5],experiment_info[6],experiment_info[7],experiment_info[8]]
     experiment_images = [imageroot+experiment_info[9], imageroot+experiment_info[10], imageroot+experiment_info[11],imageroot+experiment_info[12],imageroot+experiment_info[13],imageroot+experiment_info[14],imageroot+experiment_info[15],imageroot+experiment_info[16]]
     experiment_steps_total = experiment_info[0]
     connection.close()

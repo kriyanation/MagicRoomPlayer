@@ -157,7 +157,7 @@ class MagicExperimentPage(tk.Frame):
         self.canvas_experiment.bind('<B1-Motion>', "")
         self.canvas_experiment.bind('<ButtonRelease-1>', "")
        # tk.Tk().withdraw()  # avoids window accompanying tkinter FileChooser
-        img = filedialog.askopenfilename(initialdir="../images", title="Select image file",
+        img = filedialog.askopenfilename(initialdir=imageroot, title="Select image file",
                                          filetypes=(
                                              ("jpeg files", "*.jpg"), ("png files", "*.png"), ("gif files", "*.gif")))
         self.draw_image(img,self.winfo_width()/3,self.winfo_height()/3)
