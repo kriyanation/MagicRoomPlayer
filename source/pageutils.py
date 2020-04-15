@@ -1,6 +1,10 @@
 
 from reportlab.pdfgen import canvas
-import Data_Flow
+import Data_Flow,pyttsx3
+try:
+    import pypiwin32
+except ImportError:
+    print("pypiwin32 not available")
 
 import shutil,os
 import subprocess
@@ -18,13 +22,15 @@ def animate_text(frame, text, counter, textwidget, counter_max):
 
 
 def playtextsound(text,V='m',L='en'):
-    '''engine = pyttsx3.init(driverName='espeak')
-    engine.setProperty('voice', L+'+'+V+'3')
+    engine = pyttsx3.init(driverName='espeak')
+    engine.setProperty('voice', 'en+f2')
     engine.setProperty('rate', 130)
+    engine.setProperty("volume",0.9)
     engine.say(text)
-    engine.runAndWait()'''
-    voiceoutput = subprocess.check_output('espeak-ng -s150 -v'+L+'+f2 \"'+text+'\"',shell=True)
-    print("sound"+str(voiceoutput))
+  #  engine.say(text)
+    engine.runAndWait()
+   # voiceoutput = subprocess.check_output('espeak-ng -s150 -v'+L+'+f2 \"'+text+'\"',shell=True)
+   # print("sound"+str(voiceoutput))
 
 
 

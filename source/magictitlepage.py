@@ -141,9 +141,9 @@ class MagicTitlePage(tk.Frame):
         title_image = Data_Flow.get_title_image()
         self.image_frame = tk.Frame(self.labelframeone)
         self.image_frame.configure(background='dark slate gray')
-        self.new_window_image_button = ttk.Button(self.image_frame, text="View in New Window",
+        self.new_window_image_button = ttk.Button(self.image_frame, text="Zoom Image",
                                                   command=lambda: self.open_image_window(title_image), style='Green.TButton')
-        self.image_save_button = ttk.Button(self.image_frame, text="Save Canvas",
+        self.image_save_button = ttk.Button(self.image_frame, text="Save Board",
                                                   style='Green.TButton')
 
         self.new_window_image_button.pack(pady=10, side=tk.LEFT)
@@ -185,7 +185,7 @@ class MagicTitlePage(tk.Frame):
         self.play_button = ttk.Button(self.controlframe, text="Play", command=self.play_video, style='Green.TButton')
         self.pause_button = ttk.Button(self.controlframe, text="Pause", command=self.pause_video,
                                        style='Green.TButton')
-        self.new_screen_button = ttk.Button(self.controlframe, text="New Window", command=self.new_window,
+        self.new_screen_button = ttk.Button(self.controlframe, text="Zoom Video", command=self.new_window,
                                            style='Green.TButton')
 
 
