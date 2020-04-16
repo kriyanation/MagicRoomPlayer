@@ -1,6 +1,6 @@
 
 from reportlab.pdfgen import canvas
-import Data_Flow,pyttsx3
+import Data_Flow,pyttsx3, sys
 try:
     import pypiwin32
 except ImportError:
@@ -10,7 +10,7 @@ import shutil,os
 import subprocess
 import tkinter as tk
 
-
+_isLinux = sys.platform.startswith('linux')
 def animate_text(frame, text, counter, textwidget, counter_max):
     #print(text)
     textwidget.insert(float(counter+1),text[counter])
@@ -22,7 +22,10 @@ def animate_text(frame, text, counter, textwidget, counter_max):
 
 
 def playtextsound(text,V='m',L='en'):
-    engine = pyttsx3.init(driverName='espeak')
+    if _isLinux:
+        engine = pyttsx3.init(driverName='espeak')
+    else:
+        engine = pyttsx3.init()
     engine.setProperty('voice', 'en+f2')
     engine.setProperty('rate', 130)
     engine.setProperty("volume",0.9)
