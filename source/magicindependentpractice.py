@@ -1,6 +1,6 @@
 import os
 import tkinter as tk
-from tkinter import ttk, StringVar
+from tkinter import ttk, StringVar, messagebox
 import Data_Flow,configparser
 from pathlib import Path
 import  sys
@@ -72,11 +72,14 @@ class MagicIndenpendentPractice(tk.Frame):
         self.status_label = ttk.Label(self.labelframetwo, textvariable=self.status_text, font=("TkCaptionFont", 14), foreground="PeachPuff2",background='dark slate gray')
         self.status_label.grid(row=1, columnspan=3,pady=50)
         self.notes_label.grid(row=0,sticky=tk.NSEW,padx = 20, pady=30)
-        self.status_text.set("To save an image to images folder use \'s\' key.\nSaved in \'classroom_images\' folder")
+        #self.status_text.set("To save an image to images folder use \'s\' key.\nSaved in \'classroom_images\' folder")
 
         parent.wm_protocol("WM_DELETE_WINDOW", self.onClose)
 
     def play_video(self):
+        messagebox.showinfo(" Camera Info",
+                            "Camera shouldopen in a seperate window. Press the key 's' to save the picture under \n" + imageroot + os.path.sep+"saved_images"+os.path.sep+"classroom_images folder")
+
         p = Process(target=cv2practice.video_cam_play(imageroot))
         p.start()
         #p.join()  #
@@ -86,11 +89,12 @@ class MagicIndenpendentPractice(tk.Frame):
 
     def gen_ip_sheets(self,lessonid):
         pageutils.generate_ip_sheets(lessonid)
-        self.status_text.set("IP Sheets for the class generated in the AnswerSheets folder")
+        messagebox.showinfo("Answer Sheets Info", "IP Sheets for the class generated in the AnswerSheets folder")
 
     def gen_question_paper(self,lessonid):
 
-        self.status_text.set("Question Paper generated in the \'QuestionPapers\' folder")
+        messagebox.showinfo("Question Paper Info", "Question Paper generated in \n"+imageroot+os.path.sep+"QuestionPapers folder")
+
         pageutils.generate_ip_paper(lessonid, imageroot)
 
 

@@ -164,18 +164,27 @@ class MagicExperimentPage(tk.Frame):
 
         self.move_flag = False
     def draw_image(self, imagefile,xpos, ypos):
-        image1 = Image.open(imagefile)
-        image1.thumbnail((100, 100))
-        fimage1_display = ImageTk.PhotoImage(image1)
-        self.image_list.append(fimage1_display)
-        image1_id = self.canvas_experiment.create_image(xpos, ypos, image=self.image_list[len(self.image_list) - 1],
-                                                        tags="D")
-        self.image_canvas_list.append(image1_id)
-        self.canvas_experiment.tag_bind(self.image_canvas_list[len(self.image_canvas_list) - 1], "<Button1-Motion>",
-                                        self.move)
-        self.canvas_experiment.tag_bind(self.image_canvas_list[len(self.image_canvas_list) - 1], "<ButtonRelease-1>",
-                                        self.release)
-        return image1_id
+      try:
+            image1 = Image.open(imagefile)
+
+            image1.thumbnail((100, 100))
+            fimage1_display = ImageTk.PhotoImage(image1)
+            self.image_list.append(fimage1_display)
+            image1_id = self.canvas_experiment.create_image(xpos, ypos, image=self.image_list[len(self.image_list) - 1],
+                                                            tags="D")
+            self.image_canvas_list.append(image1_id)
+            self.canvas_experiment.tag_bind(self.image_canvas_list[len(self.image_canvas_list) - 1], "<Button1-Motion>",
+                                            self.move)
+            self.canvas_experiment.tag_bind(self.image_canvas_list[len(self.image_canvas_list) - 1], "<ButtonRelease-1>",self.release)
+            return image1_id
+      except (FileNotFoundError, IsADirectoryError):
+            messagebox.showwarning("Warning", "Step Images could not be retrieved \n")
+            return None
+
+
+
+
+
 
     def use_image_act(self):
         self.activate_button(self.image_act_button)

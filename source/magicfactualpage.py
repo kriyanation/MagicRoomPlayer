@@ -79,20 +79,28 @@ class MagicFactualPage(tk.Frame):
         self.canvas_image3.bind("<B1-Motion>", lambda event, c=self.canvas_image3: self.paint(event,c))
         self.canvas_image3.bind('<ButtonRelease-1>', self.reset)
         device = config.get("section1", 'device_type')
-        if (device == 'rpi'):
-            image1 = Image.open(self.factual_image1)
-            image1.thumbnail((300,300))
-            image2 = Image.open(self.factual_image2)
-            image2.thumbnail((300, 300))
-            image3 = Image.open(self.factual_image3)
-            image3.thumbnail((300, 300))
-        else:
-            image1 = Image.open(self.factual_image1)
-            image1.thumbnail((400, 400))
-            image2 = Image.open(self.factual_image2)
-            image2.thumbnail((400, 400))
-            image3 = Image.open(self.factual_image3)
-            image3.thumbnail((400, 400))
+        try:
+            if (device == 'rpi'):
+                image1 = Image.open(self.factual_image1)
+                image1.thumbnail((300,300))
+                image2 = Image.open(self.factual_image2)
+                image2.thumbnail((300, 300))
+                image3 = Image.open(self.factual_image3)
+                image3.thumbnail((300, 300))
+            else:
+                image1 = Image.open(self.factual_image1)
+                image1.thumbnail((400, 400))
+                image2 = Image.open(self.factual_image2)
+                image2.thumbnail((400, 400))
+                image3 = Image.open(self.factual_image3)
+                image3.thumbnail((400, 400))
+        except (FileNotFoundError , IsADirectoryError):
+            messagebox.showerror("Error", "Factual Images Could not be retrieved \n e.g. "+self.factual_image1)
+            print(self.factual_image1)
+            print(self.factual_image2)
+            print(self.factual_image3)
+            parent.destroy()
+            sys.exit()
         self.fimage1 = image1 # Image.open("../images/image1_thumbnail")
         self.fimage2 = image2
         self.fimage3 = image3

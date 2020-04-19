@@ -1,20 +1,26 @@
 import sqlite3
-import random
+import random, sys
 import configparser
 from pathlib import Path
-from tkinter import StringVar
+from tkinter import StringVar,messagebox
 TEST_ROW = 5
 
 config = configparser.RawConfigParser()
 two_up = Path(__file__).parents[2]
 print(str(two_up)+'/magic.cfg')
-config.read(str(two_up)+'/magic.cfg')
-db = config.get("section1",'dataroot')
-imageroot = config.get("section1",'image_root')
-videoroot = config.get("section1",'video_root')
+try:
+    config.read(str(two_up)+'/magic.cfg')
+    db = config.get("section1",'dataroot')
+    imageroot = config.get("section1",'image_root')
+    videoroot = config.get("section1",'video_root')
+except configparser.NoSectionError:
+    messagebox.showerror("Configuration Error", "No Section found or Configuration File Missing")
+    sys.exit()
+
+
 
 def get_Title():
-
+ try:
     connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = "select Lesson_Title from Magic_Science_Lessons where Lesson_ID = ?"
@@ -24,8 +30,12 @@ def get_Title():
     connection.commit()
     connection.close()
     return text
+ except sqlite3.OperationalError:
+     messagebox.showwarning("Title text could not be retrieved")
+
 
 def get_Lessons():
+ try:
     connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = "select Lesson_ID, Lesson_Title from Magic_Science_Lessons"
@@ -37,10 +47,14 @@ def get_Lessons():
     connection.commit()
     connection.close()
     return list_lessons
+ except sqlite3.OperationalError:
+     messagebox.showerror("DB Error", "Cannot Connect to Database")
+     sys.exit()
 
 #get_Title()
 
 def get_title_image():
+ try:
     connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = "select Title_Image from Magic_Science_Lessons where Lesson_ID = ?"
@@ -50,8 +64,12 @@ def get_title_image():
     connection.commit()
     connection.close()
     return imageroot+text
+ except sqlite3.OperationalError:
+     messagebox.showerror("DB Error", "Cannot Connect to Database")
+     sys.exit()
 
 def get_title_video():
+ try:
     connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = "select Title_Video from Magic_Science_Lessons where Lesson_ID = ?"
@@ -61,11 +79,15 @@ def get_title_video():
     connection.commit()
     connection.close()
     return videoroot+text
+ except sqlite3.OperationalError:
+    messagebox.showerror("DB Error", "Cannot Connect to Database" )
+    sys.exit()
 
 
 
 
 def get_Quote():
+ try:
     connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = "select count(*) from Magic_Quotes"
@@ -95,8 +117,12 @@ def get_Quote():
     connection.commit()
     connection.close()
     return quote
+ except sqlite3.OperationalError:
+     messagebox.showerror("DB Error", "Cannot Connect to Database")
+     sys.exit()
 
 def get_Running_Notes():
+ try:
     connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = "select Title_Running_Notes, Title_Notes_Language from Magic_Science_Lessons where Lesson_ID = ?"
@@ -109,6 +135,9 @@ def get_Running_Notes():
     connection.commit()
     connection.close()
     return (text, language)
+ except sqlite3.OperationalError:
+     messagebox.showerror("DB Error", "Cannot Connect to Database")
+     sys.exit()
 
 
 
@@ -117,6 +146,7 @@ def get_Running_Notes():
 
 #get_Quote()
 def class_info():
+ try:
     list_names = []
     connection = sqlite3.connect(db)
     cur = connection.cursor()
@@ -128,9 +158,13 @@ def class_info():
     connection.commit()
     connection.close()
     return list_names
+ except sqlite3.OperationalError:
+     messagebox.showerror("DB Error", "Cannot Connect to Database")
+     sys.exit()
 
 
 def get_factual_content():
+ try:
     list_factual_content = []
     connection = sqlite3.connect(db)
     cur = connection.cursor()
@@ -145,9 +179,13 @@ def get_factual_content():
     factual_images = [imageroot+factual_info[6], imageroot+factual_info[7], imageroot+factual_info[8]]
     connection.close()
     return (factual_terms, factual_descriptions, factual_images)
+ except sqlite3.OperationalError:
+     messagebox.showerror("DB Error", "Cannot Connect to Database")
+     sys.exit()
 
 
 def get_experiment_content():
+ try:
     connection = sqlite3.connect(db)
     cur = connection.cursor()
 
@@ -164,9 +202,13 @@ def get_experiment_content():
     experiment_steps_total = experiment_info[0]
     connection.close()
     return experiment_steps, experiment_images, experiment_steps_total
+ except sqlite3.OperationalError:
+     messagebox.showerror("DB Error", "Cannot Connect to Database")
+     sys.exit()
 
 
 def get_application_video():
+ try:
     connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = 'select Application_Video_Link, Application_Video_Running_Notes from Magic_Science_Lessons where Lesson_ID=?'
@@ -178,9 +220,13 @@ def get_application_video():
     video_link = videoroot+video_info[0]
     connection.close()
     return (video_link,video_info[1])
+ except sqlite3.OperationalError:
+     messagebox.showerror("DB Error", "Cannot Connect to Database")
+     sys.exit()
 
 
 def get_ip_data():
+ try:
     connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = 'select Answer_Key,IP_Questions, Lesson_ID, NumberOfQuestions from Magic_Science_Lessons where Lesson_ID=?'
@@ -188,8 +234,12 @@ def get_ip_data():
     ip_info = ip_info_c.fetchone()
     connection.close()
     return ip_info
+ except sqlite3.OperationalError:
+     messagebox.showerror("DB Error", "Cannot Connect to Database")
+     sys.exit()
 
 def get_application_mode():
+ try:
     connection = sqlite3.connect(db)
     cur = connection.cursor()
     sql = 'select Application_Mode from Magic_Science_Lessons where Lesson_ID=?'
@@ -197,9 +247,13 @@ def get_application_mode():
     ap_info = ap_info_c.fetchone()[0]
     connection.close()
     return ap_info
+ except sqlite3.OperationalError:
+     messagebox.showerror("DB Error", "Cannot Connect to Database")
+     sys.exit()
 
 
 def save_leader_board_data(list_points):
+ try:
     connection = sqlite3.connect(db)
     cur = connection.cursor()
 
@@ -226,3 +280,6 @@ def save_leader_board_data(list_points):
 
     connection.commit()
     connection.close()
+ except sqlite3.OperationalError:
+     messagebox.showerror("DB Error", "Cannot Connect to Database")
+     sys.exit()

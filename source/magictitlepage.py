@@ -88,14 +88,17 @@ class MagicTitlePage(tk.Frame):
         self.old_x = event.x
         self.old_y = event.y
     def play_video(self):
+        try:
          self.player.play()
+        except (NameError, OSError, AttributeError):
+         messagebox.showwarning("Warning", "VLC is unable to play the file: "+self.title_video_str)
 
 
 
 
     def new_window(self):
         self.player.stop()
-        subprocess.Popen(['vlc', '-vvv', self.title_video])
+        subprocess.Popen(['vlc', '-vvv', self.title_video_str])
 
     def pause_video(self):
         self.player.pause()
@@ -156,27 +159,32 @@ class MagicTitlePage(tk.Frame):
         self.image_save_button.configure(command=self.save_image_window)
         self.canvas.bind("<B1-Motion>", self.paint)
         self.canvas.bind('<ButtonRelease-1>', self.reset)
-        self.img = Image.open(title_image)
+        try:
+            self.img = Image.open(title_image)
 
-        device = config.get("section1",'device_type')
-        if (device == 'rpi'):
-            self.img = self.img.resize((300,300))
-            self.img1 = ImageTk.PhotoImage(self.img)
-            self.title_image_id = self.canvas.create_image(self.winfo_width() / 2 + 250,
-                                                           self.parent_window.screen_height / 4.2, image=self.img1)
+            device = config.get("section1",'device_type')
+            if (device == 'rpi'):
+                self.img = self.img.resize((300,300))
+                self.img1 = ImageTk.PhotoImage(self.img)
+                self.title_image_id = self.canvas.create_image(self.winfo_width() / 2 + 250,
+                                                               self.parent_window.screen_height / 4.2, image=self.img1)
 
-        else:
-            self.img = self.img.resize((400, 400))
-            self.img1 = ImageTk.PhotoImage(self.img)
-            self.title_image_id = self.canvas.create_image(self.winfo_width() / 2 + 450,
-                                                           self.parent_window.screen_height / 4, image=self.img1)
+            else:
+                self.img = self.img.resize((400, 400))
+                self.img1 = ImageTk.PhotoImage(self.img)
+                self.title_image_id = self.canvas.create_image(self.winfo_width() / 2 + 450,
+                                                               self.parent_window.screen_height / 4, image=self.img1)
+        except (FileNotFoundError, IsADirectoryError):
+            messagebox.showerror("Error", "Title image not found in the path \n"+title_image)
+            self.parent_window.destroy()
+            sys.exit()
 
     def title_video(self):
         self.canvas.delete("all")
         self.image_frame.pack_forget()
         self.canvas.pack_forget()
-        self.title_video = Data_Flow.get_title_video()
-        self.media = self.Instance.media_new(str(self.title_video))  # Path, unicode
+        self.title_video_str = Data_Flow.get_title_video()
+        self.media = self.Instance.media_new(str(self.title_video_str))  # Path, unicode
         self.player.set_media(self.media)
         self.canvas.delete(self.title_image_id)
 
