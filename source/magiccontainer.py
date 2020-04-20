@@ -42,7 +42,7 @@ class MagicApplication(tk.Tk):
         self.show_title_page()
 
         self.bframe = tk.Frame(self,background="dark slate gray")
-        self.bframe.pack(side = tk.TOP,anchor = tk.NE)
+
         self.nextimage = tk.PhotoImage(file="../images/next.png")
         self.nextbutton = ttk.Button(self.bframe,text="Next Step", image=self.nextimage,
                                      command=lambda: self.show_next_page(self.page_index), style='Green.TButton')
@@ -52,15 +52,17 @@ class MagicApplication(tk.Tk):
 
         self.nextbutton.pack(side = tk.RIGHT, anchor = tk.NE)
         self.backbutton.pack(side=tk.TOP, anchor=tk.NE,padx = 10)
-        self.bframe.pack(side=tk.TOP,anchor=tk.NE)
+
         self.lbbutton_hide.pack(side=tk.TOP,anchor = tk.NE,pady=5)
         self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE, pady=5)
+        self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE,pady=30)
 
 
     def show_title_page(self):
         if self.page_index == 1:
             self.factual_page.forget()
             self.LeaderBoard.pack_forget()
+            self.bframe.pack_forget()
 
         self.TitlePage = magictitlepage.MagicTitlePage(self)
         self.keydown = 0
@@ -70,7 +72,7 @@ class MagicApplication(tk.Tk):
         self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
         if self.page_index == 1:
             self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE, pady=5)
-
+            self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
 
     def hide_leader_board(self):
         self.LeaderBoard.pack_forget()
@@ -126,6 +128,7 @@ class MagicApplication(tk.Tk):
 
     def show_ip_page(self, ap_mode):
         self.LeaderBoard.pack_forget()
+        self.bframe.pack_forget()
         if ap_mode == "Video":
             self.application_video_page.player.stop()
             self.application_video_page.pack_forget()
@@ -135,6 +138,7 @@ class MagicApplication(tk.Tk):
         self.independent_practice.pack(side=tk.LEFT, anchor=tk.N)
         self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
         self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
+        self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
 
     def show_video_page(self):
         if self.page_index == 3:
@@ -142,10 +146,12 @@ class MagicApplication(tk.Tk):
         else:
             self.factual_page.pack_forget()
         self.LeaderBoard.pack_forget()
+        self.bframe.pack_forget()
         self.application_video_page = magicapplicationvideo.MagicApplicationVideo(self)
         self.application_video_page.pack(side=tk.LEFT, anchor=tk.N)
         self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
         self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
+        self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
 
     def show_experiment_page(self):
         if self.page_index == 3:
@@ -153,10 +159,12 @@ class MagicApplication(tk.Tk):
         else:
             self.factual_page.pack_forget()
         self.LeaderBoard.pack_forget()
+        self.bframe.pack_forget()
         self.application_experiment_page = magicapplicationexperiment.MagicExperimentPage(self)
         self.application_experiment_page.pack(side=tk.LEFT, anchor=tk.N)
         self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
         self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
+        self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
 
     def show_factual_page(self,ap_mode):
         if self.page_index == 2:
@@ -169,10 +177,12 @@ class MagicApplication(tk.Tk):
             self.TitlePage.player.stop()
             self.TitlePage.pack_forget()
         self.LeaderBoard.pack_forget()
+        self.bframe.pack_forget()
         self.factual_page = magicfactualpage.MagicFactualPage(self)
         self.factual_page.pack(side=tk.LEFT, anchor=tk.N)
         self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
         self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
+        self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
 
 
     def  Configure(self,event):

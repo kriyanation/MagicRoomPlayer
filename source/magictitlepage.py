@@ -40,7 +40,7 @@ class MagicTitlePage(tk.Frame):
         self.quote_text = Data_Flow.get_Quote()
         self.quote_textwidget = tk.Text(self.quoteframe, borderwidth=0,highlightthickness=0,relief=tk.FLAT,wrap=tk.WORD,font= ('TkDefaultFont',12), bd=2,foreground = 'PeachPuff2', width=60,height=2,background=
                                      'dark slate gray')
-        self.labelframeone = ttk.Labelframe(self, width=parent.screen_width / 2.0, height=parent.screen_height / 2.1,
+        self.labelframeone = ttk.Labelframe(self, width=parent.screen_width / 2.0, height=parent.screen_height / 2.0,
                                             text="Introduction", relief=tk.RIDGE, style='Red.TLabelframe')
 
         self.counter = 0
@@ -56,10 +56,7 @@ class MagicTitlePage(tk.Frame):
         self.title_intro()
 
 
-        self.show_video_button = ttk.Button(self, text="Show Video",
-                                             command= self.show_video_intro,
-                                             style='Green.TButton')
-        self.show_video_button.pack(pady=5)
+
         self.Instance = vlc.Instance(args)
         self.player = self.Instance.media_player_new()
 
@@ -110,6 +107,11 @@ class MagicTitlePage(tk.Frame):
     def show_video_intro(self):
 
         self.title_video()
+        try:
+            self.player.play()
+        except (NameError, OSError, AttributeError):
+            messagebox.showwarning("Warning", "VLC is unable to play the file: " + self.title_video_str)
+
     def play_quote_audio(self,text):
         pageutils.playtextsound(text)
 
@@ -149,13 +151,19 @@ class MagicTitlePage(tk.Frame):
         self.image_save_button = ttk.Button(self.image_frame, text="Save Board",
                                                   style='Green.TButton')
 
-        self.new_window_image_button.pack(pady=10, side=tk.LEFT)
-        self.image_save_button.pack(padx=10, side=tk.LEFT)
+        self.show_video_button = ttk.Button(self.image_frame, text="Show Video",
+                                            command=self.show_video_intro,
+                                            style='Green.TButton')
+
+
+        self.new_window_image_button.pack(pady=5, side=tk.LEFT)
+        self.image_save_button.pack(padx=5, side=tk.LEFT)
+        self.show_video_button.pack(pady=5, side=tk.LEFT)
         self.image_frame.pack()
         self.canvas = tk.Canvas(self.labelframeone,
                         width=self.parent_window.screen_width/2.0,
-                        height=self.parent_window.screen_height/2.2,background='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
-        self.canvas.pack( padx=10, anchor = tk.CENTER)
+                        height=self.parent_window.screen_height/2.5,background='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
+        self.canvas.pack( padx=3, pady=20, anchor = tk.CENTER)
         self.image_save_button.configure(command=self.save_image_window)
         self.canvas.bind("<B1-Motion>", self.paint)
         self.canvas.bind('<ButtonRelease-1>', self.reset)
@@ -172,8 +180,8 @@ class MagicTitlePage(tk.Frame):
             else:
                 self.img = self.img.resize((400, 400))
                 self.img1 = ImageTk.PhotoImage(self.img)
-                self.title_image_id = self.canvas.create_image(self.winfo_width() / 2 + 450,
-                                                               self.parent_window.screen_height / 4, image=self.img1)
+                self.title_image_id = self.canvas.create_image(self.winfo_width() / 2 + 380,
+                                                               self.parent_window.screen_height / 5.0, image=self.img1)
         except (FileNotFoundError, IsADirectoryError):
             messagebox.showerror("Error", "Title image not found in the path \n"+title_image)
             self.parent_window.destroy()
