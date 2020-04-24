@@ -55,19 +55,17 @@ class MagicTitlePage(tk.Frame):
         self.labelframeone.pack(padx = 80)
         self.title_intro()
 
-
-
-        self.Instance = vlc.Instance(args)
-        self.player = self.Instance.media_player_new()
-
         args = []
         if _isLinux:
             args.append('--no-xlib')
+        try:
+            self.Instance = vlc.Instance(args)
+        except (NameError, OSError, AttributeError) as err:
+            print(err)
+            print(err.args)
 
-
-
-
-
+        if(self.Instance != None):
+            self.player = self.Instance.media_player_new()
         parent.bind("<Configure>", self.OnConfigure)  # catch window resize, etc.
         parent.update()
 
