@@ -30,29 +30,32 @@ class MagicTitlePage(tk.Frame):
         s.configure('TScrollbar', background='dark slate gray', foreground='dark slate gray')
         s.map('TScrollbar', background=[('active', '!disabled', 'dark olive green'), ('disabled', 'dark slate gray')],
               foreground=[('active', 'PeachPuff2'), ('disabled', 'dark slate gray')])
+        self.video_mode = False
         print(type(parent).__name__)
         self.parent_window = parent
         self.old_x, self.old_y = None, None
         self.configure(background='dark slate gray')
         self.quoteframe = tk.Frame(self)
         self.quoteframe.configure(background='dark slate gray')
-        self.quoteframe.pack()
+        self.quoteframe.pack(fill=tk.X, side=tk.TOP,anchor=tk.CENTER)
         self.quote_text = Data_Flow.get_Quote()
-        self.quote_textwidget = tk.Text(self.quoteframe, borderwidth=0,highlightthickness=0,relief=tk.FLAT,wrap=tk.WORD,font= ('TkDefaultFont',12), bd=2,foreground = 'PeachPuff2', width=60,height=2,background=
+        self.quote_textwidget = tk.Text(self.quoteframe, borderwidth=0,highlightthickness=0,relief=tk.FLAT,wrap=tk.WORD,font= ('TkDefaultFont',12), bd=2,height=2,foreground = 'PeachPuff2',background=
                                      'dark slate gray')
-        self.labelframeone = ttk.Labelframe(self, width=parent.screen_width / 2.0, height=parent.screen_height / 2.0,
+        #self.labelframeone = ttk.Labelframe(self, width=parent.screen_width / 2.0, height=parent.screen_height / 2.0,
+        #                                    text="Introduction", relief=tk.RIDGE, style='Red.TLabelframe')
+        self.labelframeone = ttk.Labelframe(self,
                                             text="Introduction", relief=tk.RIDGE, style='Red.TLabelframe')
 
         self.counter = 0
         pageutils.animate_text( self.quoteframe, self.quote_text, self.counter,self.quote_textwidget,len(self.quote_text)-1)
 
-        self.quote_textwidget.pack(pady=5)
+        self.quote_textwidget.pack(pady=5,side = tk.TOP,anchor=tk.CENTER)
         self.buttonimage = tk.PhotoImage(file="../images/speaker.png")
 
         self.quote_audio_button = ttk.Button(self.quoteframe,text="hello", image = self.buttonimage,command=lambda: self.play_quote_audio(self.quote_text),
                                          style='Green.TButton')
-        self.quote_audio_button.pack(padx=100,side=tk.RIGHT)
-        self.labelframeone.pack(padx = 80)
+        self.quote_audio_button.pack(padx=100,side=tk.TOP)
+        self.labelframeone.pack(padx = 80,fill=tk.BOTH,expand=tk.TRUE)
         self.title_intro()
 
         args = []
@@ -103,7 +106,7 @@ class MagicTitlePage(tk.Frame):
         self.title_intro()
 
     def show_video_intro(self):
-
+        self.video_mode = True
         self.title_video()
         try:
             self.player.play()
@@ -157,33 +160,44 @@ class MagicTitlePage(tk.Frame):
         self.new_window_image_button.pack(pady=5, side=tk.LEFT)
         self.image_save_button.pack(padx=5, side=tk.LEFT)
         self.show_video_button.pack(pady=5, side=tk.LEFT)
-        self.image_frame.pack()
+        self.image_frame.pack(anchor=tk.CENTER)
+        #self.canvas = tk.Canvas(self.labelframeone,
+        #                width=self.parent_window.screen_width/2.0,
+        #                height=self.parent_window.screen_height/2.5,background='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
+
         self.canvas = tk.Canvas(self.labelframeone,
-                        width=self.parent_window.screen_width/2.0,
-                        height=self.parent_window.screen_height/2.5,background='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
-        self.canvas.pack( padx=3, pady=20, anchor = tk.CENTER)
+                                background='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
+
+        self.canvas.pack( padx=3, pady=20)
         self.image_save_button.configure(command=self.save_image_window)
         self.canvas.bind("<B1-Motion>", self.paint)
         self.canvas.bind('<ButtonRelease-1>', self.reset)
+        self.bind("<Configure>", self.resize)
+
         try:
             self.img = Image.open(title_image)
 
             device = config.get("section1",'device_type')
-            if (device == 'rpi'):
-                self.img = self.img.resize((300,300))
-                self.img1 = ImageTk.PhotoImage(self.img)
-                self.title_image_id = self.canvas.create_image(self.winfo_width() / 2 + 250,
-                                                               self.parent_window.screen_height / 4.2, image=self.img1)
 
-            else:
-                self.img = self.img.resize((400, 400))
-                self.img1 = ImageTk.PhotoImage(self.img)
-                self.title_image_id = self.canvas.create_image(self.winfo_width() / 2 + 380,
-                                                               self.parent_window.screen_height / 5.0, image=self.img1)
+           #self.img = self.img.resize((400, 400))
+            #self.img1 = ImageTk.PhotoImage(self.img)
+
+
         except (FileNotFoundError, IsADirectoryError):
             messagebox.showerror("Error", "Title image not found in the path \n"+title_image)
             self.parent_window.destroy()
             sys.exit()
+
+    def resize(self,event):
+        if not self.video_mode:
+            self.img = self.img.resize(
+                (int(self.winfo_width()/2)-100, int(self.winfo_height()/2)-100), Image.ANTIALIAS)
+
+            self.img1 = ImageTk.PhotoImage(self.img)
+            self.canvas.configure(width= int(self.winfo_width()/2),height= int(self.winfo_height()/2))
+            self.title_image_id = self.canvas.create_image(10, 10, image=self.img1,
+                                                           anchor=tk.NW)
+
 
     def title_video(self):
         self.canvas.delete("all")
@@ -207,7 +221,7 @@ class MagicTitlePage(tk.Frame):
         self.pause_button.pack(side=tk.LEFT,padx=10)
         self.new_screen_button.pack(side=tk.LEFT,padx=10)
         self.controlframe.pack()
-        self.canvas.pack(padx=10, anchor=tk.CENTER)
+        self.canvas.pack(padx=10, fill=tk.BOTH,expand = tk.TRUE,anchor=tk.CENTER)
         player_frame_info = self.canvas.winfo_id()  # .winfo_visualid()?
         if(_isLinux):
             self.player.set_xwindow(player_frame_info)
@@ -218,14 +232,7 @@ class MagicTitlePage(tk.Frame):
         video_notes = video_notes_info[0]
 
 
-       # self.title_image_id = self.canvas.create_text(self.winfo_width() / 2 + 450,
-        #                                               self.parent_window.screen_height / 4, text=video_notes)
-
-        #self.appHighlightFont = font.Font(self.fnt)
-       # b = '\u0B9A\u0BC1\u0BB5\u0BBE\u0B9A'
-        b = '\u0936\u094D\u0935\u0938\u0928\20\u092A\u094D\u0930\u0923\u093E\u0932\u0940'
-
-        self.video_note_text = tk.Text(self,pady=10, borderwidth=0,highlightthickness=0,relief=tk.SUNKEN,wrap= tk.WORD,font = ("comic sans",15), foreground = "PeachPuff2",background ='dark slate gray', width=50, height=30)
+        self.video_note_text = tk.Text(self,pady=10, borderwidth=0,highlightthickness=0,relief=tk.SUNKEN,wrap= tk.WORD,font = ("comic sans",15), height = 8,foreground = "PeachPuff2",background ='dark slate gray')
         pageutils.animate_text(self, video_notes, 0, self.video_note_text, len(video_notes) - 1)
         self.scrollbar = ttk.Scrollbar(self)
         self.video_note_text.config(yscrollcommand=self.scrollbar.set)

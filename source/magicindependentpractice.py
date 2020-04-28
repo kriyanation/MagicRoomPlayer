@@ -40,7 +40,7 @@ class MagicIndenpendentPractice(tk.Frame):
         s.configure('Horizontal.Green.TScale', background='dark slate gray', foreground='PeachPuff2')
         s.map('Green.TButton', background=[('active', '!disabled', 'dark olive green'), ('pressed', 'PeachPuff2')],
               foreground=[('pressed', 'PeachPuff2'), ('active', 'PeachPuff2')])
-
+        self.bind("<Configure>",self.resize_t)
         self.cameraoff = False
         self.frame = None
         self.thread = None
@@ -55,40 +55,41 @@ class MagicIndenpendentPractice(tk.Frame):
         self.ip_answer_key = self.ip_info[0]
         self.ip_questions = self.ip_info[1]
         self.lesson_id = self.ip_info[2]
-        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/2.0, height = parent.screen_height/2.1, text="Independent Practice", relief=tk.RAISED,style='Red.TLabelframe',borderwidth=0)
-        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/2.0, height = parent.screen_height/3.1,text="Evaluate", relief=tk.RIDGE,style='Red.TLabelframe')
-        self.play_button = ttk.Button(self.labelframetwo, text="Take a Picture", command= lambda: self.play_video(),style='Green.TButton')
-        self.qp_button = ttk.Button(self.labelframetwo, text="Print Question Paper", command= lambda: self.gen_question_paper(self.lesson_id),style='Green.TButton')
+        self.labelframeone = ttk.Labelframe(self, text="Independent Practice", relief=tk.RAISED,style='Red.TLabelframe',borderwidth=0)
+        #self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/2.0, height = parent.screen_height/3.1,text="Evaluate", relief=tk.RIDGE,style='Red.TLabelframe')
+        #self.play_button = ttk.Button(self.labelframetwo, text="Take a Picture", command= lambda: self.play_video(),style='Green.TButton')
+        #self.qp_button = ttk.Button(self.labelframetwo, text="Print Question Paper", command= lambda: self.gen_question_paper(self.lesson_id),style='Green.TButton')
         #self.qp_answer_button = ttk.Button(self.labelframetwo,text="Easy Answer Sheets", command = lambda: self.gen_ip_sheets(self.lesson_id),style='Green.TButton')
-        self.play_button.grid(row=0,column=0,padx=20)
-        self.qp_button.grid(row=0,column=1,padx=20)
+        #self.play_button.grid(row=0,column=0,padx=20)
+        #self.qp_button.grid(row=0,column=1,padx=20)
 
         #self.qp_answer_button.grid(row=0, column=2, padx=20)
-        self.labelframeone.grid_propagate(False)
-        self.labelframetwo.grid_propagate(False)
-        self.labelframeone.grid(row=0, pady=0, padx = 20,)
-        self.labelframetwo.grid(row=1, pady= 10, padx = 20)
+
+       # self.labelframetwo.grid_propagate(False)
+        self.labelframeone.grid(row=0, pady=0, padx = 20,sticky = tk.NSEW)
+        #self.labelframetwo.grid(row=1, pady= 10, padx = 20)
         self.notes_text = tk.Text(self.labelframeone,borderwidth=3,highlightthickness=0,
-                                     font=("TkCaptionFont", 12,'italic'), foreground="PeachPuff2",background='dark slate gray', wrap=tk.WORD,
-                                     width=int(parent.screen_width/22), height = int(parent.screen_height/50))
+                                     font=("TkCaptionFont", 18,'bold'), foreground="PeachPuff2",background='dark slate gray', wrap=tk.WORD)
+
         self.notes_text.insert(1.0,self.ip_questions)
         self.textscroll = ttk.Scrollbar(self.labelframeone)
         self.notes_text.config(yscrollcommand=self.textscroll.set)
         self.textscroll.config(command=self.notes_text.yview, style='TScrollbar')
-        self.status_label = ttk.Label(self.labelframetwo, textvariable=self.status_text, font=("TkCaptionFont", 14), foreground="PeachPuff2",background='dark slate gray')
-        self.status_label.grid(row=1, columnspan=3,pady=50)
-        self.notes_text.grid(row=0,column=0,sticky=tk.NSEW,padx = 20, pady=30)
+       # self.status_label = ttk.Label(self.labelframetwo, textvariable=self.status_text, font=("TkCaptionFont", 14), foreground="PeachPuff2",background='dark slate gray')
+        #self.status_label.grid(row=1, columnspan=3,pady=50)
+        self.notes_text.grid(row=0,column=0,sticky=tk.NSEW,padx = 20, pady=10)
         self.textscroll.grid(row=0,column=3,sticky=tk.NSEW)
         #self.status_text.set("To save an image to images folder use \'s\' key.\nSaved in \'classroom_images\' folder")
 
         parent.wm_protocol("WM_DELETE_WINDOW", self.onClose)
-
+    def resize_t(self,event):
+        self.notes_text.configure(width=int(self.winfo_width()/20),height=int(self.winfo_height()/50))
     def play_video(self):
         messagebox.showinfo(" Camera Info",
                             "Camera shouldopen in a seperate window. Press the key 's' to save the picture under \n" + imageroot + os.path.sep+"saved_images"+os.path.sep+"classroom_images folder")
 
-        p = Process(target=cv2practice.video_cam_play(imageroot))
-        p.start()
+       # p = Process(target=cv2practice.video_cam_play(imageroot))
+       # p.start()
         #p.join()  #
         return
 

@@ -20,11 +20,11 @@ class MagicLeaderBoard(tk.Frame):
               foreground=[('active', 'PeachPuff2'), ('disabled', 'dark slate gray')])
 
        # self.leaderboard = ttk.LabelFrame(self, text = "Class Leaderboard", width=parent.screen_width/4, height=parent.screen_height,borderwidth=8,relief=tk.GROOVE,style='Red.TLabelframe')
-        self.c_canvas = tk.Canvas(self, background='dark slate gray',width=290,height=400)
+        self.c_canvas = tk.Canvas(self, background='dark slate gray')
 
         self.c_canvas.grid(row=0, column=0)
-        self.leaderboard = tk.Frame(self.c_canvas, width=200,
-                                          height=600, borderwidth=2,
+        self.leaderboard = tk.Frame(self.c_canvas,
+                                           borderwidth=2,
                                           background='dark slate gray')
         self.dataframe= tk.Frame(self.leaderboard)
         self.dataframe.configure(background='dark slate gray')
@@ -48,7 +48,7 @@ class MagicLeaderBoard(tk.Frame):
 
         self.headernamelabel.grid(row=1, column=0, padx=10, pady=2)
         self.headerbadgelabel.grid(row=1, column=1,padx=10, pady=2)
-        self.headerpointslabel.grid(row=1, column=2,padx=10, pady=2)
+        self.headerpointslabel.grid(row=1, column=2, pady=2)
         self.refresh_data()
 
     def c_function(self, event):
@@ -66,7 +66,7 @@ class MagicLeaderBoard(tk.Frame):
         self.badge_image_medalc = tk.PhotoImage(file='../images/medalc.png')
         for element in list_names:
             self.datanamelabel = ttk.Label(self.leaderboard, text=element[0].strip(), font = ('TkDefaultFont', 12),
-                                           foreground = 'PeachPuff2',wraplength = 100,background='dark slate gray')
+                                           foreground = 'PeachPuff2',wraplength = 80,background='dark slate gray')
             if element[1].strip() == 'a':
                 self.databadgelabel = ttk.Label(self.leaderboard, image=self.badge_image_medala,background='dark slate gray')
             elif element[1].strip() == 'b':
@@ -88,7 +88,7 @@ class MagicLeaderBoard(tk.Frame):
            #                                foreground='PeachPuff2',background='dark slate gray')
             self.datanamelabel.grid(row=rowindex, column=0, padx=10, pady=3,sticky=tk.W)
             self.databadgelabel.grid(row=rowindex, column=1, padx=10, pady=3)
-            self.datapointspinner.grid(row=rowindex, column=2, padx=10, pady=3)
+            self.datapointspinner.grid(row=rowindex, column=2, pady=3)
             rowindex += 1
 
 

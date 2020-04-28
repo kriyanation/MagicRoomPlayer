@@ -15,10 +15,11 @@ class MagicApplication(tk.Tk):
 
         self.title("Learning Room")
         self.configure(background='dark slate gray')
-        self.lbbutton_hide = ttk.Button(text="Hide LeaderBoard", command=self.hide_leader_board,
+        self.lbbutton_hide = ttk.Button(text="Show/Hide LeaderBoard", command=self.show_hide_leader_board,
                                         style='Green.TButton')
-        self.lbbutton_show = ttk.Button(text="Show LeaderBoard", command=self.show_leader_board,
-                                        style='Green.TButton')
+        self.show_hide_flag = 1
+      #  self.lbbutton_show = ttk.Button(text="Show LeaderBoard", command=self.show_leader_board,
+      #                                  style='Green.TButton')
 
         app = LessonList.MagicLessonList(bg='dark slate gray', fg='white', buttonbg='dark olive green', selectmode=tk.SINGLE,
                               buttonfg='snow',parent=self)
@@ -39,6 +40,7 @@ class MagicApplication(tk.Tk):
         self.headerimage = tk.PhotoImage(file="../images/learning.png")
         ttk.Label(self, text="Learning Room", image=self.headerimage, compound=tk.RIGHT, background='dark slate gray',
                   font=("courier", 18, 'bold'), foreground='PeachPuff2').pack(side=tk.TOP)
+        self.lbbutton_hide.pack(side=tk.TOP, anchor=tk.NE, pady=5)
         self.show_title_page()
 
         self.bframe = tk.Frame(self,background="dark slate gray")
@@ -53,9 +55,10 @@ class MagicApplication(tk.Tk):
         self.nextbutton.pack(side = tk.RIGHT, anchor = tk.NE)
         self.backbutton.pack(side=tk.TOP, anchor=tk.NE,padx = 10)
 
-        self.lbbutton_hide.pack(side=tk.TOP,anchor = tk.NE,pady=5)
+
+        self.bframe.pack(side=tk.BOTTOM, anchor=tk.NE, pady=30)
         self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE, pady=5)
-        self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE,pady=30)
+
 
 
     def show_title_page(self):
@@ -67,23 +70,26 @@ class MagicApplication(tk.Tk):
         self.TitlePage = magictitlepage.MagicTitlePage(self)
         self.keydown = 0
         print(str(self.screen_width) + ',' + str(self.screen_height))
-        self.pack_propagate(False)
-        self.TitlePage.pack(side=tk.LEFT, anchor=tk.N)
+       # self.pack_propagate(False)
+
         self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
         if self.page_index == 1:
-            self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE, pady=5)
             self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
-
-    def hide_leader_board(self):
-        self.LeaderBoard.pack_forget()
-        self.lbbutton_hide.pack_forget()
-        self.lbbutton_show.pack(side=tk.TOP, anchor=tk.NE,pady=5)
+            if self.show_hide_flag == 1:
+                self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
+        self.TitlePage.pack(side=tk.LEFT, anchor=tk.N, fill=tk.BOTH, expand=True)
 
 
-    def show_leader_board(self):
-        self.lbbutton_show.pack_forget()
-        self.lbbutton_hide.pack(side=tk.TOP,anchor=tk.NE,pady=5)
-        self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE,pady=5)
+    def show_hide_leader_board(self):
+        if self.show_hide_flag == 1:
+            self.LeaderBoard.pack_forget()
+            self.show_hide_flag=0
+        else:
+            self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE, pady=5)
+            self.show_hide_flag = 1
+
+
+
 
 
 
@@ -99,6 +105,7 @@ class MagicApplication(tk.Tk):
                 self.page_index += 1
             else:
                 self.show_experiment_page()
+
                 self.page_index += 1
             return
         if index == 2:
@@ -135,10 +142,13 @@ class MagicApplication(tk.Tk):
         else:
             self.application_experiment_page.forget()
         self.independent_practice = magicindependentpractice.MagicIndenpendentPractice(self)
-        self.independent_practice.pack(side=tk.LEFT, anchor=tk.N)
+
         self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
-        self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
         self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
+        if self.show_hide_flag == 1:
+            self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
+        self.independent_practice.pack(side=tk.LEFT, fill=tk.BOTH, expand=tk.TRUE, anchor=tk.N)
+
 
     def show_video_page(self):
         if self.page_index == 3:
@@ -150,8 +160,9 @@ class MagicApplication(tk.Tk):
         self.application_video_page = magicapplicationvideo.MagicApplicationVideo(self)
         self.application_video_page.pack(side=tk.LEFT, anchor=tk.N)
         self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
-        self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
         self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
+        self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
+
 
     def show_experiment_page(self):
         if self.page_index == 3:
@@ -161,10 +172,14 @@ class MagicApplication(tk.Tk):
         self.LeaderBoard.pack_forget()
         self.bframe.pack_forget()
         self.application_experiment_page = magicapplicationexperiment.MagicExperimentPage(self)
-        self.application_experiment_page.pack(side=tk.LEFT, anchor=tk.N)
+
+
+
         self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
-        self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
         self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
+        if self.show_hide_flag == 1:
+            self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
+        self.application_experiment_page.pack(side=tk.LEFT, fill=tk.BOTH, expand=tk.TRUE, anchor=tk.N)
 
     def show_factual_page(self,ap_mode):
         if self.page_index == 2:
@@ -179,15 +194,21 @@ class MagicApplication(tk.Tk):
         self.LeaderBoard.pack_forget()
         self.bframe.pack_forget()
         self.factual_page = magicfactualpage.MagicFactualPage(self)
-        self.factual_page.pack(side=tk.LEFT, anchor=tk.N)
         self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
-        self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
         self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
+        if self.show_hide_flag == 1:
+            self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
+
+        self.factual_page.pack(side=tk.LEFT, fill=tk.BOTH, expand=tk.TRUE,anchor=tk.N)
+
 
 
     def  Configure(self,event):
         self.screen_width = self.winfo_width()
         self.screen_height = self.winfo_height()
+       # self.application_experiment_page.canvas_experiment.configure(width=self.winfo_width() / 1.5,
+       #                                      height=self.winfo_height() / 2)
+
        # print(str(self.screen_width) + ',' + str(self.screen_height))
 
 

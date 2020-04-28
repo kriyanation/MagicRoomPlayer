@@ -32,7 +32,8 @@ class MagicFactualPage(tk.Frame):
         s.configure('Green.TButton', background='dark slate gray', foreground='PeachPuff2')
         s.map('Green.TButton', background=[('active', '!disabled', 'dark olive green'), ('pressed', 'PeachPuff2')],
               foreground=[('pressed', 'PeachPuff2'), ('active', 'PeachPuff2')])
-
+        self.rowconfigure(0, weight=1)
+        self.columnconfigure(0, weight=1)
         factual_content_list = Data_Flow.get_factual_content()
         factual_content_terms = factual_content_list[0]
         print(factual_content_terms)
@@ -41,9 +42,10 @@ class MagicFactualPage(tk.Frame):
         factual_content_images = factual_content_list[2]
 
 
-        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/1.8, height = parent.screen_height/1.4, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
-        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/1.8, height = parent.screen_height/1.4,text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
-        self.labelframethree = ttk.Labelframe(self,width = parent.screen_width/1.8, height = parent.screen_height/1.4, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
+
+        self.labelframeone = ttk.Labelframe(self, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.labelframetwo = ttk.Labelframe(self,text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.labelframethree = ttk.Labelframe(self, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
         self.factual_term_label_one = ttk.Label(self.labelframeone, text = factual_content_terms[0], background = 'dark slate gray',foreground = 'ivory2', font=("TkCaptionFont", 18,'bold'))
         self.factual_term_label_two = ttk.Label(self.labelframetwo,text=factual_content_terms[1], background = 'dark slate gray',foreground = 'ivory2', font=("TkCaptionFont", 18,'bold'))
         self.factual_term_label_three = ttk.Label(self.labelframethree,text=factual_content_terms[2],background = 'dark slate gray', foreground = 'ivory2', font=("TkCaptionFont", 18,'bold'))
@@ -56,16 +58,16 @@ class MagicFactualPage(tk.Frame):
         self.factual_image2 = factual_content_images[1]
         self.factual_image3 = factual_content_images[2]
         self.canvas_image1 = tk.Canvas(self.labelframeone,
-                        width=parent.screen_width/2.9,
-                        height=parent.screen_height/2.4,bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
+
+                        bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
                                                          )
         self.canvas_image2 = tk.Canvas(self.labelframetwo,
-                                   width=parent.screen_width / 2.9,
-                                   height=parent.screen_height / 2.4, bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
+
+                                    bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
                                        )
         self.canvas_image3 = tk.Canvas(self.labelframethree,
-                                   width=parent.screen_width / 2.9,
-                                   height=parent.screen_height / 2.4,bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
+
+                                   bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
 
         self.canvas_image1.bind("<B1-Motion>", lambda event, c=self.canvas_image1: self.paint(event,c))
         self.canvas_image1.bind('<ButtonRelease-1>', self.reset)
@@ -75,20 +77,13 @@ class MagicFactualPage(tk.Frame):
         self.canvas_image3.bind('<ButtonRelease-1>', self.reset)
         device = config.get("section1", 'device_type')
         try:
-            if (device == 'rpi'):
-                image1 = Image.open(self.factual_image1)
-                image1.thumbnail((300,300))
-                image2 = Image.open(self.factual_image2)
-                image2.thumbnail((300, 300))
-                image3 = Image.open(self.factual_image3)
-                image3.thumbnail((300, 300))
-            else:
-                image1 = Image.open(self.factual_image1)
-                image1.thumbnail((400, 400))
-                image2 = Image.open(self.factual_image2)
-                image2.thumbnail((400, 400))
-                image3 = Image.open(self.factual_image3)
-                image3.thumbnail((400, 400))
+
+                self.image1 = Image.open(self.factual_image1)
+
+                self.image2 = Image.open(self.factual_image2)
+
+                self.image3 = Image.open(self.factual_image3)
+
         except (FileNotFoundError , IsADirectoryError):
             messagebox.showerror("Error", "Factual Images Could not be retrieved \n e.g. "+self.factual_image1)
             print(self.factual_image1)
@@ -96,26 +91,45 @@ class MagicFactualPage(tk.Frame):
             print(self.factual_image3)
             parent.destroy()
             sys.exit()
-        self.fimage1 = image1 # Image.open("../images/image1_thumbnail")
-        self.fimage2 = image2
-        self.fimage3 = image3
-        self.fimage1_display = ImageTk.PhotoImage(self.fimage1)
-        self.fimage2_display = ImageTk.PhotoImage(self.fimage2)
-        self.fimage3_display = ImageTk.PhotoImage(self.fimage3)
-        self.image1_id = self.canvas_image1.create_image(parent.screen_width/6.7, parent.screen_height/7, image=self.fimage1_display)
-        self.image2_id = self.canvas_image2.create_image(parent.screen_width/6.7, parent.screen_height/7, image=self.fimage2_display)
-        self.image3_id = self.canvas_image3.create_image(parent.screen_width/6.7, parent.screen_height/7, image=self.fimage3_display)
+
+
+        self.bind("<Configure>", self.resize_c)
 
         self.buttonimage = tk.PhotoImage(file="../images/speaker.png")
 
         self.voicebutton1 = ttk.Button(self.labelframeone, image=self.buttonimage, command=lambda: pageutils.playtextsound(factual_content_descriptions[0],'f'),style='Green.TButton')
         self.voicebutton2 = ttk.Button(self.labelframetwo,image=self.buttonimage, command=lambda: pageutils.playtextsound(factual_content_descriptions[1],'m'),style='Green.TButton')
-        self.voicebutton3 = ttk.Button(self.labelframethree, image=self.buttonimage, command=lambda: pageutils.playtextsound(factual_content_descriptions[2],'f','kannada'),style='Green.TButton')
+        self.voicebutton3 = ttk.Button(self.labelframethree, image=self.buttonimage, command=lambda: pageutils.playtextsound(factual_content_descriptions[2],'f'),style='Green.TButton')
 
 
 
         self.add_factual_panel(self.labelframeone,self.factual_term_label_one, self.factual_description_label_one,self.canvas_image1, self.voicebutton1,self.factual_image1,0)
         self.old_x, self.old_y = None, None
+
+    def resize_c(self,event):
+        self.canvas_image1.delete("all")
+        self.canvas_image2.delete("all")
+        self.canvas_image3.delete("all")
+
+        self.image1 = self.image1.resize(
+            (int(self.winfo_width()/2)-100, int(self.winfo_height()/2)-100), Image.ANTIALIAS)
+        self.image2 = self.image2.resize(
+            (int(self.winfo_width() / 2)-100, int(self.winfo_height() / 2)-100), Image.ANTIALIAS)
+        self.image3 = self.image3.resize(
+            (int(self.winfo_width() / 2)-100, int(self.winfo_height() / 2)-100), Image.ANTIALIAS)
+
+        self.fimage1_display = ImageTk.PhotoImage(self.image1)
+        self.fimage2_display = ImageTk.PhotoImage(self.image2)
+        self.fimage3_display = ImageTk.PhotoImage(self.image3)
+
+        self.canvas_image1.configure(width=int(self.winfo_width()/2),height= int(self.winfo_height()/2))
+        self.canvas_image2.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 2))
+        self.canvas_image3.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 2))
+
+        self.image1_id = self.canvas_image1.create_image(0, 0, image=self.fimage1_display, anchor=tk.NW)
+        self.image2_id = self.canvas_image2.create_image(0, 0, image=self.fimage2_display, anchor=tk.NW)
+        self.image3_id = self.canvas_image3.create_image(0, 0, image=self.fimage3_display, anchor=tk.NW)
+
 
 
     def save_image_window(self,canvas,factualterm):
@@ -136,7 +150,8 @@ class MagicFactualPage(tk.Frame):
             subprocess.call([opener, image])
 
     def add_factual_panel(self,labelframe,label, description, canvas, button,image,index):
-        labelframe.grid_propagate(False)
+        #labelframe.grid_rowconfigure(3,weight=1)
+        #labelframe.grid_columnconfigure(0, weight=1)
 
         labelframe.grid(row=0, column=0, padx=60, pady=0)
         self.image_frame = tk.Frame(labelframe)
@@ -148,19 +163,19 @@ class MagicFactualPage(tk.Frame):
                                             command=lambda: self.save_image_window(canvas,label.cget("text")),style='Green.TButton')
         self.labeltext=label.cget("text")
         self.desctext=description.cget("text")
-        self.image_zoom_button = ttk.Button(self.image_frame, text="Zoom Text",
+        self.text_zoom_button = ttk.Button(self.image_frame, text="Zoom Text",
                                             command=lambda: self.show_text_window(self.labeltext, self.desctext),
                                             style='Green.TButton')
 
-        self.image_zoom_button.grid(row=0, column=1, padx=10)
+        self.text_zoom_button.grid(row=0, column=1, padx=10)
         self.new_window_image_button.grid(row=0,column=0,padx=10)
         self.image_save_button.grid(row=0,column=2,padx=10)
 
 
-        label.grid(row=0,column=1,sticky=tk.NSEW)
-        description.grid(row=1, padx=10, column=1,sticky=tk.NSEW)
+        label.grid(row=0,column=0,columnspan =2,sticky=tk.W)
+        description.grid(row=1, padx=10, column=0,columnspan=3,sticky=tk.W)
         self.image_frame.grid(row=2,column=0,columnspan=3,sticky=tk.NSEW)
-        canvas.grid(row=3, column=0, columnspan=3, padx=150, pady=5, sticky=tk.NSEW)
+        canvas.grid(row=3, rowspan=3,column=0, columnspan=3, padx=150, pady=5, sticky=tk.NSEW)
         button.grid(row=4, column=0, padx = 5,sticky=tk.W)
         if index == 0 or index == 1:
             self.nextfactbutton = ttk.Button(self,text="Next One !", command =lambda: self.nextfact(index),style='Green.TButton')

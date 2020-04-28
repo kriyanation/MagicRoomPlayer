@@ -29,6 +29,7 @@ class MagicExperimentPage(tk.Frame):
         super().__init__(parent, *args, **kwargs)
         #self.config({'bg':'blue'})
         self.configure(background='dark slate gray')
+        self.parent = parent
         s = ttk.Style(self)
         s.configure('Red.TLabelframe', background='dark slate gray')
         s.configure('Red.TLabelframe.Label', font=('courier', 12, 'bold', 'italic'))
@@ -39,26 +40,37 @@ class MagicExperimentPage(tk.Frame):
         s.configure('Horizontal.Green.TScale', background='dark slate gray', foreground='PeachPuff2')
         s.map('Green.TButton', background=[('active', '!disabled', 'dark olive green'), ('pressed', 'PeachPuff2')],
               foreground=[('pressed', 'PeachPuff2'), ('active', 'PeachPuff2')])
+        self.rowconfigure(0,weight=1)
+        self.columnconfigure(0, weight=1)
+        self.bind("<Configure>",self.resize_c)
         self.image_list = []
         self.image_canvas_list = []
         self.experiment_content_list = Data_Flow.get_experiment_content()
         self.experiment_content_terms = self.experiment_content_list[0]
-        print(self.experiment_content_terms)
+
         self.experiment_content_images = self.experiment_content_list[1]
-        print(self.experiment_content_images)
-        self.labelframeone = ttk.Labelframe(self, width = parent.screen_width/1.9, height = parent.screen_height/2.1, text="Let us do this !", relief=tk.RIDGE,style='Red.TLabelframe')
-        self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/1.9, height = parent.screen_height/3.6,text="Step by Step we can change the world !", relief=tk.RIDGE,style='Red.TLabelframe')
-        self.canvas_experiment = tk.Canvas(self.labelframeone,
-                                       width=parent.screen_width/2.2,
-                                       height=parent.screen_height/2.6,bg="white")
-        self.labelframeone.grid_propagate(False)
-        self.labelframetwo.grid_propagate(False)
+
+        self.labelframeone = ttk.Labelframe(self, text="Let us do this !", relief=tk.RIDGE,style='Red.TLabelframe')
+        self.labelframeone.grid_rowconfigure(1,weight=1)
+
+        self.labelframetwo = ttk.Labelframe(self, text="Step by Step we can change the world !", relief=tk.RIDGE,style='Red.TLabelframe')
+       # self.canvas_experiment = tk.Canvas(self.labelframeone,bg="white",width=parent.winfo_width()/1.5,height=parent.winfo_height()/1.5)
+
+        self.canvas_experiment = tk.Canvas(self.labelframeone, bg="white")
+
+
         self.labelframeone.grid(row=0, pady=5, padx = 20)
         self.labelframetwo.grid(row=1, pady= 5, padx = 20)
         self.sound_flag = True
 
         self.fill_steps_frame(parent.screen_width,parent.screen_height)
         self.fill_canvas_frame(parent.screen_width,parent.screen_height)
+
+    def resize_c(self,event):
+        print("frame resized"+str(self.winfo_width()))
+
+        self.canvas_experiment.configure(width=self.winfo_width()/1.2 ,
+                                    height=self.winfo_height() / 2)
 
 
     def save_image_window(self,canvas,factualterm):
@@ -76,7 +88,7 @@ class MagicExperimentPage(tk.Frame):
          self.index = 1
          self.step_one_label = ttk.Label(self.labelframetwo, text="Step 1", foreground='ivory2',
                                          font=("TkCaptionFont", 14), background='dark slate gray')
-         self.step_one_desc_label = ttk.Label(self.labelframetwo, text = self.experiment_content_terms[0],foreground = 'PeachPuff2', font=("TkCaptionFont", 12,font.ITALIC),background='dark slate gray')
+         self.step_one_desc_label = ttk.Label(self.labelframetwo, text = self.experiment_content_terms[0],foreground = 'PeachPuff2',wraplength=450, font=("TkCaptionFont", 12,font.ITALIC),background='dark slate gray')
 
          self.stepbutton = ttk.Button(self.labelframetwo, text= "Next Step",style='Green.TButton')
          self.step_one_label.grid(row=1, column=0)
@@ -84,7 +96,7 @@ class MagicExperimentPage(tk.Frame):
          self.stepbutton.grid(row=0, column = 0, sticky=tk.NW)
 
          imagefile = self.experiment_content_images[0]
-         imageid = self.draw_image(imagefile, width/2.4, height/3.2)
+         imageid = self.draw_image(imagefile, 100, 100)
          self.audiobutton = ttk.Button(self.labelframetwo, text="Voice-On", style='Green.TButton',command= self.play_step_audio)
 
          self.audiooffbutton = ttk.Button(self.labelframetwo, text="Voice-Off", style='Green.TButton',
@@ -118,20 +130,20 @@ class MagicExperimentPage(tk.Frame):
         self.labelframeone.after(50,lambda: self.move_animate(canvas,imageid,finalx,finaly))
     def fill_canvas_frame(self,width,height):
         self.image_button = ttk.Button(self.labelframeone, text='Add Image', command=self.use_image,style='Green.TButton')
-        self.image_button.grid(row=0, column=0)
+        self.image_button.grid(row=0, column=0,padx=5)
 
         self.image_act_button = ttk.Button(self.labelframeone, text='Move Image', command=self.use_image_act,style='Green.TButton')
-        self.image_act_button.grid(row=0, column=1)
+        self.image_act_button.grid(row=0, column=1,padx=5)
 
         self.pen_button = ttk.Button(self.labelframeone, text='Pen', command=self.use_pen,style='Green.TButton')
-        self.pen_button.grid(row=0, column=2)
+        self.pen_button.grid(row=0, column=2,padx=5)
 
 
         self.color_button = ttk.Button(self.labelframeone, text='Color', command=self.choose_color,style='Green.TButton')
-        self.color_button.grid(row=0, column=3)
+        self.color_button.grid(row=0, column=3,padx=5)
 
         self.eraser_button = ttk.Button(self.labelframeone, text='Eraser', command=self.use_eraser,style='Green.TButton')
-        self.eraser_button.grid(row=0, column=4)
+        self.eraser_button.grid(row=0, column=4,padx=5)
         device = config.get("section1", 'device_type')
         self.choose_size_button = tk.Scale(self.labelframeone, orient=tk.HORIZONTAL, from_=1, to=10,
                                            background='dark slate gray', foreground='PeachPuff2')
@@ -142,9 +154,8 @@ class MagicExperimentPage(tk.Frame):
                                             style='Green.TButton')
 
         if (device == 'laptop'):
-             self.choose_size_button.grid(row=0, column=5)
+             self.choose_size_button.grid(row=0, column=5,padx=5)
              self.clear_button.grid(row=0, column=6)
-
 
         self.canvas_experiment.grid(row=1, pady=5, padx=20, columnspan = 7)
         self.image_save_button.grid(row=1,column=8,sticky=tk.N)
@@ -160,14 +171,14 @@ class MagicExperimentPage(tk.Frame):
         img = filedialog.askopenfilename(initialdir=imageroot, title="Select image file",
                                          filetypes=(
                                              ("jpeg files", "*.jpg"), ("png files", "*.png"), ("gif files", "*.gif")))
-        self.draw_image(img,self.winfo_width()/3,self.winfo_height()/3)
+        self.draw_image(img,self.canvas_experiment.winfo_width()-100,self.canvas_experiment.winfo_height()-100)
 
         self.move_flag = False
     def draw_image(self, imagefile,xpos, ypos):
       try:
             image1 = Image.open(imagefile)
 
-            image1.thumbnail((100, 100))
+            image1.thumbnail((200, 200))
             fimage1_display = ImageTk.PhotoImage(image1)
             self.image_list.append(fimage1_display)
             image1_id = self.canvas_experiment.create_image(xpos, ypos, image=self.image_list[len(self.image_list) - 1],
@@ -305,8 +316,8 @@ class MagicExperimentPage(tk.Frame):
             self.step_labels.append(label)
             self.step_descriptions.append(desc_label)
             imagefile = self.experiment_content_images[self.index]
-            imageid = self.draw_image(imagefile,50, 50)
-            self.move_animate(self.canvas_experiment, imageid, width/2.4, height/3.2)
+            imageid = self.draw_image(imagefile,100, 100)
+            self.move_animate(self.canvas_experiment, imageid, self.canvas_experiment.winfo_width()-100,self.canvas_experiment.winfo_height()-100)
             self.move_flag = False
             if self.sound_flag:
                  pageutils.playtextsound(self.experiment_content_terms[self.index])
