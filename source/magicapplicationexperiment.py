@@ -22,7 +22,7 @@ config = configparser.RawConfigParser()
 two_up = Path(__file__).parents[2]
 print(str(two_up)+'/magic.cfg')
 db=config.read(str(two_up)+'/magic.cfg')
-imageroot = config.get("section1",'image_root')
+imageroot = Data_Flow.imageroot
 
 class MagicExperimentPage(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -77,7 +77,7 @@ class MagicExperimentPage(tk.Frame):
         # subprocess.run([title_image], check=False)
         canvas.postscript(file='apply_image'+str(factualterm)+".eps")
         image = Image.open('apply_image'+str(factualterm)+".eps")
-        image.save(imageroot+'saved_images/apply_image'+str(factualterm)+'.png','png')
+        image.save(Data_Flow.saved_canvas+os.path.sep+'saved_images_apply_image'+str(factualterm)+'.png','png')
         image.close()
         os.remove('apply_image'+str(factualterm)+".eps")
         messagebox.showinfo("Information","Image saved under saved_images folder")
@@ -317,8 +317,9 @@ class MagicExperimentPage(tk.Frame):
             self.step_descriptions.append(desc_label)
             imagefile = self.experiment_content_images[self.index]
             imageid = self.draw_image(imagefile,100, 100)
-            self.move_animate(self.canvas_experiment, imageid, self.canvas_experiment.winfo_width()-100,self.canvas_experiment.winfo_height()-100)
-            self.move_flag = False
+            if imageid != None:
+                self.move_animate(self.canvas_experiment, imageid, self.canvas_experiment.winfo_width()-100,self.canvas_experiment.winfo_height()-100)
+                self.move_flag = False
             if self.sound_flag:
                  pageutils.playtextsound(self.experiment_content_terms[self.index])
 

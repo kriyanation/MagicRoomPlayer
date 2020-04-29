@@ -16,7 +16,7 @@ config = configparser.RawConfigParser()
 two_up = Path(__file__).resolve().parents[2]
 print(str(two_up)+'/magic.cfg')
 config.read(str(two_up)+'/magic.cfg')
-imageroot = config.get("section1",'image_root')
+imageroot = Data_Flow.imageroot
 
 
 class MagicTitlePage(tk.Frame):
@@ -128,7 +128,7 @@ class MagicTitlePage(tk.Frame):
         # subprocess.run([title_image], check=False)
         self.canvas.postscript(file='title_image'+self.title_text+".eps")
         image = Image.open('title_image'+self.title_text+".eps")
-        image.save(imageroot+'saved_images/title_image'+self.title_text+'.png','png')
+        image.save(Data_Flow.saved_canvas+os.path.sep+"title_image"+self.title_text+'.png','png')
         image.close()
         os.remove('title_image'+self.title_text+".eps")
         messagebox.showinfo("Information","Image saved under saved_images folder")

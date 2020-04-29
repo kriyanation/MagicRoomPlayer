@@ -23,7 +23,7 @@ config = configparser.RawConfigParser()
 two_up = Path(__file__).resolve().parents[2]
 print(str(two_up)+'/magic.cfg')
 config.read(str(two_up)+'/magic.cfg')
-imageroot = config.get("section1",'image_root')
+imageroot = Data_Flow.imageroot
 
 class MagicIndenpendentPractice(tk.Frame):
     def __init__(self, parent, *args, **kwargs):

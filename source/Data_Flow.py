@@ -1,4 +1,4 @@
-import sqlite3
+import sqlite3, os
 import random, sys
 import configparser
 from pathlib import Path
@@ -7,17 +7,20 @@ TEST_ROW = 5
 
 config = configparser.RawConfigParser()
 two_up = Path(__file__).parents[2]
+imageroot = ""
+videoroot = ""
+
+
 print(str(two_up)+'/magic.cfg')
 try:
     config.read(str(two_up)+'/magic.cfg')
-    db = config.get("section1",'dataroot')
-    imageroot = config.get("section1",'image_root')
-    videoroot = config.get("section1",'video_root')
+    db = config.get("section1",'file_root')+os.path.sep+'MagicRoom.db'
+    file_root = config.get("section1",'file_root')
 except configparser.NoSectionError:
     messagebox.showerror("Configuration Error", "No Section found or Configuration File Missing")
     sys.exit()
 
-
+saved_canvas = ""
 
 def get_Title():
  try:

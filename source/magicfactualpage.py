@@ -17,7 +17,7 @@ config = configparser.RawConfigParser()
 two_up = Path(__file__).resolve().parents[2]
 print(str(two_up)+'/magic.cfg')
 db=config.read(str(two_up)+'/magic.cfg')
-imageroot = config.get("section1",'image_root')
+imageroot = Data_Flow.imageroot
 class MagicFactualPage(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
@@ -102,33 +102,32 @@ class MagicFactualPage(tk.Frame):
         self.voicebutton3 = ttk.Button(self.labelframethree, image=self.buttonimage, command=lambda: pageutils.playtextsound(factual_content_descriptions[2],'f'),style='Green.TButton')
 
 
-
-        self.add_factual_panel(self.labelframeone,self.factual_term_label_one, self.factual_description_label_one,self.canvas_image1, self.voicebutton1,self.factual_image1,0)
+        self.factual_index = 0
+        self.add_factual_panel(self.labelframeone,self.factual_term_label_one, self.factual_description_label_one,self.canvas_image1, self.voicebutton1,self.factual_image1,self.factual_index)
         self.old_x, self.old_y = None, None
 
     def resize_c(self,event):
         self.canvas_image1.delete("all")
         self.canvas_image2.delete("all")
         self.canvas_image3.delete("all")
-
-        self.image1 = self.image1.resize(
-            (int(self.winfo_width()/2)-100, int(self.winfo_height()/2)-100), Image.ANTIALIAS)
-        self.image2 = self.image2.resize(
+        if self.factual_index == 0:
+            self.image1 = self.image1.resize(
+              (int(self.winfo_width()/2)-100, int(self.winfo_height()/2)-100), Image.ANTIALIAS)
+            self.fimage1_display = ImageTk.PhotoImage(self.image1)
+            self.canvas_image1.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 2))
+            self.image1_id = self.canvas_image1.create_image(0, 0, image=self.fimage1_display, anchor=tk.NW)
+        elif self.factual_index == 1:
+            self.image2 = self.image2.resize(
             (int(self.winfo_width() / 2)-100, int(self.winfo_height() / 2)-100), Image.ANTIALIAS)
-        self.image3 = self.image3.resize(
+            self.fimage2_display = ImageTk.PhotoImage(self.image2)
+            self.canvas_image2.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 2))
+            self.image2_id = self.canvas_image2.create_image(0, 0, image=self.fimage2_display, anchor=tk.NW)
+        else:
+            self.image3 = self.image3.resize(
             (int(self.winfo_width() / 2)-100, int(self.winfo_height() / 2)-100), Image.ANTIALIAS)
-
-        self.fimage1_display = ImageTk.PhotoImage(self.image1)
-        self.fimage2_display = ImageTk.PhotoImage(self.image2)
-        self.fimage3_display = ImageTk.PhotoImage(self.image3)
-
-        self.canvas_image1.configure(width=int(self.winfo_width()/2),height= int(self.winfo_height()/2))
-        self.canvas_image2.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 2))
-        self.canvas_image3.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 2))
-
-        self.image1_id = self.canvas_image1.create_image(0, 0, image=self.fimage1_display, anchor=tk.NW)
-        self.image2_id = self.canvas_image2.create_image(0, 0, image=self.fimage2_display, anchor=tk.NW)
-        self.image3_id = self.canvas_image3.create_image(0, 0, image=self.fimage3_display, anchor=tk.NW)
+            self.fimage3_display = ImageTk.PhotoImage(self.image3)
+            self.canvas_image3.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 2))
+            self.image3_id = self.canvas_image3.create_image(0, 0, image=self.fimage3_display, anchor=tk.NW)
 
 
 
@@ -136,7 +135,7 @@ class MagicFactualPage(tk.Frame):
         # subprocess.run([title_image], check=False)
         canvas.postscript(file='fact_image'+factualterm+".eps")
         image = Image.open('fact_image'+factualterm+".eps")
-        image.save(imageroot+'saved_images/fact_image'+factualterm+'.png','png')
+        image.save(Data_Flow.saved_canvas+os.path.sep+"saved_images_fact_image"+factualterm+'.png','png')
         image.close()
         os.remove('fact_image'+factualterm+".eps")
         messagebox.showinfo("Information","Image saved under saved_images folder")
@@ -175,6 +174,7 @@ class MagicFactualPage(tk.Frame):
         label.grid(row=0,column=0,columnspan =2,sticky=tk.W)
         description.grid(row=1, padx=10, column=0,columnspan=3,sticky=tk.W)
         self.image_frame.grid(row=2,column=0,columnspan=3,sticky=tk.NSEW)
+        self.event_generate("<Configure>")
         canvas.grid(row=3, rowspan=3,column=0, columnspan=3, padx=150, pady=5, sticky=tk.NSEW)
         button.grid(row=4, column=0, padx = 5,sticky=tk.W)
         if index == 0 or index == 1:
@@ -183,17 +183,20 @@ class MagicFactualPage(tk.Frame):
 
     def nextfact(self, index):
         if index == 0:
+            self.factual_index = 1
             self.labelframeone.grid_forget()
             self.nextfactbutton.grid_forget()
             self.add_factual_panel(self.labelframetwo, self.factual_term_label_two, self.factual_description_label_two,
                                    self.canvas_image2,
                                    self.voicebutton2, self.factual_image2,1)
         elif index == 1:
+            self.factual_index = 2
             self.labelframetwo.grid_forget()
             self.nextfactbutton.grid_forget()
             self.add_factual_panel(self.labelframethree, self.factual_term_label_three,
                                    self.factual_description_label_three, self.canvas_image3,
                                    self.voicebutton3, self.factual_image3,2)
+
         else:
             self.nextfactbutton.grid_forget()
 

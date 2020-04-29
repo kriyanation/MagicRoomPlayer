@@ -1,4 +1,4 @@
-import multiprocessing
+import multiprocessing,os
 import tkinter as tk
 from tkinter import ttk
 import magicleaderboard, magictitlepage, magicapplicationexperiment,magicapplicationvideo,magicindependentpractice
@@ -26,7 +26,9 @@ class MagicApplication(tk.Tk):
         self.wait_window(app)
         print(self.selected_lessons)
         Data_Flow.TEST_ROW=self.selected_lessons[0]
-
+        Data_Flow.imageroot = Data_Flow.file_root+os.path.sep+"Lessons"+os.path.sep+"Lesson"+str(Data_Flow.TEST_ROW)+os.path.sep+"images"+os.path.sep
+        Data_Flow.videoroot = Data_Flow.file_root + os.path.sep + "Lessons"+os.path.sep+"Lesson" + str(Data_Flow.TEST_ROW)+os.path.sep+ "videos" + os.path.sep
+        Data_Flow.saved_canvas = Data_Flow.file_root + os.path.sep +"Lessons"+os.path.sep+"Lesson" + str(Data_Flow.TEST_ROW) +os.path.sep+ "saved_boards" + os.path.sep
 
         self.page_index = 0
         self.resizable(width= True, height= True)
