@@ -4,7 +4,8 @@ import Data_Flow
 class MagicLeaderBoard(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
-        self.configure(background='dark slate gray')
+        self.parent=parent
+        self.configure(background='dark slate gray',borderwidth=0)
         s = ttk.Style(self)
         s.configure('Red.TLabelframe', background='dark slate gray')
         s.configure('Red.TLabelframe.Label', font=('courier', 12, 'bold','italic'))
@@ -20,23 +21,24 @@ class MagicLeaderBoard(tk.Frame):
               foreground=[('active', 'PeachPuff2'), ('disabled', 'dark slate gray')])
 
        # self.leaderboard = ttk.LabelFrame(self, text = "Class Leaderboard", width=parent.screen_width/4, height=parent.screen_height,borderwidth=8,relief=tk.GROOVE,style='Red.TLabelframe')
-        self.c_canvas = tk.Canvas(self, background='dark slate gray')
+        self.c_canvas = tk.Canvas(self, background='dark slate gray',borderwidth=0,highlightthickness=0)
 
         self.c_canvas.grid(row=0, column=0)
         self.leaderboard = tk.Frame(self.c_canvas,
-                                           borderwidth=2,
+                                           borderwidth=0,
                                           background='dark slate gray')
         self.dataframe= tk.Frame(self.leaderboard)
         self.dataframe.configure(background='dark slate gray')
-        self.refreshbutton = ttk.Button(self.dataframe,text="Refresh",style='Green.TButton',command=self.refresh_data,cursor="arrow")
-        self.savebutton = ttk.Button(self.dataframe,text="Save",style='Green.TButton',command=self.save_data,cursor="arrow")
-        self.dataframe.grid(row=0,column=0,columnspan=3)
-        self.refreshbutton.grid(row=0,column=0)
-        self.savebutton.grid(row=0,column=1,padx=5)
+        self.saveimage = tk.PhotoImage(file="../images/floppy.png")
+       # self.refreshbutton = ttk.Button(self.dataframe,text="Refresh",style='Green.TButton',command=self.refresh_data,cursor="arrow")
+        self.savebutton = ttk.Button(self.dataframe,text="Save",image = self.saveimage, style='Green.TButton',command=self.save_data,cursor="arrow")
+        self.dataframe.grid(row=0,column=3,sticky=tk.E)
+        #self.refreshbutton.grid(row=0,column=0)
+        self.savebutton.grid(row=0,column=3,padx=5,sticky=tk.W)
 
         self.scrollbar = ttk.Scrollbar(self)
         self.c_canvas.config(yscrollcommand=self.scrollbar.set)
-        self.c_canvas.create_window((0, 0), window=self.leaderboard, anchor='nw')
+        self.c_canvas.create_window((0, 0), window=self.leaderboard,anchor='nw')
         self.leaderboard.bind("<Configure>", self.c_function)
         self.scrollbar.grid(row=0,column=3,sticky="nsew")
 
@@ -44,15 +46,15 @@ class MagicLeaderBoard(tk.Frame):
         #self.leaderboard.grid(row=0, column=0, sticky=tk.W + tk.E)
         self.headernamelabel = ttk.Label(self.leaderboard, text="Name", font = ('TkDefaultFont', 16),background='dark slate gray', foreground = 'PeachPuff2')
         self.headerbadgelabel = ttk.Label(self.leaderboard, text="Badge", font=('TkDefaultFont', 16),background='dark slate gray', foreground='PeachPuff2')
-        self.headerpointslabel = ttk.Label(self.leaderboard, text="Points", font=('TkDefaultFont', 16),background='dark slate gray', foreground='PeachPuff2',)
+        self.headerpointslabel = ttk.Label(self.leaderboard, text="Points",font=('TkDefaultFont', 16),background='dark slate gray', foreground='PeachPuff2',)
 
-        self.headernamelabel.grid(row=1, column=0, padx=10, pady=2)
-        self.headerbadgelabel.grid(row=1, column=1,padx=10, pady=2)
-        self.headerpointslabel.grid(row=1, column=2, pady=2)
+        self.headernamelabel.grid(row=0, column=0, padx=0, pady=2)
+        self.headerbadgelabel.grid(row=0, column=1,padx=10, pady=2)
+        self.headerpointslabel.grid(row=0, column=2, pady=2)
         self.refresh_data()
 
     def c_function(self, event):
-        self.c_canvas.configure(scrollregion=self.c_canvas.bbox("all"))
+        self.c_canvas.configure(scrollregion=self.c_canvas.bbox("all"),borderwidth=0,height=self.parent.winfo_height()-300)
 
     def refresh_data(self):
 
@@ -94,6 +96,7 @@ class MagicLeaderBoard(tk.Frame):
 
     def save_data(self):
         Data_Flow.save_leader_board_data(self.list_points)
+        self.refresh_data()
 
 
 

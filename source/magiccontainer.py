@@ -2,8 +2,8 @@ import multiprocessing,os
 import tkinter as tk
 from tkinter import ttk
 import magicleaderboard, magictitlepage, magicapplicationexperiment,magicapplicationvideo,magicindependentpractice
-
 import Data_Flow, LessonList
+from sources import Timer_Display
 
 import magicfactualpage
 
@@ -15,8 +15,19 @@ class MagicApplication(tk.Tk):
 
         self.title("Learning Room")
         self.configure(background='dark slate gray')
-        self.lbbutton_hide = ttk.Button(text="Show/Hide LeaderBoard", command=self.show_hide_leader_board,
+        self.headerimage = tk.PhotoImage(file="../images/learning.png")
+        ttk.Label(self, text="Learning Room", image=self.headerimage, compound=tk.RIGHT, background='dark slate gray',
+                  font=("courier", 18, 'bold'), foreground='PeachPuff2').pack(side=tk.TOP)
+
+        self.tool_frame = tk.Frame(self, background="dark slate gray")
+        self.lbbutton_hide = ttk.Button(self.tool_frame,text="Show/Hide LeaderBoard", command=self.show_hide_leader_board,
                                         style='Green.TButton')
+        self.timer_button = ttk.Button(self.tool_frame,text="Timer", command=self.launch_timer,
+                                        style='Green.TButton')
+
+        self.tool_frame.pack(side=tk.TOP, anchor=tk.NE, pady=5, padx=5)
+        self.lbbutton_hide.pack(side=tk.RIGHT, anchor=tk.NE, pady=5,padx=5)
+        self.timer_button.pack(side=tk.RIGHT, anchor=tk.NE, pady=5,padx=5)
         self.show_hide_flag = 1
       #  self.lbbutton_show = ttk.Button(text="Show LeaderBoard", command=self.show_leader_board,
       #                                  style='Green.TButton')
@@ -39,10 +50,8 @@ class MagicApplication(tk.Tk):
         #[('pressed' ,'dark olive green'),('active','white')],foreground=[('pressed','PeachPuff2'),('active', 'PeachPuff2')])
         self.screen_width = self.winfo_screenwidth()
         self.screen_height = self.winfo_screenheight()
-        self.headerimage = tk.PhotoImage(file="../images/learning.png")
-        ttk.Label(self, text="Learning Room", image=self.headerimage, compound=tk.RIGHT, background='dark slate gray',
-                  font=("courier", 18, 'bold'), foreground='PeachPuff2').pack(side=tk.TOP)
-        self.lbbutton_hide.pack(side=tk.TOP, anchor=tk.NE, pady=5)
+
+
         self.show_title_page()
 
         self.bframe = tk.Frame(self,background="dark slate gray")
@@ -63,6 +72,21 @@ class MagicApplication(tk.Tk):
 
 
 
+    def  launch_timer(self):
+        win = tk.Toplevel()
+        win.wm_title("Timer")
+        win.wm_geometry('250x250+20+20')
+        win.resizable(False,False)
+        win.configure(background='dark slate gray')
+        win.attributes('-topmost', 'true')
+        self.timer_control = Timer_Display.TimerDisplay(win)
+        self.timer_control.rowconfigure(0,weight=1)
+        self.timer_control.columnconfigure(0, weight=1)
+        self.timer_control.grid(row=0, column=0,sticky=tk.NSEW,padx=8)
+
+        b = ttk.Button(win, text="Close", style='Blue.TButton', command=win.destroy)
+        b.grid(row=1, column=0)
+
     def show_title_page(self):
         if self.page_index == 1:
             self.factual_page.forget()
@@ -74,7 +98,7 @@ class MagicApplication(tk.Tk):
         print(str(self.screen_width) + ',' + str(self.screen_height))
        # self.pack_propagate(False)
 
-        self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
+        self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self,borderwidth=0)
         if self.page_index == 1:
             self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
             if self.show_hide_flag == 1:
@@ -180,7 +204,9 @@ class MagicApplication(tk.Tk):
         self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
         self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
         if self.show_hide_flag == 1:
-            self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
+          #self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
+          pass
+        self.show_hide_flag = 0
         self.application_experiment_page.pack(side=tk.LEFT, fill=tk.BOTH, expand=tk.TRUE, anchor=tk.N)
 
     def show_factual_page(self,ap_mode):

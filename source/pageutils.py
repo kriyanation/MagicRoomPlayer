@@ -7,8 +7,7 @@ except ImportError:
     print("pypiwin32 not available")
 
 import shutil,os
-import subprocess
-import tkinter as tk
+
 
 _isLinux = sys.platform.startswith('linux')
 def animate_text(frame, text, counter, textwidget, counter_max):

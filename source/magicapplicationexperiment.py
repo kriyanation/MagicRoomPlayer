@@ -1,7 +1,7 @@
 import os
 import tkinter as tk
 import random
-from tkinter import ttk, font, filedialog, messagebox
+from tkinter import ttk, font, filedialog, messagebox, simpledialog
 import Data_Flow, configparser
 from pathlib import Path
 
@@ -57,20 +57,35 @@ class MagicExperimentPage(tk.Frame):
        # self.canvas_experiment = tk.Canvas(self.labelframeone,bg="white",width=parent.winfo_width()/1.5,height=parent.winfo_height()/1.5)
 
         self.canvas_experiment = tk.Canvas(self.labelframeone, bg="white")
+        self.popup_menu = tk.Menu(self.canvas_experiment, background='dark slate gray', foreground='peachpuff2')
+        self.popup_menu.add_command(label="Text")
+        self.popup_menu.add_command(label="Move Down")
+        self.popup_menu.add_command(label="Move Right")
+        self.popup_menu.add_command(label="Zoom")
+        self.canvas_experiment.bind('<Button-3>', self.show_popup_menu)
 
 
-        self.labelframeone.grid(row=0, pady=5, padx = 20)
-        self.labelframetwo.grid(row=1, pady= 5, padx = 20)
+        self.labelframeone.grid(row=0,column=0, pady=5, padx = 20)
+        self.labelframetwo.grid(row=0,column=1, pady= 5, padx = 20,sticky=tk.N)
         self.sound_flag = True
 
         self.fill_steps_frame(parent.screen_width,parent.screen_height)
         self.fill_canvas_frame(parent.screen_width,parent.screen_height)
 
+    def show_popup_menu(self, event):
+        self.popup_menu.tk_popup(event.x_root, event.y_root)
+        self.popup_menu.entryconfig("Move Down",command=lambda:self.move_vertical(event))
+        self.popup_menu.entryconfig("Move Right", command=lambda: self.move_horizontal(event))
+        self.popup_menu.entryconfig("Zoom", command=lambda: self.paint_text(event, self.canvas_experiment))
+    def paint_text(self, event,canvas):
+        answer = simpledialog.askstring("Text to add", "Add text to the location",
+                                        parent=self.parent)
+        canvas.create_text(event.x, event.y, font=("comic sans", 15, "bold"), text=answer, fill=self.color)
     def resize_c(self,event):
         print("frame resized"+str(self.winfo_width()))
 
-        self.canvas_experiment.configure(width=self.winfo_width()/1.2 ,
-                                    height=self.winfo_height() / 2)
+        self.canvas_experiment.configure(width=self.winfo_width()/1.5 ,
+                                    height=self.winfo_height() / 1.2)
 
 
     def save_image_window(self,canvas,factualterm):
@@ -88,11 +103,11 @@ class MagicExperimentPage(tk.Frame):
          self.index = 1
          self.step_one_label = ttk.Label(self.labelframetwo, text="Step 1", foreground='ivory2',
                                          font=("TkCaptionFont", 14), background='dark slate gray')
-         self.step_one_desc_label = ttk.Label(self.labelframetwo, text = self.experiment_content_terms[0],foreground = 'PeachPuff2',wraplength=450, font=("TkCaptionFont", 12,font.ITALIC),background='dark slate gray')
+         self.step_one_desc_label = ttk.Label(self.labelframetwo, text = self.experiment_content_terms[0],foreground = 'PeachPuff2',wraplength=250, font=("TkCaptionFont", 12,font.ITALIC),background='dark slate gray')
 
          self.stepbutton = ttk.Button(self.labelframetwo, text= "Next Step",style='Green.TButton')
          self.step_one_label.grid(row=1, column=0)
-         self.step_one_desc_label.grid(row=1, column=1,columnspan=2,sticky=tk.W, padx = 50)
+         self.step_one_desc_label.grid(row=1, column=1,sticky=tk.W,columnspan=2, padx = 50)
          self.stepbutton.grid(row=0, column = 0, sticky=tk.NW)
 
          imagefile = self.experiment_content_images[0]
@@ -102,7 +117,7 @@ class MagicExperimentPage(tk.Frame):
          self.audiooffbutton = ttk.Button(self.labelframetwo, text="Voice-Off", style='Green.TButton',
                                   command= self.stop_step_audio)
          self.audiobutton.grid(row =0,padx = 20,column=1,sticky=tk.NW)
-         self.audiooffbutton.grid(row=0, column=3, sticky=tk.NW)
+         self.audiooffbutton.grid(row=0, column=2, sticky=tk.NW)
 
          self.stepbutton.configure(command=lambda: self.addnewstep(width, height))
 
@@ -128,6 +143,7 @@ class MagicExperimentPage(tk.Frame):
         if x >= finalx and y >= finaly:
             return
         self.labelframeone.after(50,lambda: self.move_animate(canvas,imageid,finalx,finaly))
+
     def fill_canvas_frame(self,width,height):
         self.image_button = ttk.Button(self.labelframeone, text='Add Image', command=self.use_image,style='Green.TButton')
         self.image_button.grid(row=0, column=0,padx=5)
@@ -174,6 +190,7 @@ class MagicExperimentPage(tk.Frame):
         self.draw_image(img,self.canvas_experiment.winfo_width()-100,self.canvas_experiment.winfo_height()-100)
 
         self.move_flag = False
+
     def draw_image(self, imagefile,xpos, ypos):
       try:
             image1 = Image.open(imagefile)
@@ -204,6 +221,16 @@ class MagicExperimentPage(tk.Frame):
         for image in self.image_canvas_list:
             self.canvas_experiment.tag_bind(image, "<Button1-Motion>", self.move)
             self.canvas_experiment.tag_bind(image, "<ButtonRelease-1>", self.release)
+
+    def move_horizontal(self,event):
+        item = self.canvas_experiment.find_closest(event.x, event.y)
+        if 'D' in self.canvas_experiment.gettags(item):
+            self.canvas_experiment.move(item,300,0)
+    def move_vertical(self,event):
+        item = self.canvas_experiment.find_closest(event.x, event.y)
+        if 'D' in self.canvas_experiment.gettags(item):
+            self.canvas_experiment.move(item,0,300)
+
 
     def move(self, event):
         print("move")
@@ -309,10 +336,10 @@ class MagicExperimentPage(tk.Frame):
         if self.index < self.experiment_content_list[2]:
             label = ttk.Label(self.labelframetwo, text="Step "+str(self.index+1), foreground='ivory2',
                                             font=("TkCaptionFont", 14),background='dark slate gray')
-            desc_label = ttk.Label(self.labelframetwo, text=self.experiment_content_terms[self.index],
+            desc_label = ttk.Label(self.labelframetwo, text=self.experiment_content_terms[self.index],wraplength=250,
                                                  foreground='PeachPuff2', font=("TkCaptionFont", 12,font.ITALIC),background='dark slate gray')
             label.grid(row=self.index+1, column=0)
-            desc_label.grid(row=self.index+1, column=1,sticky=tk.W, padx = 50)
+            desc_label.grid(row=self.index+1, column=1,sticky=tk.W,columnspan=2, padx = 50)
             self.step_labels.append(label)
             self.step_descriptions.append(desc_label)
             imagefile = self.experiment_content_images[self.index]

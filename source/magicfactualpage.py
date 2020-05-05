@@ -1,7 +1,7 @@
 import os
 import subprocess
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, simpledialog
 import Data_Flow, configparser
 from pathlib import Path
 
@@ -22,6 +22,7 @@ class MagicFactualPage(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         #self.config({'bg':'blue'})
+        self.parent = parent
         self.configure(background='dark slate gray')
         s = ttk.Style(self)
         s.configure('Red.TLabelframe', background='dark slate gray')
@@ -40,7 +41,9 @@ class MagicFactualPage(tk.Frame):
         factual_content_descriptions = factual_content_list[1]
         print(factual_content_descriptions)
         factual_content_images = factual_content_list[2]
-
+        self.pen_color = 'bisque2'
+        self.buttonnextimage = tk.PhotoImage(file="../images/arrows_next.png")
+        self.buttonbackimage = tk.PhotoImage(file="../images/arrows_back.png")
 
 
         self.labelframeone = ttk.Labelframe(self, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
@@ -50,7 +53,8 @@ class MagicFactualPage(tk.Frame):
         self.factual_term_label_two = ttk.Label(self.labelframetwo,text=factual_content_terms[1], background = 'dark slate gray',foreground = 'ivory2', font=("TkCaptionFont", 18,'bold'))
         self.factual_term_label_three = ttk.Label(self.labelframethree,text=factual_content_terms[2],background = 'dark slate gray', foreground = 'ivory2', font=("TkCaptionFont", 18,'bold'))
 
-        self.factual_description_label_one = ttk.Label(self.labelframeone, text=factual_content_descriptions[0], background='dark slate gray',foreground='PeachPuff2', font=("TkFixedFont",16),wraplength = 600)
+
+        self.factual_description_label_one = ttk.Label(self.labelframeone, text=factual_content_descriptions[0].strip(), background='dark slate gray',foreground='PeachPuff2', font=("TkFixedFont",16),wraplength = 600)
         self.factual_description_label_two = ttk.Label(self.labelframetwo,text=factual_content_descriptions[1],background='dark slate gray', foreground='PeachPuff2', font=("TkFixedFont",16),wraplength = 600)
         self.factual_description_label_three = ttk.Label(self.labelframethree,text=factual_content_descriptions[2], background='dark slate gray', foreground='PeachPuff2', font=("TkFixedFont",16),wraplength = 600)
 
@@ -61,13 +65,28 @@ class MagicFactualPage(tk.Frame):
 
                         bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
                                                          )
+        self.popup_menu_1 = tk.Menu(self.canvas_image1, background='dark slate gray', foreground='peachpuff2')
+        self.popup_menu_1.add_command(label="Dark", command=self.switch_to_dark)
+        self.popup_menu_1.add_command(label="Light", command=self.switch_to_light)
+        self.popup_menu_1.add_command(label="Text")
+        self.canvas_image1.bind('<Button-3>', self.show_popup_menu1)
         self.canvas_image2 = tk.Canvas(self.labelframetwo,
 
                                     bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
                                        )
+        self.popup_menu_2 = tk.Menu(self.canvas_image2, background='dark slate gray', foreground='peachpuff2')
+        self.popup_menu_2.add_command(label="Dark", command=self.switch_to_dark)
+        self.popup_menu_2.add_command(label="Light", command=self.switch_to_light)
+        self.popup_menu_2.add_command(label="Text")
+        self.canvas_image2.bind('<Button-3>', self.show_popup_menu2)
         self.canvas_image3 = tk.Canvas(self.labelframethree,
 
                                    bg='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
+        self.popup_menu_3 = tk.Menu(self.canvas_image3, background='dark slate gray', foreground='peachpuff2')
+        self.popup_menu_3.add_command(label="Dark", command=self.switch_to_dark)
+        self.popup_menu_3.add_command(label="Light", command=self.switch_to_light)
+        self.popup_menu_3.add_command(label="Text")
+        self.canvas_image3.bind('<Button-3>', self.show_popup_menu3)
 
         self.canvas_image1.bind("<B1-Motion>", lambda event, c=self.canvas_image1: self.paint(event,c))
         self.canvas_image1.bind('<ButtonRelease-1>', self.reset)
@@ -106,29 +125,51 @@ class MagicFactualPage(tk.Frame):
         self.add_factual_panel(self.labelframeone,self.factual_term_label_one, self.factual_description_label_one,self.canvas_image1, self.voicebutton1,self.factual_image1,self.factual_index)
         self.old_x, self.old_y = None, None
 
+
+    def paint_text(self,event,canvas):
+        answer = simpledialog.askstring("Text to add", "Add text to the location",
+                                        parent=self.parent)
+        canvas.create_text(event.x,event.y,font=("comic sans", 15, "bold"),text=answer,fill=self.pen_color)
+
+    def show_popup_menu1(self, event):
+        self.popup_menu_1.tk_popup(event.x_root, event.y_root)
+        self.popup_menu_1.entryconfig("Text",command=lambda:self.paint_text(event,self.canvas_image1))
+    def show_popup_menu2(self, event):
+        self.popup_menu_2.tk_popup(event.x_root, event.y_root)
+        self.popup_menu_2.entryconfig("Text",command=lambda:self.paint_text(event,self.canvas_image2))
+    def show_popup_menu3(self, event):
+        self.popup_menu_3.tk_popup(event.x_root, event.y_root)
+        self.popup_menu_3.entryconfig("Text",command=lambda:self.paint_text(event,self.canvas_image3))
+
     def resize_c(self,event):
         self.canvas_image1.delete("all")
         self.canvas_image2.delete("all")
         self.canvas_image3.delete("all")
-        if self.factual_index == 0:
+        if self.factual_index == 0 and self.winfo_width()/2 - 100> 0 and self.winfo_height()/2 -100 > 0:
             self.image1 = self.image1.resize(
-              (int(self.winfo_width()/2)-100, int(self.winfo_height()/2)-100), Image.ANTIALIAS)
+                (int(self.winfo_width()/2)-100, int(self.winfo_height()/2)-100), Image.ANTIALIAS)
             self.fimage1_display = ImageTk.PhotoImage(self.image1)
             self.canvas_image1.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 2))
             self.image1_id = self.canvas_image1.create_image(0, 0, image=self.fimage1_display, anchor=tk.NW)
-        elif self.factual_index == 1:
+        elif self.factual_index == 1 and self.winfo_width()/2 - 100> 0 and self.winfo_height()/2 -100 > 0:
             self.image2 = self.image2.resize(
             (int(self.winfo_width() / 2)-100, int(self.winfo_height() / 2)-100), Image.ANTIALIAS)
             self.fimage2_display = ImageTk.PhotoImage(self.image2)
             self.canvas_image2.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 2))
             self.image2_id = self.canvas_image2.create_image(0, 0, image=self.fimage2_display, anchor=tk.NW)
-        else:
+        elif self.winfo_width()/2 - 100> 0 and self.winfo_height()/2 -100:
             self.image3 = self.image3.resize(
             (int(self.winfo_width() / 2)-100, int(self.winfo_height() / 2)-100), Image.ANTIALIAS)
             self.fimage3_display = ImageTk.PhotoImage(self.image3)
             self.canvas_image3.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 2))
             self.image3_id = self.canvas_image3.create_image(0, 0, image=self.fimage3_display, anchor=tk.NW)
 
+
+    def switch_to_dark(self):
+        self.pen_color = 'gray26'
+
+    def switch_to_light(self):
+        self.pen_color = 'bisque2'
 
 
     def save_image_window(self,canvas,factualterm):
@@ -149,7 +190,7 @@ class MagicFactualPage(tk.Frame):
             subprocess.call([opener, image])
 
     def add_factual_panel(self,labelframe,label, description, canvas, button,image,index):
-        #labelframe.grid_rowconfigure(3,weight=1)
+        labelframe.rowconfigure(0,weight=1)
         #labelframe.grid_columnconfigure(0, weight=1)
 
         labelframe.grid(row=0, column=0, padx=60, pady=0)
@@ -171,34 +212,47 @@ class MagicFactualPage(tk.Frame):
         self.image_save_button.grid(row=0,column=2,padx=10)
 
 
-        label.grid(row=0,column=0,columnspan =2,sticky=tk.W)
-        description.grid(row=1, padx=10, column=0,columnspan=3,sticky=tk.W)
-        self.image_frame.grid(row=2,column=0,columnspan=3,sticky=tk.NSEW)
+
+        self.forward_button = ttk.Button(labelframe, image =self.buttonnextimage,
+                                            command=lambda:self.nextfact(index) ,
+                                            style='Green.TButton')
+        self.backward_button = ttk.Button(labelframe, image = self.buttonbackimage,
+                                            command=lambda:self.move_previous_fact(index) ,
+                                            style='Green.TButton')
+        if (index != 2):
+            self.forward_button.grid(row=4,column=4,sticky=tk.S)
+
+        label.grid(row=0,column=1,columnspan =2,sticky=tk.W)
+        description.grid(row=1, column=1,columnspan=3,sticky=tk.W)
+        self.image_frame.grid(row=2,column=1,columnspan=3,sticky=tk.NSEW)
         self.event_generate("<Configure>")
-        canvas.grid(row=3, rowspan=3,column=0, columnspan=3, padx=150, pady=5, sticky=tk.NSEW)
-        button.grid(row=4, column=0, padx = 5,sticky=tk.W)
-        if index == 0 or index == 1:
-            self.nextfactbutton = ttk.Button(self,text="Next One !", command =lambda: self.nextfact(index),style='Green.TButton')
-            self.nextfactbutton.grid(row = 1, column = 0,pady=10)
+        canvas.grid(row=3, rowspan=3,column=1, columnspan=3, padx=150, pady=5, sticky=tk.NSEW)
+        if (index != 0):
+            self.backward_button.grid(row=4, column=0,sticky=tk.S)
+        #button.grid(row=4, column=0, padx = 5,sticky=tk.W)
+
+
+
 
     def nextfact(self, index):
         if index == 0:
             self.factual_index = 1
             self.labelframeone.grid_forget()
-            self.nextfactbutton.grid_forget()
+
             self.add_factual_panel(self.labelframetwo, self.factual_term_label_two, self.factual_description_label_two,
                                    self.canvas_image2,
                                    self.voicebutton2, self.factual_image2,1)
         elif index == 1:
             self.factual_index = 2
             self.labelframetwo.grid_forget()
-            self.nextfactbutton.grid_forget()
+
             self.add_factual_panel(self.labelframethree, self.factual_term_label_three,
                                    self.factual_description_label_three, self.canvas_image3,
                                    self.voicebutton3, self.factual_image3,2)
 
-        else:
-            self.nextfactbutton.grid_forget()
+
+
+
 
 
 
@@ -213,7 +267,7 @@ class MagicFactualPage(tk.Frame):
 
         if self.old_x and self.old_y:
             canvas.create_line(self.old_x, self.old_y, event.x, event.y,
-                                    width=5, fill='bisque2',
+                                    width=5, fill=self.pen_color,
                                     capstyle=tk.ROUND, smooth=tk.TRUE, splinesteps=36)
         self.old_x = event.x
         self.old_y = event.y
@@ -237,6 +291,23 @@ class MagicFactualPage(tk.Frame):
         voicebutton_top.pack(side=tk.RIGHT)
         closebutton.pack()
        # self.option_clear()
+    def move_previous_fact(self, index):
+        if index == 1:
+            self.factual_index = 0
+            self.labelframetwo.grid_forget()
+
+            self.add_factual_panel(self.labelframeone, self.factual_term_label_one, self.factual_description_label_one,
+                                   self.canvas_image1,
+                                   self.voicebutton1, self.factual_image1,0)
+            self.backward_button.grid_forget()
+        elif index == 2:
+            self.factual_index = 1
+            self.labelframethree.grid_forget()
+            self.add_factual_panel(self.labelframetwo, self.factual_term_label_two,
+                                   self.factual_description_label_two, self.canvas_image2,
+                                   self.voicebutton2, self.factual_image2,1)
+
+
 
 
 
