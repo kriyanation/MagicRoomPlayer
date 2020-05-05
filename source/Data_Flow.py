@@ -54,6 +54,23 @@ def get_Lessons():
      messagebox.showerror("DB Error", "Cannot Connect to Database")
      sys.exit()
 
+def get_link():
+ try:
+    connection = sqlite3.connect(db)
+    cur = connection.cursor()
+    sql = "select Apply_External_Link from Magic_Science_Lessons where Lesson_ID=?"
+    cur.execute(sql,(TEST_ROW,))
+    external_link = cur.fetchone()[0]
+    print(external_link)
+
+
+    connection.commit()
+    connection.close()
+    return external_link
+ except sqlite3.OperationalError:
+     messagebox.showerror("DB Error", "Cannot Connect to Database")
+     sys.exit()
+
 #get_Title()
 
 def get_title_image():

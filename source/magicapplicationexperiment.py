@@ -1,6 +1,7 @@
 import os
 import tkinter as tk
 import random
+import webbrowser
 from tkinter import ttk, font, filedialog, messagebox, simpledialog
 import Data_Flow, configparser
 from pathlib import Path
@@ -40,6 +41,11 @@ class MagicExperimentPage(tk.Frame):
         s.configure('Horizontal.Green.TScale', background='dark slate gray', foreground='PeachPuff2')
         s.map('Green.TButton', background=[('active', '!disabled', 'dark olive green'), ('pressed', 'PeachPuff2')],
               foreground=[('pressed', 'PeachPuff2'), ('active', 'PeachPuff2')])
+        s.configure('Orange.TButton', background='PeachPuff2', foreground='dark slate gray')
+        s.map('Green.TButton', background=[('active', '!disabled', 'peachpuff2'), ('pressed', 'snow')],
+              foreground=[('pressed', 'firebrick'), ('active', 'dar slate gray')])
+        self.move_animation_Steps = 12
+        self.move_flag=False
         self.rowconfigure(0,weight=1)
         self.columnconfigure(0, weight=1)
         self.bind("<Configure>",self.resize_c)
@@ -47,6 +53,7 @@ class MagicExperimentPage(tk.Frame):
         self.image_canvas_list = []
         self.experiment_content_list = Data_Flow.get_experiment_content()
         self.experiment_content_terms = self.experiment_content_list[0]
+        self.image_map = {}
 
         self.experiment_content_images = self.experiment_content_list[1]
 
@@ -71,16 +78,36 @@ class MagicExperimentPage(tk.Frame):
 
         self.fill_steps_frame(parent.screen_width,parent.screen_height)
         self.fill_canvas_frame(parent.screen_width,parent.screen_height)
+        link_ext = Data_Flow.get_link()
+        if(link_ext is not None or link_ext != ""):
+            self.link_button = ttk.Button(self.labelframetwo,text="Launch Link",command=lambda: self.launch_link(link_ext),style="Orange.TButton")
+            self.link_button.grid(row=10, column=2,sticky=tk.SW,padx=10)
+
+
+    def launch_link(self,link):
+        webbrowser.open(link,new=2)
+
+    def zoom_image(self,event,canvas):
+        item = canvas.find_closest(event.x, event.y)
+        if 'D' in canvas.gettags(item):
+            canvas.delete(item)
+            image = self.image_map.get(item[0])
+            image_id = self.draw_image(image,event.x,event.y,400,400)
+            self.image_map[image_id] = image
+
+
+
 
     def show_popup_menu(self, event):
         self.popup_menu.tk_popup(event.x_root, event.y_root)
-        self.popup_menu.entryconfig("Move Down",command=lambda:self.move_vertical(event))
-        self.popup_menu.entryconfig("Move Right", command=lambda: self.move_horizontal(event))
-        self.popup_menu.entryconfig("Zoom", command=lambda: self.paint_text(event, self.canvas_experiment))
+        self.popup_menu.entryconfig("Move Down",command=lambda:self.move_vertical(event,0))
+        self.popup_menu.entryconfig("Move Right", command=lambda: self.move_horizontal(event,0))
+        self.popup_menu.entryconfig("Zoom", command=lambda: self.zoom_image(event, self.canvas_experiment))
+        self.popup_menu.entryconfig("Text", command=lambda: self.paint_text(event, self.canvas_experiment))
     def paint_text(self, event,canvas):
         answer = simpledialog.askstring("Text to add", "Add text to the location",
                                         parent=self.parent)
-        canvas.create_text(event.x, event.y, font=("comic sans", 15, "bold"), text=answer, fill=self.color)
+        canvas.create_text(event.x, event.y, font=("comic sans", 32, "bold"), text=answer, fill=self.color)
     def resize_c(self,event):
         print("frame resized"+str(self.winfo_width()))
 
@@ -111,7 +138,8 @@ class MagicExperimentPage(tk.Frame):
          self.stepbutton.grid(row=0, column = 0, sticky=tk.NW)
 
          imagefile = self.experiment_content_images[0]
-         imageid = self.draw_image(imagefile, 100, 100)
+         imageid = self.draw_image(imagefile, 100, 100,200,200)
+         self.image_map[imageid] = imagefile
          self.audiobutton = ttk.Button(self.labelframetwo, text="Voice-On", style='Green.TButton',command= self.play_step_audio)
 
          self.audiooffbutton = ttk.Button(self.labelframetwo, text="Voice-Off", style='Green.TButton',
@@ -187,15 +215,16 @@ class MagicExperimentPage(tk.Frame):
         img = filedialog.askopenfilename(initialdir=imageroot, title="Select image file",
                                          filetypes=(
                                              ("jpeg files", "*.jpg"), ("png files", "*.png"), ("gif files", "*.gif")))
-        self.draw_image(img,self.canvas_experiment.winfo_width()-100,self.canvas_experiment.winfo_height()-100)
+        imageid = self.draw_image(img,self.canvas_experiment.winfo_width()-100,self.canvas_experiment.winfo_height()-100,200,200)
+        self.image_map[imageid] = img
 
         self.move_flag = False
 
-    def draw_image(self, imagefile,xpos, ypos):
+    def draw_image(self, imagefile,xpos, ypos,scale1,scale2):
       try:
             image1 = Image.open(imagefile)
 
-            image1.thumbnail((200, 200))
+            image1.thumbnail((scale1, scale2))
             fimage1_display = ImageTk.PhotoImage(image1)
             self.image_list.append(fimage1_display)
             image1_id = self.canvas_experiment.create_image(xpos, ypos, image=self.image_list[len(self.image_list) - 1],
@@ -222,14 +251,31 @@ class MagicExperimentPage(tk.Frame):
             self.canvas_experiment.tag_bind(image, "<Button1-Motion>", self.move)
             self.canvas_experiment.tag_bind(image, "<ButtonRelease-1>", self.release)
 
-    def move_horizontal(self,event):
+    def move_horizontal(self,event,index):
         item = self.canvas_experiment.find_closest(event.x, event.y)
         if 'D' in self.canvas_experiment.gettags(item):
-            self.canvas_experiment.move(item,300,0)
-    def move_vertical(self,event):
+            self.move_in_X(item,index,self.canvas_experiment)
+
+    def move_in_X(self,item,index,canvas):
+        canvas.move(item, 30, 0)
+        index += 1
+        if index == self.move_animation_Steps:
+            return
+        else:
+            self.canvas_experiment.after(500, self.move_in_X,item,index,canvas)
+
+    def move_in_Y(self,item,index,canvas):
+        canvas.move(item, 0, 30)
+        index += 1
+        if index == self.move_animation_Steps:
+            return
+        else:
+            self.canvas_experiment.after(500, self.move_in_Y,item,index,canvas)
+
+    def move_vertical(self,event,index):
         item = self.canvas_experiment.find_closest(event.x, event.y)
         if 'D' in self.canvas_experiment.gettags(item):
-            self.canvas_experiment.move(item,0,300)
+            self.move_in_Y(item, index, self.canvas_experiment)
 
 
     def move(self, event):
@@ -343,7 +389,8 @@ class MagicExperimentPage(tk.Frame):
             self.step_labels.append(label)
             self.step_descriptions.append(desc_label)
             imagefile = self.experiment_content_images[self.index]
-            imageid = self.draw_image(imagefile,100, 100)
+            imageid = self.draw_image(imagefile,100, 100,200,200)
+            self.image_map[imageid] = imagefile
             if imageid != None:
                 self.move_animate(self.canvas_experiment, imageid, self.canvas_experiment.winfo_width()-100,self.canvas_experiment.winfo_height()-100)
                 self.move_flag = False

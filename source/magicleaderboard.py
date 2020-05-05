@@ -2,9 +2,10 @@ import tkinter as tk
 from tkinter import ttk,StringVar
 import Data_Flow
 class MagicLeaderBoard(tk.Frame):
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent,mode="inline", *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self.parent=parent
+        self.mode = mode
         self.configure(background='dark slate gray',borderwidth=0)
         s = ttk.Style(self)
         s.configure('Red.TLabelframe', background='dark slate gray')
@@ -54,8 +55,11 @@ class MagicLeaderBoard(tk.Frame):
         self.refresh_data()
 
     def c_function(self, event):
-        self.c_canvas.configure(scrollregion=self.c_canvas.bbox("all"),borderwidth=0,height=self.parent.winfo_height()-300)
-
+        if self.mode == "inline":
+            self.c_canvas.configure(scrollregion=self.c_canvas.bbox("all"),borderwidth=0,height=self.parent.winfo_height()-300)
+        else:
+            self.c_canvas.configure(scrollregion=self.c_canvas.bbox("all"), borderwidth=0,width=320,
+                                    height=300)
     def refresh_data(self):
 
         self.spinboxvalue = []

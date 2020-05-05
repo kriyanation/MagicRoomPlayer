@@ -39,7 +39,7 @@ class MagicApplication(tk.Tk):
         Data_Flow.TEST_ROW=self.selected_lessons[0]
         Data_Flow.imageroot = Data_Flow.file_root+os.path.sep+"Lessons"+os.path.sep+"Lesson"+str(Data_Flow.TEST_ROW)+os.path.sep+"images"+os.path.sep
         Data_Flow.videoroot = Data_Flow.file_root + os.path.sep + "Lessons"+os.path.sep+"Lesson" + str(Data_Flow.TEST_ROW)+os.path.sep+ "videos" + os.path.sep
-        Data_Flow.saved_canvas = Data_Flow.file_root + os.path.sep +"Lessons"+os.path.sep+"Lesson" + str(Data_Flow.TEST_ROW) +os.path.sep+ "saved_boards" + os.path.sep
+        Data_Flow.saved_canvas = Data_Flow.file_root + os.path.sep +"Lessons"+os.path.sep+"Lesson" + str(Data_Flow.TEST_ROW) +os.path.sep+ "saved_boards"
 
         self.page_index = 0
         self.resizable(width= True, height= True)
@@ -111,8 +111,9 @@ class MagicApplication(tk.Tk):
             self.LeaderBoard.pack_forget()
             self.show_hide_flag=0
         else:
-            self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE, pady=5)
-            self.show_hide_flag = 1
+            if (self.page_index != 2):
+                self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE, pady=5)
+                self.show_hide_flag = 1
 
 
 
@@ -205,9 +206,21 @@ class MagicApplication(tk.Tk):
         self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
         if self.show_hide_flag == 1:
           #self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
-          pass
+          self.show_leaderboard_seperate()
         self.show_hide_flag = 0
         self.application_experiment_page.pack(side=tk.LEFT, fill=tk.BOTH, expand=tk.TRUE, anchor=tk.N)
+
+
+    def show_leaderboard_seperate(self):
+        win = tk.Toplevel()
+        win.wm_title("Leaderboard")
+        win.wm_geometry('340x400+500+500')
+        win.configure(background='dark slate gray')
+        self.leaderboard = magicleaderboard.MagicLeaderBoard(win,mode="top")
+        self.leaderboard.grid(row=0, column=0)
+
+        b = ttk.Button(win, text="Close", style='Blue.TButton', command=win.destroy)
+        b.grid(row=1, column=0)
 
     def show_factual_page(self,ap_mode):
         if self.page_index == 2:
