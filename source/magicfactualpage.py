@@ -179,7 +179,7 @@ class MagicFactualPage(tk.Frame):
         image.save(Data_Flow.saved_canvas+os.path.sep+"saved_images_fact_image"+factualterm+'.png','png')
         image.close()
         os.remove('fact_image'+factualterm+".eps")
-        messagebox.showinfo("Information","Image saved under saved_images folder")
+        messagebox.showinfo("Information","Use Save for saving your interactions on the board in the lesson notes")
 
     def open_image_window(self, image):
         # subprocess.run([title_image], check=False)
@@ -229,7 +229,7 @@ class MagicFactualPage(tk.Frame):
         canvas.grid(row=3, rowspan=3,column=1, columnspan=3, padx=150, pady=5, sticky=tk.NSEW)
         if (index != 0):
             self.backward_button.grid(row=4, column=0,sticky=tk.S)
-        #button.grid(row=4, column=0, padx = 5,sticky=tk.W)
+        button.grid(row=5, column=0, padx = 5,sticky=tk.EW)
 
 
 

@@ -73,7 +73,7 @@ class MagicExperimentPage(tk.Frame):
 
 
         self.labelframeone.grid(row=0,column=0, pady=5, padx = 20)
-        self.labelframetwo.grid(row=0,column=1, pady= 5, padx = 20,sticky=tk.N)
+        self.labelframetwo.grid(row=0,column=1, pady= 10, padx = 20,sticky=tk.N)
         self.sound_flag = True
 
         self.fill_steps_frame(parent.screen_width,parent.screen_height)
@@ -119,10 +119,10 @@ class MagicExperimentPage(tk.Frame):
         # subprocess.run([title_image], check=False)
         canvas.postscript(file='apply_image'+str(factualterm)+".eps")
         image = Image.open('apply_image'+str(factualterm)+".eps")
-        image.save(Data_Flow.saved_canvas+os.path.sep+'saved_images_apply_image'+str(factualterm)+'.png','png')
+        image.save(Data_Flow.saved_canvas+os.path.sep+'skill_board'+'.png','png')
         image.close()
         os.remove('apply_image'+str(factualterm)+".eps")
-        messagebox.showinfo("Information","Image saved under saved_images folder")
+
 
 
     def fill_steps_frame(self,width,height):
@@ -324,6 +324,7 @@ class MagicExperimentPage(tk.Frame):
         self.eraser_on = False
         self.line_width = self.choose_size_button.get()
         self.color = askcolor(color=self.color)[1]
+        self.use_pen()
     def use_eraser(self):
         self.canvas_experiment.bind('<B1-Motion>', self.paint)
         self.canvas_experiment.bind('<ButtonRelease-1>', self.reset)

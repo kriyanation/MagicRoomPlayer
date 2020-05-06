@@ -62,19 +62,7 @@ class MagicTitlePage(tk.Frame):
         self.labelframeone.pack(padx = 80,fill=tk.BOTH,expand=tk.TRUE)
         self.title_intro()
 
-        args = []
-        if _isLinux:
-            args.append('--no-xlib')
-        try:
-            self.Instance = vlc.Instance(args)
-        except (NameError, OSError, AttributeError) as err:
-            print(err)
-            print(err.args)
 
-        if(self.Instance != None):
-            self.player = self.Instance.media_player_new()
-        parent.bind("<Configure>", self.OnConfigure)  # catch window resize, etc.
-        parent.update()
 
     def paint_text(self,event):
         answer = simpledialog.askstring("Text to add", "Add text to the location",
@@ -141,7 +129,7 @@ class MagicTitlePage(tk.Frame):
         image.save(Data_Flow.saved_canvas+os.path.sep+"title_image"+self.title_text+'.png','png')
         image.close()
         os.remove('title_image'+self.title_text+".eps")
-        messagebox.showinfo("Information","Image saved under saved_images folder")
+        messagebox.showinfo("Information","Use Save for saving your interactions on the board in the lesson notes")
 
     def show_popup_menu(self, event):
         self.popup_menu.tk_popup(event.x_root, event.y_root)
@@ -218,6 +206,20 @@ class MagicTitlePage(tk.Frame):
 
 
     def title_video(self):
+        args = []
+        if _isLinux:
+            args.append('--no-xlib')
+        try:
+            self.Instance = vlc.Instance(args)
+        except (NameError, OSError, AttributeError) as err:
+            print(err)
+            print(err.args)
+
+        if (self.Instance != None):
+            self.player = self.Instance.media_player_new()
+        self.parent_window.bind("<Configure>", self.OnConfigure)  # catch window resize, etc.
+        self.parent_window.update()
+
         self.canvas.delete("all")
         self.image_frame.pack_forget()
         self.canvas.pack_forget()
@@ -264,7 +266,14 @@ class MagicTitlePage(tk.Frame):
         self.video_note_text = tk.Text(self, pady=10, borderwidth=0, highlightthickness=0, relief=tk.SUNKEN,
                                        wrap=tk.WORD, font=("comic sans", 15), height=8, foreground="PeachPuff2",
                                        background='dark slate gray')
+
+        self.button_notes_image = tk.PhotoImage(file="../images/speaker.png")
+
+        self.intro_text_speaker  = ttk.Button(self, text="hello", image=self.button_notes_image,
+                                             command=lambda: self.play_quote_audio(video_notes),
+                                             style='Green.TButton')
         pageutils.animate_text(self, video_notes, 0, self.video_note_text, len(video_notes) - 1)
+        self.intro_text_speaker.pack()
         self.scrollbar = ttk.Scrollbar(self)
         self.video_note_text.config(yscrollcommand=self.scrollbar.set)
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)

@@ -5,7 +5,7 @@ import magicleaderboard, magictitlepage, magicapplicationexperiment,magicapplica
 import Data_Flow, LessonList
 from sources import Timer_Display
 
-import magicfactualpage
+import magicfactualpage,random
 
 
 
@@ -114,6 +114,8 @@ class MagicApplication(tk.Tk):
             if (self.page_index != 2):
                 self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE, pady=5)
                 self.show_hide_flag = 1
+            else:
+                self.show_leaderboard_seperate()
 
 
 
@@ -161,6 +163,8 @@ class MagicApplication(tk.Tk):
 
 
     def show_ip_page(self, ap_mode):
+        self.show_hide_flag = 1
+        self.application_experiment_page.save_image_window(self.application_experiment_page.canvas_experiment, random.randint(0,100))
         self.LeaderBoard.pack_forget()
         self.bframe.pack_forget()
         if ap_mode == "Video":
@@ -206,7 +210,7 @@ class MagicApplication(tk.Tk):
         self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
         if self.show_hide_flag == 1:
           #self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
-          self.show_leaderboard_seperate()
+          pass
         self.show_hide_flag = 0
         self.application_experiment_page.pack(side=tk.LEFT, fill=tk.BOTH, expand=tk.TRUE, anchor=tk.N)
 
@@ -230,7 +234,8 @@ class MagicApplication(tk.Tk):
             else:
                 self.application_experiment_page.forget()
         else:
-            self.TitlePage.player.stop()
+            if hasattr(self.TitlePage,"player"):
+                 self.TitlePage.player.stop()
             self.TitlePage.pack_forget()
         self.LeaderBoard.pack_forget()
         self.bframe.pack_forget()
