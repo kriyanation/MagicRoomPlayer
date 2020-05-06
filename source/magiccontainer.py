@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 import magicleaderboard, magictitlepage, magicapplicationexperiment,magicapplicationvideo,magicindependentpractice
 import Data_Flow, LessonList
-from sources import Timer_Display
+import Timer_Display
 
 import magicfactualpage,random
 

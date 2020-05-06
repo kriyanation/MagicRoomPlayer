@@ -11,14 +11,8 @@ imageroot = ""
 videoroot = ""
 
 
-print(str(two_up)+'/magic.cfg')
-try:
-    config.read(str(two_up)+'/magic.cfg')
-    db = config.get("section1",'file_root')+os.path.sep+'MagicRoom.db'
-    file_root = config.get("section1",'file_root')
-except configparser.NoSectionError:
-    messagebox.showerror("Configuration Error", "No Section found or Configuration File Missing")
-    sys.exit()
+file_root = os.path.abspath(os.path.join(os.getcwd(),".."))
+db = file_root+os.path.sep+"MagicRoom.db"
 
 saved_canvas = ""
 
