@@ -1,18 +1,11 @@
-import os
 import tkinter as tk
-from tkinter import ttk, StringVar, messagebox, Scrollbar
-import Data_Flow,configparser
-from pathlib import Path
-import  sys
-from multiprocessing import Process
+from tkinter import ttk, StringVar
+import tkinter as tk
+from tkinter import ttk, StringVar
+import sys
 
 
-import cv2
-import time
-
-import cv2practice
-import pageutils
-
+import Data_Flow
 
 _isLinux = sys.platform.startswith('linux')
 
@@ -88,8 +81,6 @@ class MagicIndenpendentPractice(tk.Frame):
 
 
 
-    def pause_video(self):
-        cv2.destroyAllWindows()
 
 
     '''def videoLoop(self):

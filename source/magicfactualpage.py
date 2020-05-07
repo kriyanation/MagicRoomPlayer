@@ -1,15 +1,12 @@
 import os
 import subprocess
+import sys
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
-import Data_Flow, configparser
-from pathlib import Path
-
-
-import  sys
 
 from PIL import Image, ImageTk
 
+import Data_Flow
 import pageutils
 
 _isLinux = sys.platform.startswith('linux')

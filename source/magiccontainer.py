@@ -1,12 +1,18 @@
-import multiprocessing,os
+import multiprocessing
+import os
 import tkinter as tk
 from tkinter import ttk
-import magicleaderboard, magictitlepage, magicapplicationexperiment,magicapplicationvideo,magicindependentpractice
-import Data_Flow, LessonList
+
+import Data_Flow
+import LessonList
 import Timer_Display
-
-import magicfactualpage,random
-
+import magicapplicationexperiment
+import magicapplicationvideo
+import magicfactualpage
+import magicindependentpractice
+import magicleaderboard
+import magictitlepage
+import random
 
 
 class MagicApplication(tk.Tk):

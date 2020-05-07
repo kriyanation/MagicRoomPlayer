@@ -1,9 +1,8 @@
-from reportlab.pdfgen import canvas
-import Data_Flow
-
-
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfgen import canvas
+
+import Data_Flow
 
 pdfmetrics.registerFont(TTFont('cat', 'Kavivanar-Regular.ttf'))
 

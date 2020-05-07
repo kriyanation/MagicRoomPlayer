@@ -1,6 +1,7 @@
-import pyzbar.pyzbar as pyzbar
-import numpy as np
 import cv2
+import numpy as np
+import pyzbar.pyzbar as pyzbar
+
 
 def decode(im):
     decodedobjects = pyzbar.decode(im)

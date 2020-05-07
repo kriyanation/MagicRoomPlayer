@@ -1,8 +1,10 @@
 import tkinter as tk
-import pyzbar.pyzbar as pyzbar
-from tkinter import ttk, StringVar
-import cv2
 from multiprocessing import Process
+from tkinter import ttk, StringVar
+
+import cv2
+import pyzbar.pyzbar as pyzbar
+
 
 class MagicAnswerSheetScanner(tk.Tk):
     def __init__(self,*args, **kwargs):

@@ -1,9 +1,12 @@
 import tkinter as tk
-from tkinter import ttk, font, filedialog
+from tkinter import ttk
+
+import configparser
+import subprocess
+import sys
+import vlc
+
 import Data_Flow
-
-import vlc, sys,subprocess, configparser
-
 import pageutils
 
 _isLinux = sys.platform.startswith('linux')

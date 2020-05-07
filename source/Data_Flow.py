@@ -1,8 +1,11 @@
-import sqlite3, os
-import random, sys
 import configparser
+import os
+import random
+import sqlite3
+import sys
 from pathlib import Path
-from tkinter import StringVar,messagebox
+from tkinter import StringVar, messagebox
+
 TEST_ROW = 5
 
 config = configparser.RawConfigParser()

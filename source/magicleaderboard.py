@@ -1,6 +1,9 @@
 import tkinter as tk
-from tkinter import ttk,StringVar
+from tkinter import ttk, StringVar
+
 import Data_Flow
+
+
 class MagicLeaderBoard(tk.Frame):
     def __init__(self, parent,mode="inline", *args, **kwargs):
         super().__init__(parent, *args, **kwargs)

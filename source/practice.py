@@ -1,6 +1,6 @@
 import tkinter as tk
+import unicodedata
 from tkinter import ttk
-import unicodedata, unidecode
 
 root = tk.Tk()
 text = 'श्वसन प्रणाली में नाक गुहा, ट्रेकिआ और फेफड़े होते हैं'

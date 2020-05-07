@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, Toplevel
+
 import Data_Flow
+
 
 class MagicLessonList(Toplevel):
     def __init__(self, bg,fg,buttonbg,buttonfg,selectmode,parent,*args, **kwargs):

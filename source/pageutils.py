@@ -1,6 +1,10 @@
 
 from reportlab.pdfgen import canvas
-import Data_Flow,pyttsx3, sys
+
+import Data_Flow
+import pyttsx3
+import sys
+
 try:
     import pypiwin32
 except ImportError:

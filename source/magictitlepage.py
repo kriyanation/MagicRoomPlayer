@@ -1,16 +1,16 @@
 # -*- coding: utf8 -*-
 import os
 import tkinter as tk
-from tkinter import ttk, font, Menu, simpledialog
-import Data_Flow
-import unicodedata
-import vlc, sys, time
-import pageutils, subprocess, configparser
-from pathlib import Path
 from tkinter import messagebox
+from tkinter import ttk, Menu, simpledialog
 
-import PIL
-from PIL import Image, ImageTk, ImageFont
+import sys
+import vlc
+from PIL import Image, ImageTk
+
+import Data_Flow
+import pageutils
+import subprocess
 
 _isLinux = sys.platform.startswith('linux')
 

@@ -1,18 +1,14 @@
 import os
-import tkinter as tk
 import random
+import sys
+import tkinter as tk
 import webbrowser
 from tkinter import ttk, font, filedialog, messagebox, simpledialog
-import Data_Flow, configparser
-from pathlib import Path
-
-import  sys
-
 from tkinter.colorchooser import askcolor
 
-import PIL
 from PIL import Image, ImageTk
 
+import Data_Flow
 import pageutils
 
 _isLinux = sys.platform.startswith('linux')
@@ -169,36 +165,42 @@ class MagicExperimentPage(tk.Frame):
         self.labelframeone.after(50,lambda: self.move_animate(canvas,imageid,finalx,finaly))
 
     def fill_canvas_frame(self,width,height):
-        self.image_button = ttk.Button(self.labelframeone, text='Add Image', command=self.use_image,style='Green.TButton')
+        self.button_frame= tk.Frame(self.labelframeone,background="dark slate gray")
+        self.add_image_icon = tk.PhotoImage(file="../images/image_open.png")
+        self.image_button = ttk.Button(self.button_frame, text='Add Image',image=self.add_image_icon, command=self.use_image,style='Green.TButton')
         self.image_button.grid(row=0, column=0,padx=5)
 
-        self.image_act_button = ttk.Button(self.labelframeone, text='Move Image', command=self.use_image_act,style='Green.TButton')
+        self.move_image_icon = tk.PhotoImage(file="../images/image_move.png")
+        self.image_act_button = ttk.Button(self.button_frame, text='Move Image', image = self.move_image_icon,command=self.use_image_act,style='Green.TButton')
         self.image_act_button.grid(row=0, column=1,padx=5)
 
-        self.pen_button = ttk.Button(self.labelframeone, text='Pen', command=self.use_pen,style='Green.TButton')
+        self.pen_image_icon = tk.PhotoImage(file="../images/pen_brush.png")
+        self.pen_button = ttk.Button(self.button_frame, text='Pen',image = self.pen_image_icon, command=self.use_pen,style='Green.TButton')
         self.pen_button.grid(row=0, column=2,padx=5)
 
-
-        self.color_button = ttk.Button(self.labelframeone, text='Color', command=self.choose_color,style='Green.TButton')
+        self.color_image_icon = tk.PhotoImage(file="../images/color_pal.png")
+        self.color_button = ttk.Button(self.button_frame, text='Color', image= self.color_image_icon,command=self.choose_color,style='Green.TButton')
         self.color_button.grid(row=0, column=3,padx=5)
-
-        self.eraser_button = ttk.Button(self.labelframeone, text='Eraser', command=self.use_eraser,style='Green.TButton')
+        self.eraser_image_icon = tk.PhotoImage(file="../images/erase.png")
+        self.eraser_button = ttk.Button(self.button_frame, text='Eraser',image=self.eraser_image_icon, command=self.use_eraser,style='Green.TButton')
         self.eraser_button.grid(row=0, column=4,padx=5)
 
-        self.choose_size_button = tk.Scale(self.labelframeone, orient=tk.HORIZONTAL, from_=1, to=10,
+
+        self.choose_size_button = tk.Scale(self.button_frame, orient=tk.HORIZONTAL, from_=1, to=10,
                                            background='dark slate gray', foreground='PeachPuff2')
-        self.clear_button = ttk.Button(self.labelframeone, text='Clear', command=self.clear, style='Green.TButton')
+        self.clear_image_icon = tk.PhotoImage(file="../images/cls.png")
+        self.clear_button = ttk.Button(self.button_frame, text='Clear', image=self.clear_image_icon,command=self.clear, style='Green.TButton')
         self.buttonimage = tk.PhotoImage(file="../images/save.png")
-        self.image_save_button = ttk.Button(self.labelframeone, text="Save Canvas",image=self.buttonimage,
+        self.image_save_button = ttk.Button(self.button_frame, text="Save Canvas",image=self.buttonimage,
                                             command=lambda: self.save_image_window(self.canvas_experiment, random.randint(0,100)),
                                             style='Green.TButton')
 
 
         self.choose_size_button.grid(row=0, column=5,padx=5)
-        self.clear_button.grid(row=0, column=6)
-
+        self.clear_button.grid(row=0, column=6,padx=5)
+        self.button_frame.grid(row=0,column=0,columnspan=7)
         self.canvas_experiment.grid(row=1, pady=5, padx=20, columnspan = 7)
-        self.image_save_button.grid(row=1,column=8,sticky=tk.N)
+        self.image_save_button.grid(row=0,column=8,sticky=tk.N)
 
         self.setup_canvas()
 
