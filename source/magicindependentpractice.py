@@ -19,11 +19,7 @@ _isLinux = sys.platform.startswith('linux')
 DEFAULT_PEN_SIZE = 5.0
 DEFAULT_COLOR = 'black'
 
-config = configparser.RawConfigParser()
-two_up = Path(__file__).resolve().parents[2]
-print(str(two_up)+'/magic.cfg')
-config.read(str(two_up)+'/magic.cfg')
-imageroot = Data_Flow.imageroot
+
 
 class MagicIndenpendentPractice(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -84,26 +80,10 @@ class MagicIndenpendentPractice(tk.Frame):
         parent.wm_protocol("WM_DELETE_WINDOW", self.onClose)
     def resize_t(self,event):
         self.notes_text.configure(width=int(self.winfo_width()/20),height=int(self.winfo_height()/50))
-    def play_video(self):
-        messagebox.showinfo(" Camera Info",
-                            "Camera shouldopen in a seperate window. Press the key 's' to save the picture under \n" + imageroot + os.path.sep+"saved_images"+os.path.sep+"classroom_images folder")
-
-       # p = Process(target=cv2practice.video_cam_play(imageroot))
-       # p.start()
-        #p.join()  #
-        return
 
 
 
-    def gen_ip_sheets(self,lessonid):
-        pageutils.generate_ip_sheets(lessonid)
-        messagebox.showinfo("Answer Sheets Info", "IP Sheets for the class generated in the AnswerSheets folder")
 
-    def gen_question_paper(self,lessonid):
-
-        messagebox.showinfo("Question Paper Info", "Question Paper generated in \n"+imageroot+os.path.sep+"QuestionPapers folder")
-
-        pageutils.generate_ip_paper(lessonid, imageroot)
 
 
 

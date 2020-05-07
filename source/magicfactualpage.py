@@ -13,11 +13,7 @@ from PIL import Image, ImageTk
 import pageutils
 
 _isLinux = sys.platform.startswith('linux')
-config = configparser.RawConfigParser()
-two_up = Path(__file__).resolve().parents[2]
-print(str(two_up)+'/magic.cfg')
-db=config.read(str(two_up)+'/magic.cfg')
-imageroot = Data_Flow.imageroot
+
 class MagicFactualPage(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
@@ -94,7 +90,7 @@ class MagicFactualPage(tk.Frame):
         self.canvas_image2.bind('<ButtonRelease-1>', self.reset)
         self.canvas_image3.bind("<B1-Motion>", lambda event, c=self.canvas_image3: self.paint(event,c))
         self.canvas_image3.bind('<ButtonRelease-1>', self.reset)
-        device = config.get("section1", 'device_type')
+        device = "laptop"
         try:
 
                 self.image1 = Image.open(self.factual_image1)

@@ -19,11 +19,7 @@ _isLinux = sys.platform.startswith('linux')
 
 DEFAULT_PEN_SIZE = 5.0
 DEFAULT_COLOR = 'black'
-config = configparser.RawConfigParser()
-two_up = Path(__file__).parents[2]
-print(str(two_up)+'/magic.cfg')
-db=config.read(str(two_up)+'/magic.cfg')
-imageroot = Data_Flow.imageroot
+
 
 class MagicExperimentPage(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -111,7 +107,7 @@ class MagicExperimentPage(tk.Frame):
     def resize_c(self,event):
         print("frame resized"+str(self.winfo_width()))
 
-        self.canvas_experiment.configure(width=self.winfo_width()/1.5 ,
+        self.canvas_experiment.configure(width=self.winfo_width()/1.7 ,
                                     height=self.winfo_height() / 1.2)
 
 
@@ -188,7 +184,7 @@ class MagicExperimentPage(tk.Frame):
 
         self.eraser_button = ttk.Button(self.labelframeone, text='Eraser', command=self.use_eraser,style='Green.TButton')
         self.eraser_button.grid(row=0, column=4,padx=5)
-        device = config.get("section1", 'device_type')
+
         self.choose_size_button = tk.Scale(self.labelframeone, orient=tk.HORIZONTAL, from_=1, to=10,
                                            background='dark slate gray', foreground='PeachPuff2')
         self.clear_button = ttk.Button(self.labelframeone, text='Clear', command=self.clear, style='Green.TButton')
@@ -197,9 +193,9 @@ class MagicExperimentPage(tk.Frame):
                                             command=lambda: self.save_image_window(self.canvas_experiment, random.randint(0,100)),
                                             style='Green.TButton')
 
-        if (device == 'laptop'):
-             self.choose_size_button.grid(row=0, column=5,padx=5)
-             self.clear_button.grid(row=0, column=6)
+
+        self.choose_size_button.grid(row=0, column=5,padx=5)
+        self.clear_button.grid(row=0, column=6)
 
         self.canvas_experiment.grid(row=1, pady=5, padx=20, columnspan = 7)
         self.image_save_button.grid(row=1,column=8,sticky=tk.N)
@@ -212,7 +208,7 @@ class MagicExperimentPage(tk.Frame):
         self.canvas_experiment.bind('<B1-Motion>', "")
         self.canvas_experiment.bind('<ButtonRelease-1>', "")
        # tk.Tk().withdraw()  # avoids window accompanying tkinter FileChooser
-        img = filedialog.askopenfilename(initialdir=imageroot, title="Select image file",
+        img = filedialog.askopenfilename(initialdir=Data_Flow.file_root, title="Select image file",
                                          filetypes=(
                                              ("jpeg files", "*.jpg"), ("png files", "*.png"), ("gif files", "*.gif")))
         imageid = self.draw_image(img,self.canvas_experiment.winfo_width()-100,self.canvas_experiment.winfo_height()-100,200,200)
