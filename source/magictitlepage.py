@@ -5,10 +5,10 @@ from tkinter import messagebox
 from tkinter import ttk, Menu, simpledialog
 
 import sys
-import vlc
+
 from PIL import Image, ImageTk
 
-import Data_Flow
+import Data_Flow_Player
 import pageutils
 import subprocess
 
@@ -28,6 +28,7 @@ class MagicTitlePage(tk.Frame):
         s.map('TScrollbar', background=[('active', '!disabled', 'dark olive green'), ('disabled', 'dark slate gray')],
               foreground=[('active', 'PeachPuff2'), ('disabled', 'dark slate gray')])
         self.video_mode = False
+        self.title_video_str = Data_Flow_Player.get_title_video()
         print(type(parent).__name__)
         self.parent_window = parent
         self.pen_color = 'bisque2'
@@ -36,7 +37,7 @@ class MagicTitlePage(tk.Frame):
         self.quoteframe = tk.Frame(self)
         self.quoteframe.configure(background='dark slate gray')
         self.quoteframe.pack(fill=tk.X, side=tk.TOP, anchor=tk.CENTER)
-        self.quote_text = Data_Flow.get_Quote()
+        self.quote_text = Data_Flow_Player.get_Quote()
         self.quote_textwidget = tk.Text(self.quoteframe, borderwidth=0, highlightthickness=0, relief=tk.FLAT,
                                         wrap=tk.WORD, font=('TkDefaultFont', 12), bd=2, height=2,
                                         foreground='PeachPuff2', background=
@@ -86,7 +87,7 @@ class MagicTitlePage(tk.Frame):
             messagebox.showwarning("Warning", "VLC is unable to play the file: " + self.title_video_str)
 
     def new_window(self):
-        self.player.stop()
+        #self.player.stop()
         subprocess.Popen(['vlc', '-vvv', self.title_video_str])
 
     def pause_video(self):
@@ -121,7 +122,7 @@ class MagicTitlePage(tk.Frame):
         # subprocess.run([title_image], check=False)
         self.canvas.postscript(file='title_image' + self.title_text + ".eps")
         image = Image.open('title_image' + self.title_text + ".eps")
-        image.save(Data_Flow.saved_canvas + os.path.sep + "title_image" + self.title_text + '.png', 'png')
+        image.save(Data_Flow_Player.saved_canvas + os.path.sep + "title_image" + self.title_text + '.png', 'png')
         image.close()
         os.remove('title_image' + self.title_text + ".eps")
         messagebox.showinfo("Information", "Use Save for saving your interactions on the board in the lesson notes")
@@ -132,14 +133,14 @@ class MagicTitlePage(tk.Frame):
 
     def title_intro(self):
 
-        self.title_text = Data_Flow.get_Title()
+        self.title_text = Data_Flow_Player.get_Title()
 
         self.topic_label = ttk.Label(self.labelframeone, text=self.title_text, font=('TkDefaultFont', 16),
                                      foreground='PeachPuff2', background='dark slate gray',
                                      wraplength=self.parent_window.screen_width / 2.5)
         self.topic_label.pack(pady=10, anchor=tk.CENTER)
 
-        title_image = Data_Flow.get_title_image()
+        title_image = Data_Flow_Player.get_title_image()
         self.image_frame = tk.Frame(self.labelframeone)
         self.image_frame.configure(background='dark slate gray')
         self.new_window_image_button = ttk.Button(self.image_frame, text="Zoom Image",
@@ -149,7 +150,7 @@ class MagicTitlePage(tk.Frame):
                                             style='Green.TButton')
 
         self.show_video_button = ttk.Button(self.image_frame, text="Show Video",
-                                            command=self.show_video_intro,
+                                            command=self.new_window,
                                             style='Green.TButton')
 
         self.new_window_image_button.pack(pady=5, side=tk.LEFT)
@@ -203,29 +204,30 @@ class MagicTitlePage(tk.Frame):
         if _isLinux:
             args.append('--no-xlib')
         try:
-            self.Instance = vlc.Instance(args)
+            #self.Instance = vlc.Instance(args)
+            pass
         except (NameError, OSError, AttributeError) as err:
             print(err)
             print(err.args)
 
-        if (self.Instance != None):
-            self.player = self.Instance.media_player_new()
+        #if (self.Instance != None):
+         #   self.player = self.Instance.media_player_new()
         self.parent_window.bind("<Configure>", self.OnConfigure)  # catch window resize, etc.
         self.parent_window.update()
 
         self.canvas.delete("all")
         self.image_frame.pack_forget()
         self.canvas.pack_forget()
-        self.title_video_str = "https://www.youtube.com/watch?v=zab3ePtO7Jc"  # Data_Flow.get_title_video()
+        self.title_video_str = Data_Flow_Player.get_title_video()
 
-        self.media = self.Instance.media_new(str(self.title_video_str))  # Path, unicode
-        self.media_list = self.Instance.media_list_new([self.title_video_str])
-        self.player.set_media(self.media)
-
-        self.list_player = self.Instance.media_list_player_new()
-        self.list_player.set_media_player(self.player)
-        self.list_player.set_media_list(self.media_list)
-        self.canvas.delete(self.title_image_id)
+        # self.media = self.Instance.media_new(str(self.title_video_str))  # Path, unicode
+        # self.media_list = self.Instance.media_list_new([self.title_video_str])
+        # self.player.set_media(self.media)
+        #
+        # self.list_player = self.Instance.media_list_player_new()
+        # self.list_player.set_media_player(self.player)
+        # self.list_player.set_media_list(self.media_list)
+        # self.canvas.delete(self.title_image_id)
 
         self.controlframe = tk.Frame(self.labelframeone)
         self.controlframe.configure(background='dark slate gray')
@@ -241,20 +243,20 @@ class MagicTitlePage(tk.Frame):
         self.controlframe.pack()
         self.canvas.pack(padx=10, fill=tk.BOTH, expand=tk.TRUE, anchor=tk.CENTER)
         self.player_frame_info = self.canvas.winfo_id()  # .winfo_visualid()?
-        if (_isLinux):
-            self.player.set_xwindow(self.player_frame_info)
-        else:
-            self.player.set_hwnd(self.player_frame_info)
+       # if (_isLinux):
+            #self.player.set_xwindow(self.player_frame_info)
+        #else:
+            #self.player.set_hwnd(self.player_frame_info)
         # self.player.play()
         # self.notes_display()
         self.show_video_button.config(state='disabled')
 
     def notes_display(self):
-        video_notes_info = Data_Flow.get_Running_Notes()
+        video_notes_info = Data_Flow_Player.get_Running_Notes()
         video_notes = video_notes_info[0]
         self.text_frame = tk.Frame(self, background="dark slate gray")
         self.video_note_text = tk.Text(self.text_frame, pady=10, borderwidth=0, highlightthickness=0, relief=tk.SUNKEN,
-                                       wrap=tk.WORD, font=("comic sans", 12), height=10, foreground="PeachPuff2",
+                                       wrap=tk.WORD, font=("comic sans", 14), height=10, foreground="PeachPuff2",
                                        background='dark slate gray')
 
         self.button_notes_image = tk.PhotoImage(file="../images/speaker.png")
@@ -269,7 +271,7 @@ class MagicTitlePage(tk.Frame):
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.scrollbar.config(command=self.video_note_text.yview, style='TScrollbar')
         self.text_frame.pack(side=tk.BOTTOM, fill=tk.X)
-        self.video_note_text.pack(fill=tk.X, expand=True)
+        self.video_note_text.pack(fill=tk.X)
 
     def OnConfigure(self, *unused):
         """Some widget configuration changed.

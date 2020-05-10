@@ -5,7 +5,7 @@ from tkinter import ttk, StringVar
 import sys
 
 
-import Data_Flow
+import Data_Flow_Player
 
 _isLinux = sys.platform.startswith('linux')
 
@@ -40,7 +40,7 @@ class MagicIndenpendentPractice(tk.Frame):
         self.status_text.set("")
 
         self.parent = parent
-        self.ip_info = Data_Flow.get_ip_data()
+        self.ip_info = Data_Flow_Player.get_ip_data()
         self.ip_answer_key = self.ip_info[0]
         self.ip_questions = self.ip_info[1]
         self.lesson_id = self.ip_info[2]

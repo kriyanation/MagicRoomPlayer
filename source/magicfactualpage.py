@@ -6,7 +6,7 @@ from tkinter import ttk, messagebox, simpledialog
 
 from PIL import Image, ImageTk
 
-import Data_Flow
+import Data_Flow_Player
 import pageutils
 
 _isLinux = sys.platform.startswith('linux')
@@ -28,7 +28,7 @@ class MagicFactualPage(tk.Frame):
               foreground=[('pressed', 'PeachPuff2'), ('active', 'PeachPuff2')])
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
-        factual_content_list = Data_Flow.get_factual_content()
+        factual_content_list = Data_Flow_Player.get_factual_content()
         factual_content_terms = factual_content_list[0]
         print(factual_content_terms)
         factual_content_descriptions = factual_content_list[1]
@@ -169,7 +169,7 @@ class MagicFactualPage(tk.Frame):
         # subprocess.run([title_image], check=False)
         canvas.postscript(file='fact_image'+factualterm+".eps")
         image = Image.open('fact_image'+factualterm+".eps")
-        image.save(Data_Flow.saved_canvas+os.path.sep+"saved_images_fact_image"+factualterm+'.png','png')
+        image.save(Data_Flow_Player.saved_canvas+os.path.sep+"saved_images_fact_image"+factualterm+'.png','png')
         image.close()
         os.remove('fact_image'+factualterm+".eps")
         messagebox.showinfo("Information","Use Save for saving your interactions on the board in the lesson notes")

@@ -8,7 +8,7 @@ from tkinter.colorchooser import askcolor
 
 from PIL import Image, ImageTk
 
-import Data_Flow
+import Data_Flow_Player
 import pageutils
 
 _isLinux = sys.platform.startswith('linux')
@@ -43,7 +43,7 @@ class MagicExperimentPage(tk.Frame):
         self.bind("<Configure>",self.resize_c)
         self.image_list = []
         self.image_canvas_list = []
-        self.experiment_content_list = Data_Flow.get_experiment_content()
+        self.experiment_content_list = Data_Flow_Player.get_experiment_content()
         self.experiment_content_terms = self.experiment_content_list[0]
         self.image_map = {}
 
@@ -70,7 +70,7 @@ class MagicExperimentPage(tk.Frame):
 
         self.fill_steps_frame(parent.screen_width,parent.screen_height)
         self.fill_canvas_frame(parent.screen_width,parent.screen_height)
-        link_ext = Data_Flow.get_link()
+        link_ext = Data_Flow_Player.get_link()
         if(link_ext is not None or link_ext != ""):
             self.link_button = ttk.Button(self.labelframetwo,text="Launch Link",command=lambda: self.launch_link(link_ext),style="Orange.TButton")
             self.link_button.grid(row=10, column=2,sticky=tk.SW,padx=10)
@@ -111,7 +111,7 @@ class MagicExperimentPage(tk.Frame):
         # subprocess.run([title_image], check=False)
         canvas.postscript(file='apply_image'+str(factualterm)+".eps")
         image = Image.open('apply_image'+str(factualterm)+".eps")
-        image.save(Data_Flow.saved_canvas+os.path.sep+'skill_board'+'.png','png')
+        image.save(Data_Flow_Player.saved_canvas+os.path.sep+'skill_board'+'.png','png')
         image.close()
         os.remove('apply_image'+str(factualterm)+".eps")
 
@@ -210,7 +210,7 @@ class MagicExperimentPage(tk.Frame):
         self.canvas_experiment.bind('<B1-Motion>', "")
         self.canvas_experiment.bind('<ButtonRelease-1>', "")
        # tk.Tk().withdraw()  # avoids window accompanying tkinter FileChooser
-        img = filedialog.askopenfilename(initialdir=Data_Flow.file_root, title="Select image file",
+        img = filedialog.askopenfilename(initialdir=Data_Flow_Player.file_root, title="Select image file",
                                          filetypes=(
                                              ("jpeg files", "*.jpg"), ("png files", "*.png"), ("gif files", "*.gif")))
         imageid = self.draw_image(img,self.canvas_experiment.winfo_width()-100,self.canvas_experiment.winfo_height()-100,200,200)

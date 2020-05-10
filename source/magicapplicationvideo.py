@@ -4,7 +4,7 @@ from tkinter import ttk
 import configparser
 import subprocess
 import sys
-import vlc
+
 
 import Data_Flow
 import pageutils
@@ -58,8 +58,8 @@ class MagicApplicationVideo(tk.Frame):
         args = []
         if _isLinux:
             args.append('--no-xlib')
-        self.Instance = vlc.Instance(args)
-        self.player = self.Instance.media_player_new()
+        # self.Instance = vlc.Instance(args)
+        # self.player = self.Instance.media_player_new()
 
         parent.bind("<Configure>", self.OnConfigure)  # catch window resize, etc.
         parent.update()
@@ -69,18 +69,20 @@ class MagicApplicationVideo(tk.Frame):
 
 
     def play_video(self):
-         self.player.play()
+       #  self.player.play()
+        pass
 
 
 
 
     def new_window(self):
-        self.player.stop()
+       # self.player.stop()
         subprocess.Popen(['vlc', '-vvv', self.video_link])
 
     def pause_video(self):
-        self.player.pause()
+       # self.player.pause()
        #self.player.set_fullscreen(False)
+        pass
 
     def OnConfigure(self, *unused):
         """Some widget configuration changed.

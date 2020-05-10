@@ -3,7 +3,7 @@ import os
 import tkinter as tk
 from tkinter import ttk
 
-import Data_Flow
+import Data_Flow_Player
 import LessonList
 import Timer_Display
 import magicapplicationexperiment
@@ -15,7 +15,7 @@ import magictitlepage
 import random
 
 
-class MagicApplication(tk.Tk):
+class MagicApplication(tk.Toplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -42,10 +42,10 @@ class MagicApplication(tk.Tk):
                               buttonfg='snow',parent=self)
         self.wait_window(app)
         print(self.selected_lessons)
-        Data_Flow.TEST_ROW=self.selected_lessons[0]
-        Data_Flow.imageroot = Data_Flow.file_root+os.path.sep+"Lessons"+os.path.sep+"Lesson"+str(Data_Flow.TEST_ROW)+os.path.sep+"images"+os.path.sep
-        Data_Flow.videoroot = Data_Flow.file_root + os.path.sep + "Lessons"+os.path.sep+"Lesson" + str(Data_Flow.TEST_ROW)+os.path.sep+ "videos" + os.path.sep
-        Data_Flow.saved_canvas = Data_Flow.file_root + os.path.sep +"Lessons"+os.path.sep+"Lesson" + str(Data_Flow.TEST_ROW) +os.path.sep+ "saved_boards"
+        Data_Flow_Player.TEST_ROW=self.selected_lessons[0]
+        Data_Flow_Player.imageroot = Data_Flow_Player.file_root+os.path.sep+"Lessons"+os.path.sep+"Lesson"+str(Data_Flow_Player.TEST_ROW)+os.path.sep+"images"+os.path.sep
+        Data_Flow_Player.videoroot = Data_Flow_Player.file_root + os.path.sep + "Lessons"+os.path.sep+"Lesson" + str(Data_Flow_Player.TEST_ROW)+os.path.sep+ "videos" + os.path.sep
+        Data_Flow_Player.saved_canvas = Data_Flow_Player.file_root + os.path.sep +"Lessons"+os.path.sep+"Lesson" + str(Data_Flow_Player.TEST_ROW) +os.path.sep+ "saved_boards"
 
         self.page_index = 0
         self.resizable(width= True, height= True)
@@ -88,7 +88,7 @@ class MagicApplication(tk.Tk):
         self.timer_control = Timer_Display.TimerDisplay(win)
         self.timer_control.rowconfigure(0,weight=1)
         self.timer_control.columnconfigure(0, weight=1)
-        self.timer_control.grid(row=0, column=0,sticky=tk.NSEW,padx=8)
+       # self.timer_control.grid(row=0, column=0,sticky=tk.NSEW,padx=8)
 
         b = ttk.Button(win, text="Close", style='Blue.TButton', command=win.destroy)
         b.grid(row=1, column=0)
@@ -103,13 +103,13 @@ class MagicApplication(tk.Tk):
         self.keydown = 0
         print(str(self.screen_width) + ',' + str(self.screen_height))
        # self.pack_propagate(False)
-
+        self.TitlePage.pack(side=tk.LEFT, anchor=tk.N, fill=tk.BOTH, expand=True)
         self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self,borderwidth=0)
         if self.page_index == 1:
             self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
             if self.show_hide_flag == 1:
                 self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
-        self.TitlePage.pack(side=tk.LEFT, anchor=tk.N, fill=tk.BOTH, expand=True)
+
 
 
     def show_hide_leader_board(self):
@@ -129,7 +129,7 @@ class MagicApplication(tk.Tk):
 
 
     def show_next_page(self, index):
-        ap_mode = Data_Flow.get_application_mode()
+        ap_mode = Data_Flow_Player.get_application_mode()
         if index == 0:
             self.show_factual_page(ap_mode)
             self.page_index += 1
@@ -148,7 +148,7 @@ class MagicApplication(tk.Tk):
             self.page_index += 1
 
     def show_previous_page(self, index):
-        ap_mode = Data_Flow.get_application_mode()
+        ap_mode = Data_Flow_Player.get_application_mode()
         if index == 1:
             self.show_title_page()
             self.page_index -= 1
@@ -174,7 +174,7 @@ class MagicApplication(tk.Tk):
         self.LeaderBoard.pack_forget()
         self.bframe.pack_forget()
         if ap_mode == "Video":
-            self.application_video_page.player.stop()
+            #self.application_video_page.player.stop()
             self.application_video_page.pack_forget()
         else:
             self.application_experiment_page.forget()
@@ -235,13 +235,14 @@ class MagicApplication(tk.Tk):
     def show_factual_page(self,ap_mode):
         if self.page_index == 2:
             if ap_mode == "Video":
-                self.application_video_page.player.stop()
+                #self.application_video_page.player.stop()
                 self.application_video_page.pack_forget()
             else:
                 self.application_experiment_page.forget()
         else:
             if hasattr(self.TitlePage,"player"):
-                 self.TitlePage.player.stop()
+                 #self.TitlePage.player.stop()
+                  pass
             self.TitlePage.pack_forget()
         self.LeaderBoard.pack_forget()
         self.bframe.pack_forget()
@@ -272,19 +273,19 @@ class MagicApplication(tk.Tk):
 
 
 
-if __name__ == "__main__":
-
-    multiprocessing.freeze_support()
-    app = MagicApplication()
-    screen_width = app.winfo_screenwidth()
-    screen_height = app.winfo_screenheight()
-
-
-    app.geometry(str(screen_width)+'x'+str(screen_height)+'+5+5')
-
-
-
-    #app.bind("<KeyPress-Down>", app.show_title_text)
-    app.bind('<Configure>',app.Configure)
-    app.mainloop()
+# if __name__ == "__main__":
+#
+#     multiprocessing.freeze_support()
+#     app = MagicApplication()
+#     screen_width = app.winfo_screenwidth()
+#     screen_height = app.winfo_screenheight()
+#
+#
+#     app.geometry(str(screen_width)+'x'+str(screen_height)+'+5+5')
+#
+#
+#
+#     #app.bind("<KeyPress-Down>", app.show_title_text)
+#     app.bind('<Configure>',app.Configure)
+#     app.mainloop()
 
