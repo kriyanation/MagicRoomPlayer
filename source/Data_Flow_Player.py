@@ -107,33 +107,13 @@ def get_Quote():
  try:
     connection = sqlite3.connect(db)
     cur = connection.cursor()
-    sql = "select count(*) from Magic_Quotes"
+    sql = "select * from Magic_Quotes where Theme_ID = 1"
     cur.execute(sql)
-    rows = cur.fetchall()
-    list_names = []
-    for element in rows:
-        list_names.append(element)
+    rows = cur.fetchone()
 
-
-    for element in list_names:
-        count = int(element[0])
-    # print(str(count)+"count")
-    q_text_number = random.randint(1, count)
-    cur = connection.cursor()
-    sql = "select * from Magic_Quotes where Theme_ID = ?"
-    cur.execute(sql, (q_text_number,))
-    rows = cur.fetchall()
-    list_quote = []
-    for element in rows:
-        list_quote.append(element)
-    connection.commit()
-
-    for element in list_quote:
-        quote = element[1]
-    print(quote)
     connection.commit()
     connection.close()
-    return quote
+    return rows
  except sqlite3.OperationalError:
      messagebox.showerror("DB Error", "Cannot Connect to Database")
      sys.exit()
@@ -291,6 +271,8 @@ def save_leader_board_data(list_points):
             badge ='b'
         elif int(value) > badge_c:
             badge = 'c'
+        if int(value) >=100:
+            value = str(99)
         sql='update Magic_Class_Info set Points = ? , Badge = ? where Name=?'
         print(value,element[0])
         cur.execute(sql,(int(value), badge, element[0]))

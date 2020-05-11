@@ -132,7 +132,7 @@ class MagicTitlePage(tk.Frame):
         image.save(Data_Flow_Player.saved_canvas + os.path.sep + "title_image" + self.title_text + '.png', 'png')
         image.close()
         os.remove('title_image' + self.title_text + ".eps")
-        messagebox.showinfo("Information", "Use Save for saving your interactions on the board in the lesson notes")
+        messagebox.showinfo("Information", "Use Save for saving your interactions on the board in the lesson notes",parent=self)
 
     def show_popup_menu(self, event):
         self.popup_menu.tk_popup(event.x_root, event.y_root)
@@ -268,7 +268,7 @@ class MagicTitlePage(tk.Frame):
         video_notes = video_notes_info[0]
         self.text_frame = tk.Frame(self, background="dark slate gray")
         self.video_note_text = tk.Text(self.text_frame, pady=10, borderwidth=0, highlightthickness=0, relief=tk.SUNKEN,
-                                       wrap=tk.WORD, font=("comic sans", 14), height=10, foreground="PeachPuff2",
+                                       wrap=tk.WORD, font=("comic sans", 14), height=6, foreground="PeachPuff2",
                                        background='dark slate gray')
 
         self.button_notes_image = tk.PhotoImage(file="../images/speaker.png")

@@ -1,5 +1,8 @@
+import logging
 import os
 import random
+import traceback
+
 import sys
 import tkinter as tk
 import webbrowser
@@ -17,7 +20,7 @@ _isLinux = sys.platform.startswith('linux')
 DEFAULT_PEN_SIZE = 5.0
 DEFAULT_COLOR = 'black'
 
-
+logger = logging.getLogger("MagicLogger")
 class MagicExperimentPage(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
@@ -72,7 +75,7 @@ class MagicExperimentPage(tk.Frame):
         self.fill_steps_frame(parent.screen_width,parent.screen_height)
         self.fill_canvas_frame(parent.screen_width,parent.screen_height)
         link_ext = Data_Flow_Player.get_link()
-        if(link_ext is not None or link_ext != ""):
+        if(link_ext is not None and link_ext != ""):
             self.link_button = ttk.Button(self.labelframetwo,text="Launch Link",command=lambda: self.launch_link(link_ext),style="Orange.TButton")
             self.link_button.tooltip = tooltip.ToolTip(self.link_button, "Opens Browser")
             self.link_button.grid(row=10, column=2,sticky=tk.SW,padx=10)
@@ -111,11 +114,15 @@ class MagicExperimentPage(tk.Frame):
 
     def save_image_window(self,canvas,factualterm):
         # subprocess.run([title_image], check=False)
-        canvas.postscript(file='apply_image'+str(factualterm)+".eps")
-        image = Image.open('apply_image'+str(factualterm)+".eps")
-        image.save(Data_Flow_Player.saved_canvas+os.path.sep+'skill_board'+'.png','png')
-        image.close()
-        os.remove('apply_image'+str(factualterm)+".eps")
+        try:
+            canvas.postscript(file='apply_image'+str(factualterm)+".eps")
+            image = Image.open('apply_image'+str(factualterm)+".eps")
+            image.save(Data_Flow_Player.saved_canvas+os.path.sep+'skill_board'+'.png','png')
+            image.close()
+            os.remove('apply_image'+str(factualterm)+".eps")
+        except:
+            logger.error("Canvas Image Could Not be Saved")
+            logger.error(traceback.print_exc())
 
 
 
@@ -268,16 +275,18 @@ class MagicExperimentPage(tk.Frame):
 
     def move_in_X(self,item,index,canvas):
         canvas.move(item, 30, 0)
+        X, Y = canvas.coords(item)
         index += 1
-        if index == self.move_animation_Steps:
+        if index == self.move_animation_Steps or X >= canvas.winfo_width()-100:
             return
         else:
             self.canvas_experiment.after(500, self.move_in_X,item,index,canvas)
 
     def move_in_Y(self,item,index,canvas):
         canvas.move(item, 0, 30)
+        X,Y = canvas.coords(item)
         index += 1
-        if index == self.move_animation_Steps:
+        if index == self.move_animation_Steps or Y >=canvas.winfo_height()-100:
             return
         else:
             self.canvas_experiment.after(500, self.move_in_Y,item,index,canvas)
