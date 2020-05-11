@@ -1,7 +1,7 @@
 
 from reportlab.pdfgen import canvas
 
-import Data_Flow
+import Data_Flow_Player
 import pyttsx3
 import sys
 
@@ -41,7 +41,7 @@ def playtextsound(text,V='m',L='en'):
 
 
 def generate_ip_paper(lesson_id,imageroot):
-    text_id = Data_Flow.get_ip_data()
+    text_id = Data_Flow_Player.get_ip_data()
     text = text_id[1]
     id = text_id[2]
     cc = canvas.Canvas(imageroot+"Question_Papers/ip"+str(id)+".pdf")

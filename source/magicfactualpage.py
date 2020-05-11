@@ -8,6 +8,7 @@ from PIL import Image, ImageTk
 
 import Data_Flow_Player
 import pageutils
+import tooltip
 
 _isLinux = sys.platform.startswith('linux')
 
@@ -113,7 +114,9 @@ class MagicFactualPage(tk.Frame):
         self.voicebutton2 = ttk.Button(self.labelframetwo,image=self.buttonimage, command=lambda: pageutils.playtextsound(factual_content_descriptions[1],'m'),style='Green.TButton')
         self.voicebutton3 = ttk.Button(self.labelframethree, image=self.buttonimage, command=lambda: pageutils.playtextsound(factual_content_descriptions[2],'f'),style='Green.TButton')
 
-
+        self.voicebutton1.tooltip = tooltip.ToolTip(self.voicebutton1, "Read Aloud")
+        self.voicebutton2.tooltip = tooltip.ToolTip(self.voicebutton2, "Read Aloud")
+        self.voicebutton3.tooltip = tooltip.ToolTip(self.voicebutton3, "Read Aloud")
         self.factual_index = 0
         self.add_factual_panel(self.labelframeone,self.factual_term_label_one, self.factual_description_label_one,self.canvas_image1, self.voicebutton1,self.factual_image1,self.factual_index)
         self.old_x, self.old_y = None, None
@@ -138,23 +141,23 @@ class MagicFactualPage(tk.Frame):
         self.canvas_image1.delete("all")
         self.canvas_image2.delete("all")
         self.canvas_image3.delete("all")
-        if self.factual_index == 0 and self.winfo_width()/2 - 100> 0 and self.winfo_height()/2 -100 > 0:
+        if self.factual_index == 0 and self.winfo_width()/2 - 100> 0 and self.winfo_height()/1.5 -100 > 0:
             self.image1 = self.image1.resize(
-                (int(self.winfo_width()/2)-100, int(self.winfo_height()/2)-100), Image.ANTIALIAS)
+                (int(self.winfo_width()/2)-100, int(self.winfo_height()/1.5)-100), Image.ANTIALIAS)
             self.fimage1_display = ImageTk.PhotoImage(self.image1)
-            self.canvas_image1.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 2))
+            self.canvas_image1.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 1.5))
             self.image1_id = self.canvas_image1.create_image(0, 0, image=self.fimage1_display, anchor=tk.NW)
-        elif self.factual_index == 1 and self.winfo_width()/2 - 100> 0 and self.winfo_height()/2 -100 > 0:
+        elif self.factual_index == 1 and self.winfo_width()/2 - 100> 0 and self.winfo_height()/1.5 -100 > 0:
             self.image2 = self.image2.resize(
-            (int(self.winfo_width() / 2)-100, int(self.winfo_height() / 2)-100), Image.ANTIALIAS)
+            (int(self.winfo_width() / 2)-100, int(self.winfo_height() / 1.5)-100), Image.ANTIALIAS)
             self.fimage2_display = ImageTk.PhotoImage(self.image2)
-            self.canvas_image2.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 2))
+            self.canvas_image2.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 1.5))
             self.image2_id = self.canvas_image2.create_image(0, 0, image=self.fimage2_display, anchor=tk.NW)
-        elif self.winfo_width()/2 - 100> 0 and self.winfo_height()/2 -100:
+        elif self.winfo_width()/2 - 100> 0 and self.winfo_height()/1.5 -100:
             self.image3 = self.image3.resize(
-            (int(self.winfo_width() / 2)-100, int(self.winfo_height() / 2)-100), Image.ANTIALIAS)
+            (int(self.winfo_width() / 2)-100, int(self.winfo_height() / 1.5)-100), Image.ANTIALIAS)
             self.fimage3_display = ImageTk.PhotoImage(self.image3)
-            self.canvas_image3.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 2))
+            self.canvas_image3.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 1.5))
             self.image3_id = self.canvas_image3.create_image(0, 0, image=self.fimage3_display, anchor=tk.NW)
 
 
@@ -192,14 +195,16 @@ class MagicFactualPage(tk.Frame):
         self.new_window_image_button = ttk.Button(self.image_frame, text="Zoom Image",
                                                   command=lambda: self.open_image_window(image),
                                                   style='Green.TButton')
+        self.new_window_image_button.tooltip = tooltip.ToolTip(self.new_window_image_button, "Open in new window")
         self.image_save_button = ttk.Button(self.image_frame, text="Save Board",
                                             command=lambda: self.save_image_window(canvas,label.cget("text")),style='Green.TButton')
+        self.image_save_button.tooltip = tooltip.ToolTip(self.image_save_button, "Save your additions to the Image.\n(will appear in lesson notes)")
         self.labeltext=label.cget("text")
         self.desctext=description.cget("text")
         self.text_zoom_button = ttk.Button(self.image_frame, text="Zoom Text",
                                             command=lambda: self.show_text_window(self.labeltext, self.desctext),
                                             style='Green.TButton')
-
+        self.text_zoom_button.tooltip = tooltip.ToolTip(self.text_zoom_button, "View Text in larger size")
         self.text_zoom_button.grid(row=0, column=1, padx=10)
         self.new_window_image_button.grid(row=0,column=0,padx=10)
         self.image_save_button.grid(row=0,column=2,padx=10)
@@ -209,9 +214,11 @@ class MagicFactualPage(tk.Frame):
         self.forward_button = ttk.Button(labelframe, image =self.buttonnextimage,
                                             command=lambda:self.nextfact(index) ,
                                             style='Green.TButton')
+        self.forward_button.tooltip = tooltip.ToolTip(self.forward_button, "Next")
         self.backward_button = ttk.Button(labelframe, image = self.buttonbackimage,
                                             command=lambda:self.move_previous_fact(index) ,
                                             style='Green.TButton')
+        self.backward_button.tooltip = tooltip.ToolTip(self.backward_button, "Previous")
         if (index != 2):
             self.forward_button.grid(row=4,column=4,sticky=tk.S)
 

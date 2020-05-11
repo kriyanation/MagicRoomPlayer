@@ -10,6 +10,7 @@ from PIL import Image, ImageTk
 
 import Data_Flow_Player
 import pageutils
+import tooltip
 
 _isLinux = sys.platform.startswith('linux')
 
@@ -73,6 +74,7 @@ class MagicExperimentPage(tk.Frame):
         link_ext = Data_Flow_Player.get_link()
         if(link_ext is not None or link_ext != ""):
             self.link_button = ttk.Button(self.labelframetwo,text="Launch Link",command=lambda: self.launch_link(link_ext),style="Orange.TButton")
+            self.link_button.tooltip = tooltip.ToolTip(self.link_button, "Opens Browser")
             self.link_button.grid(row=10, column=2,sticky=tk.SW,padx=10)
 
 
@@ -169,32 +171,42 @@ class MagicExperimentPage(tk.Frame):
         self.add_image_icon = tk.PhotoImage(file="../images/image_open.png")
         self.image_button = ttk.Button(self.button_frame, text='Add Image',image=self.add_image_icon, command=self.use_image,style='Green.TButton')
         self.image_button.grid(row=0, column=0,padx=5)
+        self.image_button.tooltip = tooltip.ToolTip(self.image_button, "Open an image file")
 
         self.move_image_icon = tk.PhotoImage(file="../images/image_move.png")
         self.image_act_button = ttk.Button(self.button_frame, text='Move Image', image = self.move_image_icon,command=self.use_image_act,style='Green.TButton')
         self.image_act_button.grid(row=0, column=1,padx=5)
+        self.image_act_button.tooltip = tooltip.ToolTip(self.image_act_button, "Enable Moving of Images")
 
         self.pen_image_icon = tk.PhotoImage(file="../images/pen_brush.png")
         self.pen_button = ttk.Button(self.button_frame, text='Pen',image = self.pen_image_icon, command=self.use_pen,style='Green.TButton')
         self.pen_button.grid(row=0, column=2,padx=5)
+        self.pen_button.tooltip = tooltip.ToolTip(self.pen_button, "Draw with a Pen")
 
         self.color_image_icon = tk.PhotoImage(file="../images/color_pal.png")
         self.color_button = ttk.Button(self.button_frame, text='Color', image= self.color_image_icon,command=self.choose_color,style='Green.TButton')
         self.color_button.grid(row=0, column=3,padx=5)
+        self.color_button.tooltip = tooltip.ToolTip(self.color_button, "Choose a Color")
+
         self.eraser_image_icon = tk.PhotoImage(file="../images/erase.png")
         self.eraser_button = ttk.Button(self.button_frame, text='Eraser',image=self.eraser_image_icon, command=self.use_eraser,style='Green.TButton')
         self.eraser_button.grid(row=0, column=4,padx=5)
-
+        self.eraser_button.tooltip = tooltip.ToolTip(self.eraser_button, "Erase Drawing")
 
         self.choose_size_button = tk.Scale(self.button_frame, orient=tk.HORIZONTAL, from_=1, to=10,
                                            background='dark slate gray', foreground='PeachPuff2')
+        self.choose_size_button.tooltip = tooltip.ToolTip(self.choose_size_button, "Line Size of the Pen")
+
         self.clear_image_icon = tk.PhotoImage(file="../images/cls.png")
         self.clear_button = ttk.Button(self.button_frame, text='Clear', image=self.clear_image_icon,command=self.clear, style='Green.TButton')
+        self.clear_button.tooltip = tooltip.ToolTip(self.clear_button, "Clear Entire Canvas")
+
         self.buttonimage = tk.PhotoImage(file="../images/save.png")
+
         self.image_save_button = ttk.Button(self.button_frame, text="Save Canvas",image=self.buttonimage,
                                             command=lambda: self.save_image_window(self.canvas_experiment, random.randint(0,100)),
                                             style='Green.TButton')
-
+        self.image_save_button.tooltip = tooltip.ToolTip(self.image_save_button, "Save Canvas to view in Lesson Notes\n(Moving to Next Page also saves the canvas)")
 
         self.choose_size_button.grid(row=0, column=5,padx=5)
         self.clear_button.grid(row=0, column=6,padx=5)
@@ -225,13 +237,13 @@ class MagicExperimentPage(tk.Frame):
             image1.thumbnail((scale1, scale2))
             fimage1_display = ImageTk.PhotoImage(image1)
             self.image_list.append(fimage1_display)
-            image1_id = self.canvas_experiment.create_image(xpos, ypos, image=self.image_list[len(self.image_list) - 1],
+            self.image1_id = self.canvas_experiment.create_image(xpos, ypos, image=self.image_list[len(self.image_list) - 1],
                                                             tags="D")
-            self.image_canvas_list.append(image1_id)
+            self.image_canvas_list.append(self.image1_id)
             self.canvas_experiment.tag_bind(self.image_canvas_list[len(self.image_canvas_list) - 1], "<Button1-Motion>",
                                             self.move)
             self.canvas_experiment.tag_bind(self.image_canvas_list[len(self.image_canvas_list) - 1], "<ButtonRelease-1>",self.release)
-            return image1_id
+            return self.image1_id
       except (FileNotFoundError, IsADirectoryError):
             messagebox.showwarning("Warning", "Step Images could not be retrieved \n")
             return None

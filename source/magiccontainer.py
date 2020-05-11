@@ -14,6 +14,8 @@ import magicleaderboard
 import magictitlepage
 import random
 
+import tooltip
+
 
 class MagicApplication(tk.Toplevel):
     def __init__(self, *args, **kwargs):
@@ -30,6 +32,7 @@ class MagicApplication(tk.Toplevel):
                                         style='Green.TButton')
         self.timer_button = ttk.Button(self.tool_frame,text="Timer", command=self.launch_timer,
                                         style='Green.TButton')
+        self.timer_button.tooltip = tooltip.ToolTip(self.timer_button, "Launch Timer App")
 
         self.tool_frame.pack(side=tk.TOP, anchor=tk.NE, pady=5, padx=5)
         self.lbbutton_hide.pack(side=tk.RIGHT, anchor=tk.NE, pady=5,padx=5)
@@ -68,7 +71,8 @@ class MagicApplication(tk.Toplevel):
         self.backimage = tk.PhotoImage(file="../images/back.png")
         self.backbutton = ttk.Button(self.bframe,text="Last Step", image=self.backimage,
                                      command=lambda: self.show_previous_page(self.page_index), style='Green.TButton')
-
+        self.nextbutton.tooltip = tooltip.ToolTip(self.nextbutton, "Move Next")
+        self.backbutton.tooltip = tooltip.ToolTip(self.backbutton, "Move Back")
         self.nextbutton.pack(side = tk.RIGHT, anchor = tk.NE)
         self.backbutton.pack(side=tk.TOP, anchor=tk.NE,padx = 10)
 
@@ -79,19 +83,10 @@ class MagicApplication(tk.Toplevel):
 
 
     def  launch_timer(self):
-        win = tk.Toplevel()
-        win.wm_title("Timer")
-        win.wm_geometry('250x250+20+20')
-        win.resizable(False,False)
-        win.configure(background='dark slate gray')
-        win.attributes('-topmost', 'true')
-        self.timer_control = Timer_Display.TimerDisplay(win)
-        self.timer_control.rowconfigure(0,weight=1)
-        self.timer_control.columnconfigure(0, weight=1)
-       # self.timer_control.grid(row=0, column=0,sticky=tk.NSEW,padx=8)
-
-        b = ttk.Button(win, text="Close", style='Blue.TButton', command=win.destroy)
-        b.grid(row=1, column=0)
+        launch_timer = Timer_Display.TimerDisplay(self)
+        launch_timer.geometry("240x250+200+200")
+        launch_timer.resizable(width=False,height=False)
+        launch_timer.attributes("-topmost", True)
 
     def show_title_page(self):
         if self.page_index == 1:

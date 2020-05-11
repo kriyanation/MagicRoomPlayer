@@ -6,9 +6,10 @@ from tkinter import ttk, Menu, simpledialog
 
 import sys
 
+
 from PIL import Image, ImageTk
 
-import Data_Flow_Player
+import Data_Flow_Player, tooltip
 import pageutils
 import subprocess
 
@@ -19,6 +20,8 @@ _isLinux = sys.platform.startswith('linux')
 class MagicTitlePage(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
+
+
         s = ttk.Style(self)
         s.configure('Green.TButton', background='dark slate gray', foreground='PeachPuff2')
         s.map('Green.TButton', background=[('active', '!disabled', 'dark olive green'), ('pressed', 'PeachPuff2')],
@@ -58,6 +61,7 @@ class MagicTitlePage(tk.Frame):
                                              command=lambda: self.play_quote_audio(self.quote_text),
                                              style='Green.TButton')
         self.quote_audio_button.pack(padx=100, side=tk.TOP)
+        self.quote_audio_button.tooltip = tooltip.ToolTip(self.quote_audio_button,"Read Aloud")
 
         self.title_intro()
 
@@ -81,7 +85,8 @@ class MagicTitlePage(tk.Frame):
 
     def play_video(self):
         try:
-             self.player.play()
+            pass
+             #self.player.play()
             #self.list_player.play()
         except (NameError, OSError, AttributeError):
             messagebox.showwarning("Warning", "VLC is unable to play the file: " + self.title_video_str)
@@ -91,7 +96,8 @@ class MagicTitlePage(tk.Frame):
         subprocess.Popen(['vlc', '-vvv', self.title_video_str])
 
     def pause_video(self):
-        self.player.pause()
+        pass
+        #self.player.pause()
         #self.list_player.pause()
 
     # self.player.set_fullscreen(False)
@@ -103,7 +109,8 @@ class MagicTitlePage(tk.Frame):
         self.video_mode = True
         self.title_video()
         try:
-            self.list_player.play()
+           # self.list_player.play()
+            pass
         except (NameError, OSError, AttributeError):
             messagebox.showwarning("Warning", "VLC is unable to play the file: " + self.title_video_str)
 
@@ -146,12 +153,17 @@ class MagicTitlePage(tk.Frame):
         self.new_window_image_button = ttk.Button(self.image_frame, text="Zoom Image",
                                                   command=lambda: self.open_image_window(title_image),
                                                   style='Green.TButton')
+        self.new_window_image_button.tooltip = tooltip.ToolTip(self.new_window_image_button, "Open in new window")
+
         self.image_save_button = ttk.Button(self.image_frame, text="Save Board",
                                             style='Green.TButton')
+        self.image_save_button.tooltip = tooltip.ToolTip(self.image_save_button, "Save your additions to the Image.\n(will appear in lesson notes)")
 
         self.show_video_button = ttk.Button(self.image_frame, text="Show Video",
                                             command=self.new_window,
                                             style='Green.TButton')
+        self.show_video_button.tooltip = tooltip.ToolTip(self.show_video_button,
+                                                         "Launches VLC video player")
 
         self.new_window_image_button.pack(pady=5, side=tk.LEFT)
         self.image_save_button.pack(padx=5, side=tk.LEFT)
@@ -192,10 +204,10 @@ class MagicTitlePage(tk.Frame):
     def resize(self, event):
         if not self.video_mode:
             self.img = self.img.resize(
-                (int(self.winfo_width() / 2) - 100, int(self.winfo_height() / 2) - 100), Image.ANTIALIAS)
+                (int(self.winfo_width() / 2) - 100, int(self.winfo_height() / 1.5) - 100), Image.ANTIALIAS)
 
             self.img1 = ImageTk.PhotoImage(self.img)
-            self.canvas.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 2))
+            self.canvas.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 1.5))
             self.title_image_id = self.canvas.create_image(10, 10, image=self.img1,
                                                            anchor=tk.NW)
 
@@ -265,6 +277,8 @@ class MagicTitlePage(tk.Frame):
                                              command=lambda: self.play_quote_audio(video_notes),
                                              style='Green.TButton')
         pageutils.animate_text(self, video_notes, 0, self.video_note_text, len(video_notes) - 1)
+        self.intro_text_speaker.tooltip = tooltip.ToolTip(self.intro_text_speaker, "Read Aloud")
+
         self.intro_text_speaker.pack(side=tk.BOTTOM)
         self.scrollbar = ttk.Scrollbar(self.text_frame)
         self.video_note_text.config(yscrollcommand=self.scrollbar.set)

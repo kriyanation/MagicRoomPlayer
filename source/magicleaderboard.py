@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk, StringVar
 
 import Data_Flow_Player
+import tooltip
 
 
 class MagicLeaderBoard(tk.Frame):
@@ -36,6 +37,7 @@ class MagicLeaderBoard(tk.Frame):
         self.saveimage = tk.PhotoImage(file="../images/floppy.png")
        # self.refreshbutton = ttk.Button(self.dataframe,text="Refresh",style='Green.TButton',command=self.refresh_data,cursor="arrow")
         self.savebutton = ttk.Button(self.dataframe,text="Save",image = self.saveimage, style='Green.TButton',command=self.save_data,cursor="arrow")
+        self.savebutton.tooltip = tooltip.ToolTip(self.savebutton, "Save Changes")
         self.dataframe.grid(row=0,column=3,sticky=tk.E)
         #self.refreshbutton.grid(row=0,column=0)
         self.savebutton.grid(row=0,column=3,padx=5,sticky=tk.W)

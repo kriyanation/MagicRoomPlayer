@@ -6,7 +6,7 @@ import subprocess
 import sys
 
 
-import Data_Flow
+import Data_Flow_Player
 import pageutils
 
 _isLinux = sys.platform.startswith('linux')
@@ -33,7 +33,7 @@ class MagicApplicationVideo(tk.Frame):
         s.configure('Horizontal.Green.TScale', background='dark slate gray', foreground='PeachPuff2')
         s.map('Green.TButton', background=[('active', '!disabled', 'dark olive green'), ('pressed', 'PeachPuff2')],
               foreground=[('pressed', 'PeachPuff2'), ('active', 'PeachPuff2')])
-        self.application_video_info = Data_Flow.get_application_video()
+        self.application_video_info = Data_Flow_Player.get_application_video()
         self.video_link = self.application_video_info[0]
         self.video_notes = self.application_video_info[1]
 
