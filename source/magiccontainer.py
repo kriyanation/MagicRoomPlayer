@@ -20,6 +20,15 @@ import tooltip
 class MagicApplication(tk.Toplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        s = ttk.Style(self)
+        s.theme_use("clam")
+        s.configure('Green.TButton', background='dark slate gray', foreground='PeachPuff2')
+        s.map('Green.TButton', background=[('active', '!disabled', 'dark olive green'), ('pressed', 'PeachPuff2')],
+              foreground=[('pressed', 'PeachPuff2'), ('active', 'PeachPuff2')])
+
+        s.configure('TScrollbar', background='dark slate gray', foreground='dark slate gray')
+        s.map('TScrollbar', background=[('active', '!disabled', 'dark olive green'), ('disabled', 'dark slate gray')],
+              foreground=[('active', 'PeachPuff2'), ('disabled', 'dark slate gray')])
 
         self.title("Learning Room")
         self.configure(background='dark slate gray')
