@@ -285,7 +285,7 @@ class MagicTitlePage(tk.Frame):
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.scrollbar.config(command=self.video_note_text.yview, style='TScrollbar')
         self.text_frame.pack(side=tk.BOTTOM, fill=tk.X)
-        self.video_note_text.pack(fill=tk.X)
+        self.video_note_text.pack(padx=50, anchor = tk.CENTER,fill=tk.X)
 
     def OnConfigure(self, *unused):
         """Some widget configuration changed.

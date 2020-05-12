@@ -1,4 +1,5 @@
 import configparser
+import logging
 import os
 import random
 import sqlite3
@@ -12,6 +13,7 @@ config = configparser.RawConfigParser()
 two_up = Path(__file__).parents[2]
 imageroot = ""
 videoroot = ""
+logger = logging.getLogger("MagicLogger")
 
 
 file_root = os.path.abspath(os.path.join(os.getcwd(),".."))
@@ -113,10 +115,10 @@ def get_Quote():
 
     connection.commit()
     connection.close()
-    return rows
+    return rows[1]
  except sqlite3.OperationalError:
      messagebox.showerror("DB Error", "Cannot Connect to Database")
-     sys.exit()
+     logger.info("Error connecting to database getQuote")
 
 def get_Running_Notes():
  try:
