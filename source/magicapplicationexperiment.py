@@ -342,7 +342,7 @@ class MagicExperimentPage(tk.Frame):
     def choose_color(self):
         self.eraser_on = False
         self.line_width = self.choose_size_button.get()
-        self.color = askcolor(color=self.color)[1]
+        self.color = askcolor(color=self.color,parent=self)[1]
         self.use_pen()
     def use_eraser(self):
         self.canvas_experiment.bind('<B1-Motion>', self.paint)
