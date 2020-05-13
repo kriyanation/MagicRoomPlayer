@@ -140,15 +140,16 @@ class MagicExperimentPage(tk.Frame):
 
          imagefile = self.experiment_content_images[0]
          imageid = self.draw_image(imagefile, 100, 100,200,200)
-         self.image_map[imageid] = imagefile
-         self.audiobutton = ttk.Button(self.labelframetwo, text="Voice-On", style='Green.TButton',command= self.play_step_audio)
+         if imageid != None:
+             self.image_map[imageid] = imagefile
+             self.audiobutton = ttk.Button(self.labelframetwo, text="Voice-On", style='Green.TButton',command= self.play_step_audio)
 
-         self.audiooffbutton = ttk.Button(self.labelframetwo, text="Voice-Off", style='Green.TButton',
-                                  command= self.stop_step_audio)
-         self.audiobutton.grid(row =0,padx = 20,column=1,sticky=tk.NW)
-         self.audiooffbutton.grid(row=0, column=2, sticky=tk.NW)
+             self.audiooffbutton = ttk.Button(self.labelframetwo, text="Voice-Off", style='Green.TButton',
+                                      command= self.stop_step_audio)
+             self.audiobutton.grid(row =0,padx = 20,column=1,sticky=tk.NW)
+             self.audiooffbutton.grid(row=0, column=2, sticky=tk.NW)
 
-         self.stepbutton.configure(command=lambda: self.addnewstep(width, height))
+             self.stepbutton.configure(command=lambda: self.addnewstep(width, height))
 
     def play_step_audio(self):
         self.sound_flag = True
@@ -252,7 +253,7 @@ class MagicExperimentPage(tk.Frame):
             self.canvas_experiment.tag_bind(self.image_canvas_list[len(self.image_canvas_list) - 1], "<ButtonRelease-1>",self.release)
             return self.image1_id
       except (FileNotFoundError, IsADirectoryError):
-            messagebox.showwarning("Warning", "Step Images could not be retrieved \n")
+            messagebox.showwarning("Warning", "Step Images could not be retrieved \n",parent=self)
             return None
 
 
@@ -410,8 +411,9 @@ class MagicExperimentPage(tk.Frame):
             self.step_descriptions.append(desc_label)
             imagefile = self.experiment_content_images[self.index]
             imageid = self.draw_image(imagefile,100, 100,200,200)
-            self.image_map[imageid] = imagefile
+
             if imageid != None:
+                self.image_map[imageid] = imagefile
                 self.move_animate(self.canvas_experiment, imageid, self.canvas_experiment.winfo_width()-100,self.canvas_experiment.winfo_height()-100)
                 self.move_flag = False
             if self.sound_flag:
