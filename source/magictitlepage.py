@@ -180,7 +180,7 @@ class MagicTitlePage(tk.Frame):
         self.popup_menu.add_command(label="Light", command=self.switch_to_light)
         self.popup_menu.add_command(label="Text")
 
-        self.canvas.pack(padx=3, pady=20)
+        self.canvas.pack(padx=10, pady=10)
         self.canvas.bind('<Button-3>', self.show_popup_menu)
         self.image_save_button.configure(command=self.save_image_window)
         self.canvas.bind("<B1-Motion>", self.paint)
@@ -204,10 +204,10 @@ class MagicTitlePage(tk.Frame):
     def resize(self, event):
         if not self.video_mode:
             self.img = self.img.resize(
-                (int(self.winfo_width() / 2) - 100, int(self.winfo_height() / 1.5) - 100), Image.ANTIALIAS)
+                (int(self.winfo_width() / 2) - 100, int(self.winfo_height() / 2.0) - 100), Image.ANTIALIAS)
 
             self.img1 = ImageTk.PhotoImage(self.img)
-            self.canvas.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 1.5))
+            self.canvas.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 2.0))
             self.title_image_id = self.canvas.create_image(10, 10, image=self.img1,
                                                            anchor=tk.NW)
 
