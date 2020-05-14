@@ -97,6 +97,8 @@ def get_title_video():
     #print(text)
     connection.commit()
     connection.close()
+    if("/" in text):
+        return text
     return videoroot+text
  except sqlite3.OperationalError:
     messagebox.showerror("DB Error", "Cannot Connect to Database" )
