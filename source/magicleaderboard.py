@@ -61,7 +61,7 @@ class MagicLeaderBoard(tk.Frame):
 
     def c_function(self, event):
         if self.mode == "inline":
-            self.c_canvas.configure(scrollregion=self.c_canvas.bbox("all"),borderwidth=0,height=self.parent.winfo_height()-300)
+            self.c_canvas.configure(scrollregion=self.c_canvas.bbox("all"),borderwidth=0,width=self.parent.winfo_width()/4,height=self.parent.winfo_height()-300)
         else:
             self.c_canvas.configure(scrollregion=self.c_canvas.bbox("all"), borderwidth=0,width=320,
                                     height=300)
