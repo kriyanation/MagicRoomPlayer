@@ -1,3 +1,4 @@
+import logging
 import multiprocessing
 import os
 import tkinter as tk
@@ -16,6 +17,7 @@ import random
 
 import tooltip
 
+logger = logging.getLogger("MagicLogger")
 
 class MagicApplication(tk.Toplevel):
     def __init__(self, *args, **kwargs):

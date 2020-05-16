@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+import logging
 import os
 import tkinter as tk
 from tkinter import messagebox
@@ -15,7 +16,7 @@ import subprocess
 
 _isLinux = sys.platform.startswith('linux')
 
-
+logger = logging.getLogger("MagicLogger")
 
 class MagicTitlePage(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -90,6 +91,7 @@ class MagicTitlePage(tk.Frame):
             #self.list_player.play()
         except (NameError, OSError, AttributeError):
             messagebox.showwarning("Warning", "VLC is unable to play the file: " + self.title_video_str)
+            logger.exception("VLC could not be launched")
 
     def new_window(self):
         #self.player.stop()
@@ -113,7 +115,7 @@ class MagicTitlePage(tk.Frame):
             pass
         except (NameError, OSError, AttributeError):
             messagebox.showwarning("Warning", "VLC is unable to play the file: " + self.title_video_str)
-
+            logger.exception("VLC cannot be launched")
     def play_quote_audio(self, text):
         pageutils.playtextsound(text)
 
@@ -198,8 +200,7 @@ class MagicTitlePage(tk.Frame):
 
         except (FileNotFoundError, IsADirectoryError):
             messagebox.showerror("Error", "Title image not found in the path \n" + title_image)
-            self.parent_window.destroy()
-            sys.exit()
+            logger.exception("TItle image  cannot be loaded")
 
     def resize(self, event):
         if not self.video_mode:

@@ -87,7 +87,9 @@ class MagicExperimentPage(tk.Frame):
     def zoom_image(self,event,canvas):
         item = canvas.find_closest(event.x, event.y)
         if 'D' in canvas.gettags(item):
+            self.image_canvas_list.remove(item[0])
             canvas.delete(item)
+
             image = self.image_map.get(item[0])
             image_id = self.draw_image(image,event.x,event.y,400,400)
             self.image_map[image_id] = image
@@ -327,6 +329,9 @@ class MagicExperimentPage(tk.Frame):
 
 
     def use_pen(self):
+        for image in self.image_canvas_list:
+            self.canvas_experiment.tag_unbind(image, "<Button1-Motion>")
+            self.canvas_experiment.tag_unbind(image, "<ButtonRelease-1>")
         self.canvas_experiment.bind('<B1-Motion>', self.paint)
         self.canvas_experiment.bind('<ButtonRelease-1>', self.reset)
         self.line_width = self.choose_size_button.get()
