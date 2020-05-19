@@ -236,7 +236,7 @@ class MagicExperimentPage(tk.Frame):
         self.canvas_experiment.bind('<B1-Motion>', "")
         self.canvas_experiment.bind('<ButtonRelease-1>', "")
        # tk.Tk().withdraw()  # avoids window accompanying tkinter FileChooser
-        img = filedialog.askopenfilename(initialdir=Data_Flow_Player.file_root, title="Select image file",
+        img = filedialog.askopenfilename(initialdir=Data_Flow_Player.file_root, parent=self,title="Select image file",
                                          filetypes=(
                                              ("jpeg files", "*.jpg"), ("png files", "*.png"), ("gif files", "*.gif")))
         imageid = self.draw_image(img,self.canvas_experiment.winfo_width()-100,self.canvas_experiment.winfo_height()-100,200,200)
