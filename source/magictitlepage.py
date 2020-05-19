@@ -12,7 +12,7 @@ from PIL import Image, ImageTk
 
 import Data_Flow_Player, tooltip
 import pageutils
-import subprocess
+import subprocess, threading
 
 _isLinux = sys.platform.startswith('linux')
 
@@ -117,7 +117,9 @@ class MagicTitlePage(tk.Frame):
             messagebox.showwarning("Warning", "VLC is unable to play the file: " + self.title_video_str)
             logger.exception("VLC cannot be launched")
     def play_quote_audio(self, text):
-        pageutils.playtextsound(text)
+        sound_speak = threading.Thread(target=pageutils.playtextsound,args=(text, ))
+        sound_speak.start()
+       # pageutils.playtextsound(text)
 
     def open_image_window(self, title_image):
         # subprocess.run([title_image], check=False)

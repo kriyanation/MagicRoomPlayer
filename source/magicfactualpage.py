@@ -1,5 +1,7 @@
 import os
 import subprocess
+import threading
+
 import sys
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
@@ -110,9 +112,9 @@ class MagicFactualPage(tk.Frame):
 
         self.buttonimage = tk.PhotoImage(file="../images/speaker.png")
 
-        self.voicebutton1 = ttk.Button(self.labelframeone, image=self.buttonimage, command=lambda: pageutils.playtextsound(factual_content_descriptions[0],'f'),style='Green.TButton')
-        self.voicebutton2 = ttk.Button(self.labelframetwo,image=self.buttonimage, command=lambda: pageutils.playtextsound(factual_content_descriptions[1],'m'),style='Green.TButton')
-        self.voicebutton3 = ttk.Button(self.labelframethree, image=self.buttonimage, command=lambda: pageutils.playtextsound(factual_content_descriptions[2],'f'),style='Green.TButton')
+        self.voicebutton1 = ttk.Button(self.labelframeone, image=self.buttonimage, command=lambda: self.playtextsound(factual_content_descriptions[0],'f'),style='Green.TButton')
+        self.voicebutton2 = ttk.Button(self.labelframetwo,image=self.buttonimage, command=lambda: self.playtextsound(factual_content_descriptions[1],'m'),style='Green.TButton')
+        self.voicebutton3 = ttk.Button(self.labelframethree, image=self.buttonimage, command=lambda: self.playtextsound(factual_content_descriptions[2],'f'),style='Green.TButton')
 
         self.voicebutton1.tooltip = tooltip.ToolTip(self.voicebutton1, "Read Aloud")
         self.voicebutton2.tooltip = tooltip.ToolTip(self.voicebutton2, "Read Aloud")
@@ -307,8 +309,9 @@ class MagicFactualPage(tk.Frame):
                                    self.factual_description_label_two, self.canvas_image2,
                                    self.voicebutton2, self.factual_image2,1)
 
-
-
+    def playtextsound(self, text, v):
+        sound_speak = threading.Thread(target=pageutils.playtextsound, args=(text, v))
+        sound_speak.start()
 
 
 if __name__== "__main__":

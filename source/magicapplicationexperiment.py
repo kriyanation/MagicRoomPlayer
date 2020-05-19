@@ -1,6 +1,7 @@
 import logging
 import os
 import random
+import threading
 import traceback
 
 import sys
@@ -139,6 +140,9 @@ class MagicExperimentPage(tk.Frame):
          self.step_one_label.grid(row=1, column=0)
          self.step_one_desc_label.grid(row=1, column=1,sticky=tk.W,columnspan=2, padx = 50)
          self.stepbutton.grid(row=0, column = 0, sticky=tk.NW)
+         sound_speak1 = threading.Thread(target=pageutils.playtextsound,
+                                        args=(self.experiment_content_terms[0], 'f'))
+         sound_speak1.start()
 
          imagefile = self.experiment_content_images[0]
          imageid = self.draw_image(imagefile, 100, 100,200,200)
@@ -422,7 +426,9 @@ class MagicExperimentPage(tk.Frame):
                 self.move_animate(self.canvas_experiment, imageid, self.canvas_experiment.winfo_width()-100,self.canvas_experiment.winfo_height()-100)
                 self.move_flag = False
             if self.sound_flag:
-                 pageutils.playtextsound(self.experiment_content_terms[self.index])
+                sound_speak = threading.Thread(target=pageutils.playtextsound, args=(self.experiment_content_terms[self.index], 'f'))
+                sound_speak.start()
+
 
 
         self.index += 1
