@@ -120,7 +120,7 @@ class MagicExperimentPage(tk.Frame):
         try:
             canvas.postscript(file='apply_image'+str(factualterm)+".eps")
             image = Image.open('apply_image'+str(factualterm)+".eps")
-            image.save(Data_Flow_Player.saved_canvas+os.path.sep+'skill_board'+'.png','png')
+            image.save(Data_Flow_Player.saved_canvas+os.path.sep+'skill_board'+factualterm+'.png','png')
             image.close()
             os.remove('apply_image'+str(factualterm)+".eps")
         except:
