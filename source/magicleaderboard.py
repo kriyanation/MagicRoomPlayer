@@ -10,30 +10,24 @@ class MagicLeaderBoard(tk.Frame):
         super().__init__(parent, *args, **kwargs)
         self.parent=parent
         self.mode = mode
-        self.configure(background='dark slate gray',borderwidth=0)
+        self.configure(background='steelblue3',borderwidth=0)
         s = ttk.Style(self)
-        s.configure('Red.TLabelframe', background='dark slate gray')
-        s.configure('Red.TLabelframe.Label', font=('courier', 12, 'bold','italic'))
-        s.configure('Red.TLabelframe.Label', foreground='PeachPuff2')
-        s.configure('Red.TLabelframe.Label', background='dark slate gray')
+        s.configure('Red.TLabelframe', background='steelblue3')
+        s.configure('Red.TLabelframe.Label', font=('helvetica', 12, 'bold'))
+        s.configure('Red.TLabelframe.Label', foreground='white')
+        s.configure('Red.TLabelframe.Label', background='steelblue3')
 
-        s.configure('Green.TButton', background='dark slate gray', foreground='PeachPuff2')
-        s.map('Green.TButton', background=[('active', '!disabled', 'dark olive green'), ('pressed', 'PeachPuff2')],
-              foreground=[('pressed', 'PeachPuff2'), ('active', 'PeachPuff2')])
 
-        s.configure('TScrollbar', background='dark slate gray', foreground='dark slate gray')
-        s.map('TScrollbar', background=[('active', '!disabled', 'dark olive green'), ('disabled', 'dark slate gray')],
-              foreground=[('active', 'PeachPuff2'), ('disabled', 'dark slate gray')])
 
        # self.leaderboard = ttk.LabelFrame(self, text = "Class Leaderboard", width=parent.screen_width/4, height=parent.screen_height,borderwidth=8,relief=tk.GROOVE,style='Red.TLabelframe')
-        self.c_canvas = tk.Canvas(self, background='dark slate gray',borderwidth=0,highlightthickness=0)
+        self.c_canvas = tk.Canvas(self, background='white',borderwidth=0,highlightthickness=0)
 
         self.c_canvas.grid(row=0, column=0)
         self.leaderboard = tk.Frame(self.c_canvas,
                                            borderwidth=0,
-                                          background='dark slate gray')
+                                          background='white')
         self.dataframe= tk.Frame(self.leaderboard)
-        self.dataframe.configure(background='dark slate gray')
+        self.dataframe.configure(background='white')
         self.saveimage = tk.PhotoImage(file="../images/floppy.png")
        # self.refreshbutton = ttk.Button(self.dataframe,text="Refresh",style='Green.TButton',command=self.refresh_data,cursor="arrow")
         self.savebutton = ttk.Button(self.dataframe,text="Save",image = self.saveimage, style='Green.TButton',command=self.save_data,cursor="arrow")
@@ -50,9 +44,9 @@ class MagicLeaderBoard(tk.Frame):
 
         self.scrollbar.config(command=self.c_canvas.yview, style='TScrollbar')
         #self.leaderboard.grid(row=0, column=0, sticky=tk.W + tk.E)
-        self.headernamelabel = ttk.Label(self.leaderboard, text="Name", font = ('TkDefaultFont', 16),background='dark slate gray', foreground = 'PeachPuff2')
-        self.headerbadgelabel = ttk.Label(self.leaderboard, text="Badge", font=('TkDefaultFont', 16),background='dark slate gray', foreground='PeachPuff2')
-        self.headerpointslabel = ttk.Label(self.leaderboard, text="Points",font=('TkDefaultFont', 16),background='dark slate gray', foreground='PeachPuff2',)
+        self.headernamelabel = ttk.Label(self.leaderboard, text="Name", font = ('TkDefaultFont', 16,'bold'),background='white', foreground = 'midnight blue')
+        self.headerbadgelabel = ttk.Label(self.leaderboard, text="Badge", font=('TkDefaultFont', 16,'bold'),background='white', foreground='midnight blue')
+        self.headerpointslabel = ttk.Label(self.leaderboard, text="Points",font=('TkDefaultFont', 16,'bold'),background='white', foreground='midnight blue')
 
         self.headernamelabel.grid(row=0, column=0, padx=0, pady=2)
         self.headerbadgelabel.grid(row=0, column=1,padx=10, pady=2)
@@ -76,21 +70,21 @@ class MagicLeaderBoard(tk.Frame):
         self.badge_image_medalb = tk.PhotoImage(file= '../images/medalb.png' )
         self.badge_image_medalc = tk.PhotoImage(file='../images/medalc.png')
         for element in list_names:
-            self.datanamelabel = ttk.Label(self.leaderboard, text=element[0].strip(), font = ('TkDefaultFont', 12),
-                                           foreground = 'PeachPuff2',wraplength = 80,background='dark slate gray')
+            self.datanamelabel = ttk.Label(self.leaderboard, text=element[0].strip(), font = ('TkDefaultFont', 12,'bold'),
+                                           foreground = 'midnight blue',wraplength = 80,background='white')
             if element[1].strip() == 'a':
-                self.databadgelabel = ttk.Label(self.leaderboard, image=self.badge_image_medala,background='dark slate gray')
+                self.databadgelabel = ttk.Label(self.leaderboard, image=self.badge_image_medala,background='white')
             elif element[1].strip() == 'b':
-                self.databadgelabel = ttk.Label(self.leaderboard, image=self.badge_image_medalb,background='dark slate gray')
+                self.databadgelabel = ttk.Label(self.leaderboard, image=self.badge_image_medalb,background='white')
             else:
                 self.databadgelabel = ttk.Label(self.leaderboard, image=self.badge_image_medalc,
-                                                background='dark slate gray')
+                                                background='white')
 
             points = StringVar()
             points.set(str(element[2]))
             self.spinboxvalue.append(points)
             print("rowindex"+str(rowindex))
-            self.datapointspinner = ttk.Spinbox(self.leaderboard,background='dark slate gray',foreground='dark slate gray',font=('TkDefaultFont', 12),
+            self.datapointspinner = ttk.Spinbox(self.leaderboard,background='white',foreground='midnight blue',font=('helvetica', 12,"bold"),
                                                 from_=0,to=100,textvariable=self.spinboxvalue[rowindex-2],wrap=True,width=2)
 
             self.list_points.append((element[0],self.spinboxvalue[rowindex-2]))

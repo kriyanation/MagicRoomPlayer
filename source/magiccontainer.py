@@ -1,12 +1,13 @@
 import logging
-import multiprocessing
+
 import os
 import tkinter as tk
 from tkinter import ttk
 
 import Data_Flow_Player
-import LessonList
+
 import Timer_Display
+import lesson_list_player
 import magicapplicationexperiment
 import magicapplicationvideo
 import magicfactualpage
@@ -24,57 +25,49 @@ class MagicApplication(tk.Toplevel):
         super().__init__(*args, **kwargs)
         s = ttk.Style(self)
         s.theme_use("clam")
-        s.configure('Green.TButton', background='dark slate gray', foreground='PeachPuff2')
-        s.map('Green.TButton', background=[('active', '!disabled', 'dark olive green'), ('pressed', 'PeachPuff2')],
-              foreground=[('pressed', 'PeachPuff2'), ('active', 'PeachPuff2')])
+        s.configure('Green.TButton', background='white', foreground='midnight blue',font=('helvetica', 12, 'bold'),bordercolor="midnight blue")
+        s.map('Green.TButton', background=[('active', '!disabled', 'cyan'), ('pressed', 'white')],
+              foreground=[('pressed', 'midnight blue'), ('active', 'midnight blue')])
 
-        s.configure('TScrollbar', background='dark slate gray', foreground='dark slate gray')
-        s.map('TScrollbar', background=[('active', '!disabled', 'dark olive green'), ('disabled', 'dark slate gray')],
-              foreground=[('active', 'PeachPuff2'), ('disabled', 'dark slate gray')])
+        s.configure('TScrollbar', background='midnight blue', foreground='steelblue3')
+        s.map('TScrollbar', background=[('active', '!disabled', 'steelblue3'), ('pressed', 'snow')],
+              foreground=[('pressed', 'midnight blue'), ('active', 'midnight blue')])
+        s.configure('Red.TLabelframe', background='steelblue3', bordercolor="midnight blue")
+        s.configure('Red.TLabelframe.Label', font=('helvetica', 15, 'bold'))
+        s.configure('Red.TLabelframe.Label', foreground='white')
+        s.configure('Red.TLabelframe.Label', background='steelblue3')
 
         self.title("Learning Room")
-        self.configure(background='dark slate gray')
+        self.configure(background='steelblue3')
         self.headerimage = tk.PhotoImage(file="../images/learning.png")
-        ttk.Label(self, text="Learning Room", image=self.headerimage, compound=tk.RIGHT, background='dark slate gray',
-                  font=("courier", 18, 'bold'), foreground='PeachPuff2').pack(side=tk.TOP)
-
-        self.tool_frame = tk.Frame(self, background="dark slate gray")
+        ttk.Label(self, text="Learning Room", image=self.headerimage, compound=tk.RIGHT, background='steelblue3',
+                  font=("helvetica", 18, 'bold'), foreground='white').pack(side=tk.TOP)
+        self.tool_frame = tk.Frame(self, background="steelblue3")
         self.lbbutton_hide = ttk.Button(self.tool_frame,text="Show/Hide LeaderBoard", command=self.show_hide_leader_board,
                                         style='Green.TButton')
         self.timer_button = ttk.Button(self.tool_frame,text="Timer", command=self.launch_timer,
                                         style='Green.TButton')
         self.timer_button.tooltip = tooltip.ToolTip(self.timer_button, "Launch Timer App")
-
         self.tool_frame.pack(side=tk.TOP, anchor=tk.NE, pady=5, padx=5)
         self.lbbutton_hide.pack(side=tk.RIGHT, anchor=tk.NE, pady=5,padx=5)
         self.timer_button.pack(side=tk.RIGHT, anchor=tk.NE, pady=5,padx=5)
         self.show_hide_flag = 1
-      #  self.lbbutton_show = ttk.Button(text="Show LeaderBoard", command=self.show_leader_board,
-      #                                  style='Green.TButton')
-
-        app = LessonList.MagicLessonList(bg='dark slate gray', fg='white', buttonbg='dark olive green', selectmode=tk.SINGLE,
-                              buttonfg='snow',parent=self)
+        app = lesson_list_player.MagicLessonList(parent=self)
         self.wait_window(app)
         print(self.selected_lessons)
         Data_Flow_Player.TEST_ROW=self.selected_lessons[0]
         Data_Flow_Player.imageroot = Data_Flow_Player.file_root+os.path.sep+"Lessons"+os.path.sep+"Lesson"+str(Data_Flow_Player.TEST_ROW)+os.path.sep+"images"+os.path.sep
         Data_Flow_Player.videoroot = Data_Flow_Player.file_root + os.path.sep + "Lessons"+os.path.sep+"Lesson" + str(Data_Flow_Player.TEST_ROW)+os.path.sep+ "videos" + os.path.sep
         Data_Flow_Player.saved_canvas = Data_Flow_Player.file_root + os.path.sep +"Lessons"+os.path.sep+"Lesson" + str(Data_Flow_Player.TEST_ROW) +os.path.sep+ "saved_boards"
-
         self.page_index = 0
         self.resizable(width= True, height= True)
         s = ttk.Style()
         s.theme_use('clam')
-        s.configure('Green.TButton', background='dark slate gray',foreground='PeachPuff2')
-        s.map('Green.TButton',background=[('active','!disabled','dark olive green'),('pressed','PeachPuff2')], foreground=[('pressed','PeachPuff2'),('active','PeachPuff2')])
         #[('pressed' ,'dark olive green'),('active','white')],foreground=[('pressed','PeachPuff2'),('active', 'PeachPuff2')])
         self.screen_width = self.winfo_screenwidth()
         self.screen_height = self.winfo_screenheight()
 
-
-        self.show_title_page()
-
-        self.bframe = tk.Frame(self,background="dark slate gray")
+        self.bframe = tk.Frame(self,background="steelblue3")
 
         self.nextimage = tk.PhotoImage(file="../images/next.png")
         self.nextbutton = ttk.Button(self.bframe,text="Next Step", image=self.nextimage,
@@ -86,10 +79,8 @@ class MagicApplication(tk.Toplevel):
         self.backbutton.tooltip = tooltip.ToolTip(self.backbutton, "Move Back")
         self.nextbutton.pack(side = tk.RIGHT, anchor = tk.NE)
         self.backbutton.pack(side=tk.TOP, anchor=tk.NE,padx = 10)
+        self.show_title_page()
 
-
-        self.bframe.pack(side=tk.BOTTOM, anchor=tk.NE, pady=30)
-        self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE, pady=5)
 
 
 
@@ -100,22 +91,24 @@ class MagicApplication(tk.Toplevel):
         launch_timer.attributes("-topmost", True)
 
     def show_title_page(self):
+
         if self.page_index == 1:
             self.factual_page.forget()
             self.LeaderBoard.pack_forget()
             self.bframe.pack_forget()
 
+        self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self, borderwidth=0)
         self.TitlePage = magictitlepage.MagicTitlePage(self)
-        self.keydown = 0
-        print(str(self.screen_width) + ',' + str(self.screen_height))
-       # self.pack_propagate(False)
-        self.TitlePage.pack(side=tk.LEFT, anchor=tk.N, fill=tk.BOTH, expand=True)
-        self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self,borderwidth=0)
+
         if self.page_index == 1:
-            self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
+            self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, padx=5, pady=30)
             if self.show_hide_flag == 1:
                 self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
-
+            self.TitlePage.pack(side=tk.LEFT, anchor=tk.N, fill=tk.BOTH, expand=True)
+        else:
+            self.bframe.pack(side=tk.BOTTOM, anchor=tk.NE, padx=5,pady=30)
+            self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE, pady=5)
+            self.TitlePage.pack(side=tk.LEFT, anchor=tk.N, fill=tk.BOTH, expand=True)
 
 
     def show_hide_leader_board(self):
@@ -187,7 +180,7 @@ class MagicApplication(tk.Toplevel):
         self.independent_practice = magicindependentpractice.MagicIndenpendentPractice(self)
 
         self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
-        self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
+        self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, padx=5,pady=30)
         if self.show_hide_flag == 1:
             self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
         self.independent_practice.pack(side=tk.LEFT, fill=tk.BOTH, expand=tk.TRUE, anchor=tk.N)
@@ -203,7 +196,7 @@ class MagicApplication(tk.Toplevel):
         self.application_video_page = magicapplicationvideo.MagicApplicationVideo(self)
         self.application_video_page.pack(side=tk.LEFT, anchor=tk.N)
         self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
-        self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
+        self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, padx=5,pady=30)
         self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
 
 
@@ -219,7 +212,7 @@ class MagicApplication(tk.Toplevel):
 
 
         self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
-        self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
+        self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, padx=5, pady=30)
         if self.show_hide_flag == 1:
           #self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
           pass
@@ -231,7 +224,9 @@ class MagicApplication(tk.Toplevel):
         win = tk.Toplevel()
         win.wm_title("Leaderboard")
         win.wm_geometry('340x400+500+500')
-        win.configure(background='dark slate gray')
+        win.configure(background='steelblue3')
+        win.resizable(width=False, height=False)
+        win.attributes("-topmost", True)
         self.leaderboard = magicleaderboard.MagicLeaderBoard(win,mode="top")
         self.leaderboard.grid(row=0, column=0)
 
@@ -254,7 +249,7 @@ class MagicApplication(tk.Toplevel):
         self.bframe.pack_forget()
         self.factual_page = magicfactualpage.MagicFactualPage(self)
         self.LeaderBoard = magicleaderboard.MagicLeaderBoard(self)
-        self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, pady=30)
+        self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, padx=5,pady=30)
         if self.show_hide_flag == 1:
             self.LeaderBoard.pack(side=tk.RIGHT, anchor=tk.NE)
 

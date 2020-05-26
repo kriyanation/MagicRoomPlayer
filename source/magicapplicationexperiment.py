@@ -26,21 +26,15 @@ class MagicExperimentPage(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         #self.config({'bg':'blue'})
-        self.configure(background='dark slate gray')
+        self.configure(background='steelblue3')
         self.parent = parent
         s = ttk.Style(self)
-        s.configure('Red.TLabelframe', background='dark slate gray')
-        s.configure('Red.TLabelframe.Label', font=('courier', 12, 'bold', 'italic'))
-        s.configure('Red.TLabelframe.Label', foreground='PeachPuff2')
-        s.configure('Red.TLabelframe.Label', background='dark slate gray')
 
-        s.configure('Green.TButton', background='dark slate gray', foreground='PeachPuff2')
-        s.configure('Horizontal.Green.TScale', background='dark slate gray', foreground='PeachPuff2')
-        s.map('Green.TButton', background=[('active', '!disabled', 'dark olive green'), ('pressed', 'PeachPuff2')],
-              foreground=[('pressed', 'PeachPuff2'), ('active', 'PeachPuff2')])
-        s.configure('Orange.TButton', background='PeachPuff2', foreground='dark slate gray')
-        s.map('Green.TButton', background=[('active', '!disabled', 'peachpuff2'), ('pressed', 'snow')],
-              foreground=[('pressed', 'firebrick'), ('active', 'dar slate gray')])
+
+        s.configure('Horizontal.Green.TScale', background='steelblue3', foreground='white')
+
+
+
         self.move_animation_Steps = 12
         self.move_flag=False
         self.rowconfigure(0,weight=1)
@@ -61,7 +55,7 @@ class MagicExperimentPage(tk.Frame):
        # self.canvas_experiment = tk.Canvas(self.labelframeone,bg="white",width=parent.winfo_width()/1.5,height=parent.winfo_height()/1.5)
 
         self.canvas_experiment = tk.Canvas(self.labelframeone, bg="white")
-        self.popup_menu = tk.Menu(self.canvas_experiment, background='dark slate gray', foreground='peachpuff2')
+        self.popup_menu = tk.Menu(self.canvas_experiment, background='steelblue3', foreground='white')
         self.popup_menu.add_command(label="Text")
         self.popup_menu.add_command(label="Move Down")
         self.popup_menu.add_command(label="Move Right")
@@ -77,7 +71,7 @@ class MagicExperimentPage(tk.Frame):
         self.fill_canvas_frame(parent.screen_width,parent.screen_height)
         link_ext = Data_Flow_Player.get_link()
         if(link_ext is not None and link_ext != ""):
-            self.link_button = ttk.Button(self.labelframetwo,text="Launch Link",command=lambda: self.launch_link(link_ext),style="Orange.TButton")
+            self.link_button = ttk.Button(self.labelframetwo,text="Launch Link",command=lambda: self.launch_link(link_ext),style="Green.TButton")
             self.link_button.tooltip = tooltip.ToolTip(self.link_button, "Opens Browser")
             self.link_button.grid(row=10, column=2,sticky=tk.SW,padx=10)
 
@@ -132,14 +126,14 @@ class MagicExperimentPage(tk.Frame):
     def fill_steps_frame(self,width,height):
 
          self.index = 1
-         self.step_one_label = ttk.Label(self.labelframetwo, text="Step 1", foreground='ivory2',
-                                         font=("TkCaptionFont", 14), background='dark slate gray')
-         self.step_one_desc_label = ttk.Label(self.labelframetwo, text = self.experiment_content_terms[0],foreground = 'PeachPuff2',wraplength=250, font=("TkCaptionFont", 12,font.ITALIC),background='dark slate gray')
+         self.step_one_label = ttk.Label(self.labelframetwo, text="Step 1", foreground='white',
+                                         font=("helvetica", 14,'bold'), background='steelblue3')
+         self.step_one_desc_label = ttk.Label(self.labelframetwo, text = self.experiment_content_terms[0],foreground = 'white',wraplength=250, font=("helvetica", 14,'bold'),background='steelblue3')
 
          self.stepbutton = ttk.Button(self.labelframetwo, text= "Next Step",style='Green.TButton')
          self.step_one_label.grid(row=1, column=0)
          self.step_one_desc_label.grid(row=1, column=1,sticky=tk.W,columnspan=2, padx = 50)
-         self.stepbutton.grid(row=0, column = 0, sticky=tk.NW)
+         self.stepbutton.grid(row=0, column = 0,pady=5, sticky=tk.NW,padx=5)
          sound_speak1 = threading.Thread(target=pageutils.playtextsound,
                                         args=(self.experiment_content_terms[0], 'f'))
          sound_speak1.start()
@@ -152,8 +146,8 @@ class MagicExperimentPage(tk.Frame):
 
              self.audiooffbutton = ttk.Button(self.labelframetwo, text="Voice-Off", style='Green.TButton',
                                       command= self.stop_step_audio)
-             self.audiobutton.grid(row =0,padx = 20,column=1,sticky=tk.NW)
-             self.audiooffbutton.grid(row=0, column=2, sticky=tk.NW)
+             self.audiobutton.grid(row =0,padx = 20,column=1,sticky=tk.NW,pady=5)
+             self.audiooffbutton.grid(row=0, column=2, sticky=tk.NW,pady=5)
 
              self.stepbutton.configure(command=lambda: self.addnewstep(width, height))
 
@@ -181,7 +175,7 @@ class MagicExperimentPage(tk.Frame):
         self.labelframeone.after(50,lambda: self.move_animate(canvas,imageid,finalx,finaly))
 
     def fill_canvas_frame(self,width,height):
-        self.button_frame= tk.Frame(self.labelframeone,background="dark slate gray")
+        self.button_frame= tk.Frame(self.labelframeone,background="steelblue3")
         self.add_image_icon = tk.PhotoImage(file="../images/image_open.png")
         self.image_button = ttk.Button(self.button_frame, text='Add Image',image=self.add_image_icon, command=self.use_image,style='Green.TButton')
         self.image_button.grid(row=0, column=0,padx=5)
@@ -208,7 +202,7 @@ class MagicExperimentPage(tk.Frame):
         self.eraser_button.tooltip = tooltip.ToolTip(self.eraser_button, "Erase Drawing")
 
         self.choose_size_button = tk.Scale(self.button_frame, orient=tk.HORIZONTAL, from_=1, to=10,
-                                           background='dark slate gray', foreground='PeachPuff2')
+                                           background='steelblue3', foreground='white')
         self.choose_size_button.tooltip = tooltip.ToolTip(self.choose_size_button, "Line Size of the Pen")
 
         self.clear_image_icon = tk.PhotoImage(file="../images/cls.png")
@@ -224,7 +218,7 @@ class MagicExperimentPage(tk.Frame):
 
         self.choose_size_button.grid(row=0, column=5,padx=5)
         self.clear_button.grid(row=0, column=6,padx=5)
-        self.button_frame.grid(row=0,column=0,columnspan=7)
+        self.button_frame.grid(row=0,column=0,columnspan=7,pady=8)
         self.canvas_experiment.grid(row=1, pady=5, padx=20, columnspan = 7)
         self.image_save_button.grid(row=0,column=8,sticky=tk.N)
 
@@ -410,10 +404,10 @@ class MagicExperimentPage(tk.Frame):
         self.step_labels = []
         self.step_descriptions = []
         if self.index < self.experiment_content_list[2]:
-            label = ttk.Label(self.labelframetwo, text="Step "+str(self.index+1), foreground='ivory2',
-                                            font=("TkCaptionFont", 14),background='dark slate gray')
+            label = ttk.Label(self.labelframetwo, text="Step "+str(self.index+1), foreground='white',
+                                            font=("helvetica", 14,'bold'),background='steelblue3')
             desc_label = ttk.Label(self.labelframetwo, text=self.experiment_content_terms[self.index],wraplength=250,
-                                                 foreground='PeachPuff2', font=("TkCaptionFont", 12,font.ITALIC),background='dark slate gray')
+                                                 foreground='white', font=("helvetica", 14,'bold'),background='steelblue3')
             label.grid(row=self.index+1, column=0)
             desc_label.grid(row=self.index+1, column=1,sticky=tk.W,columnspan=2, padx = 50)
             self.step_labels.append(label)

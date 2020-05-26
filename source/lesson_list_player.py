@@ -5,29 +5,31 @@ import Data_Flow_Player
 
 
 class MagicLessonList(Toplevel):
-    def __init__(self, bg,fg,buttonbg,buttonfg,selectmode,parent,*args, **kwargs):
+    def __init__(self,parent,*args, **kwargs):
         Toplevel.__init__(self,parent,*args, **kwargs)
         self.transient(parent)
         self.parent = parent
 
         s = ttk.Style(self)
         s.theme_use('clam')
-        s.configure('Red.TLabelframe', background=bg)
-        s.configure('Red.TLabelframe.Label', font=('courier', 14, 'bold', 'italic'))
-        s.configure('Red.TLabelframe.Label', foreground=fg)
-        s.configure('Red.TLabelframe.Label', background=bg)
-        s.configure('Blue.TButton', background=buttonbg, foreground=buttonfg)
-        s.map('Blue.TButton', background=[('active', '!disabled', 'peru'), ('pressed', buttonbg)],
-              foreground=[('pressed', buttonfg), ('active', buttonfg)])
-        s.configure('TScrollbar', background=buttonbg, foreground=buttonfg)
-        self.configure(background=bg)
+        s.configure('Red.TLabelframe', background="steelblue3")
+        s.configure('Red.TLabelframe.Label', font=('helvetica', 14, 'bold'))
+        s.configure('Red.TLabelframe.Label', foreground="white")
+        s.configure('Red.TLabelframe.Label', background="steelblue3")
+        s.configure('Blue.TButton', background="white", foreground="midnight blue")
+        s.map('Blue.TButton', background=[('active', '!disabled', 'cyan'), ('pressed', "white")],
+              foreground=[('pressed', "midnight blue"), ('active', "midnight blue")])
+        s.configure('TScrollbar', background='midnight blue', foreground='steelblue3')
+        s.map('TScrollbar', background=[('active', '!disabled', 'steelblue3'), ('pressed', 'snow')],
+              foreground=[('pressed', 'midnight blue'), ('active', 'midnight blue')])
+        self.configure(background="steelblue3")
         self.grab_set()
 
         self.choice_label = ttk.Label(self, text="Select the Lesson to Learn",
-                                      font=("Comic Sans", 14, 'bold'), background=bg, foreground=fg)
+                                      font=("helvetica", 14, 'bold'), background="steelblue3", foreground="white")
         self.scroll_frame = ttk.Frame(self)
-        self.choice_list = tk.Listbox(self.scroll_frame, selectmode=selectmode, background=bg,
-                                      selectbackground='sienna', selectforeground='white',foreground=fg, bd=0)
+        self.choice_list = tk.Listbox(self.scroll_frame, selectmode=tk.SINGLE, background="white",
+                                      selectbackground='midnight blue', selectforeground='white',foreground="midnight blue", bd=0)
         self.lesson_button = ttk.Button(self, text="Select Lesson",
                                         style='Blue.TButton',command=self.select_lesson)
 

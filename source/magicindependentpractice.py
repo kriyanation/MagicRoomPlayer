@@ -18,17 +18,9 @@ class MagicIndenpendentPractice(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 
-        self.configure(background='dark slate gray')
-        s = ttk.Style(self)
-        s.configure('Red.TLabelframe', background='dark slate gray')
-        s.configure('Red.TLabelframe.Label', font=('courier', 12, 'bold', 'italic'))
-        s.configure('Red.TLabelframe.Label', foreground='PeachPuff2')
-        s.configure('Red.TLabelframe.Label', background='dark slate gray')
+        self.configure(background='steelblue3')
 
-        s.configure('Green.TButton', background='dark slate gray', foreground='PeachPuff2')
-        s.configure('Horizontal.Green.TScale', background='dark slate gray', foreground='PeachPuff2')
-        s.map('Green.TButton', background=[('active', '!disabled', 'dark olive green'), ('pressed', 'PeachPuff2')],
-              foreground=[('pressed', 'PeachPuff2'), ('active', 'PeachPuff2')])
+
         self.bind("<Configure>",self.resize_t)
         self.cameraoff = False
         self.frame = None
@@ -58,7 +50,7 @@ class MagicIndenpendentPractice(tk.Frame):
         self.labelframeone.grid(row=0, pady=0, padx = 20,sticky = tk.NSEW)
         #self.labelframetwo.grid(row=1, pady= 10, padx = 20)
         self.notes_text = tk.Text(self.labelframeone,borderwidth=3,highlightthickness=0,
-                                     font=("TkCaptionFont", 18,'bold'), foreground="PeachPuff2",background='dark slate gray', wrap=tk.WORD)
+                                     font=("helvetica", 16,'bold'), foreground="midnight blue",background='white', wrap=tk.WORD)
 
         self.notes_text.insert(1.0,self.ip_questions)
         self.textscroll = ttk.Scrollbar(self.labelframeone)
