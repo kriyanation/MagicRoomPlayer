@@ -30,15 +30,15 @@ class MagicTitlePage(tk.Frame):
         self.parent_window = parent
         self.pen_color = 'bisque2'
         self.old_x, self.old_y = None, None
-        self.configure(background='steelblue3')
+        self.configure(background='steelblue4')
         self.quoteframe = tk.Frame(self)
-        self.quoteframe.configure(background='steelblue3')
+        self.quoteframe.configure(background='steelblue4')
         self.quoteframe.pack(fill=tk.X, side=tk.TOP, anchor=tk.CENTER)
         self.quote_text = Data_Flow_Player.get_Quote()
         self.quote_textwidget = tk.Text(self.quoteframe, borderwidth=0, highlightthickness=0, relief=tk.FLAT,
                                         wrap=tk.WORD, font=('helvetica', 14,'bold'), bd=2, height=2,
                                         foreground='white', background=
-                                        'steelblue3')
+                                        'steelblue4')
         # self.labelframeone = ttk.Labelframe(self, width=parent.screen_width / 2.0, height=parent.screen_height / 2.0,
         #                                    text="Introduction", relief=tk.RIDGE, style='Red.TLabelframe')
         self.labelframeone = ttk.Labelframe(self,
@@ -140,13 +140,13 @@ class MagicTitlePage(tk.Frame):
         self.title_text = Data_Flow_Player.get_Title()
 
         self.topic_label = ttk.Label(self.labelframeone, text=self.title_text, font=('helvetica', 16,'bold'),
-                                     foreground='white', background='steelblue3',
+                                     foreground='white', background='steelblue4',
                                      wraplength=self.parent_window.screen_width / 2.5)
         self.topic_label.pack(pady=10, anchor=tk.CENTER)
 
         title_image = Data_Flow_Player.get_title_image()
         self.image_frame = tk.Frame(self.labelframeone)
-        self.image_frame.configure(background='steelblue3')
+        self.image_frame.configure(background='steelblue4')
         self.new_window_image_button = ttk.Button(self.image_frame, text="Zoom Image",
                                                   command=lambda: self.open_image_window(title_image),
                                                   style='Green.TButton')
@@ -171,8 +171,8 @@ class MagicTitlePage(tk.Frame):
         #                height=self.parent_window.screen_height/2.5,background='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
 
         self.canvas = tk.Canvas(self.labelframeone,
-                                background='steelblue3', borderwidth=0, highlightthickness=0, relief=tk.FLAT)
-        self.popup_menu = Menu(self.canvas, background='steelblue3', foreground='white')
+                                background='steelblue4', borderwidth=0, highlightthickness=0, relief=tk.FLAT)
+        self.popup_menu = Menu(self.canvas, background='steelblue4', foreground='white')
         self.popup_menu.add_command(label="Dark", command=self.switch_to_dark)
         self.popup_menu.add_command(label="Light", command=self.switch_to_light)
         self.popup_menu.add_command(label="Text")
@@ -238,7 +238,7 @@ class MagicTitlePage(tk.Frame):
         # self.canvas.delete(self.title_image_id)
 
         self.controlframe = tk.Frame(self.labelframeone)
-        self.controlframe.configure(background='steelblue3')
+        self.controlframe.configure(background='steelblue4')
         self.play_button = ttk.Button(self.controlframe, text="Play", command=self.play_video, style='Green.TButton')
         self.pause_button = ttk.Button(self.controlframe, text="Pause", command=self.pause_video,
                                        style='Green.TButton')
@@ -262,9 +262,9 @@ class MagicTitlePage(tk.Frame):
     def notes_display(self):
         video_notes_info = Data_Flow_Player.get_Running_Notes()
         video_notes = video_notes_info[0]
-        self.text_frame = tk.Frame(self, background="steelblue3")
+        self.text_frame = tk.Frame(self, background="steelblue4")
         self.video_note_text = tk.Text(self.text_frame, pady=10, borderwidth=0, highlightthickness=0, relief=tk.SUNKEN,
-                                       wrap=tk.WORD, font=("helvetica", 16,'bold'), height=6, foreground="midnight blue",
+                                       wrap=tk.WORD, font=("helvetica", 16,'bold'), height=6, foreground="royalblue4",
                                        background='white')
 
         self.button_notes_image = tk.PhotoImage(file="../images/speaker.png")

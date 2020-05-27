@@ -18,7 +18,7 @@ class MagicIndenpendentPractice(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 
-        self.configure(background='steelblue3')
+        self.configure(background='steelblue4')
 
 
         self.bind("<Configure>",self.resize_t)
@@ -37,34 +37,24 @@ class MagicIndenpendentPractice(tk.Frame):
         self.ip_questions = self.ip_info[1]
         self.lesson_id = self.ip_info[2]
         self.labelframeone = ttk.Labelframe(self, text="Learning Assessment/Notes", relief=tk.RAISED,style='Red.TLabelframe',borderwidth=0)
-        #self.labelframetwo = ttk.Labelframe(self, width = parent.screen_width/2.0, height = parent.screen_height/3.1,text="Evaluate", relief=tk.RIDGE,style='Red.TLabelframe')
-        #self.play_button = ttk.Button(self.labelframetwo, text="Take a Picture", command= lambda: self.play_video(),style='Green.TButton')
-        #self.qp_button = ttk.Button(self.labelframetwo, text="Print Question Paper", command= lambda: self.gen_question_paper(self.lesson_id),style='Green.TButton')
-        #self.qp_answer_button = ttk.Button(self.labelframetwo,text="Easy Answer Sheets", command = lambda: self.gen_ip_sheets(self.lesson_id),style='Green.TButton')
-        #self.play_button.grid(row=0,column=0,padx=20)
-        #self.qp_button.grid(row=0,column=1,padx=20)
 
-        #self.qp_answer_button.grid(row=0, column=2, padx=20)
-
-       # self.labelframetwo.grid_propagate(False)
         self.labelframeone.grid(row=0, pady=0, padx = 20,sticky = tk.NSEW)
-        #self.labelframetwo.grid(row=1, pady= 10, padx = 20)
+
         self.notes_text = tk.Text(self.labelframeone,borderwidth=3,highlightthickness=0,
-                                     font=("helvetica", 16,'bold'), foreground="midnight blue",background='white', wrap=tk.WORD)
+                                     font=("helvetica", 16,'bold'), foreground="royalblue4",background='white', wrap=tk.WORD)
 
         self.notes_text.insert(1.0,self.ip_questions)
         self.textscroll = ttk.Scrollbar(self.labelframeone)
         self.notes_text.config(yscrollcommand=self.textscroll.set)
         self.textscroll.config(command=self.notes_text.yview, style='TScrollbar')
-       # self.status_label = ttk.Label(self.labelframetwo, textvariable=self.status_text, font=("TkCaptionFont", 14), foreground="PeachPuff2",background='dark slate gray')
-        #self.status_label.grid(row=1, columnspan=3,pady=50)
+
         self.notes_text.grid(row=0,column=0,sticky=tk.NSEW,padx = 20, pady=10)
         self.textscroll.grid(row=0,column=3,sticky=tk.NSEW)
         #self.status_text.set("To save an image to images folder use \'s\' key.\nSaved in \'classroom_images\' folder")
 
         parent.wm_protocol("WM_DELETE_WINDOW", self.onClose)
     def resize_t(self,event):
-        self.notes_text.configure(width=int(self.winfo_width()/20),height=int(self.winfo_height()/50))
+        self.notes_text.configure(width=int(self.winfo_width()/15),height=int(self.winfo_height()/35))
 
 
 
@@ -75,34 +65,6 @@ class MagicIndenpendentPractice(tk.Frame):
 
 
 
-    '''def videoLoop(self):
-        # DISCLAIMER:
-        # I'm not a GUI developer, nor do I even pretend to be. This
-        # try/except statement is a pretty ugly hack to get around
-        # a RunTime error that Tkinter throws due to threading
-        try:
-
-            # keep looping over frames until we are instructed to stop
-            while not self.stopEvent.is_set():
-                # grab the frame from the video stream and resize it to
-                # have a maximum width of 300 pixels
-
-
-
-
-                # OpenCV represents images in BGR order; however PIL
-                # represents images in RGB order, so we need to swap
-                # the channels, then convert to PIL and ImageTk format
-
-
-
-
-
-                # if the panel is not None, we need to initialize it
-
-
-        except RuntimeError:
-            print("[INFO] caught a RuntimeError")'''
 
     def onClose(self):
         # set the stop event, cleanup the camera, and allow the rest of

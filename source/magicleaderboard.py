@@ -10,12 +10,12 @@ class MagicLeaderBoard(tk.Frame):
         super().__init__(parent, *args, **kwargs)
         self.parent=parent
         self.mode = mode
-        self.configure(background='steelblue3',borderwidth=0)
+        self.configure(background='steelblue4',borderwidth=0)
         s = ttk.Style(self)
-        s.configure('Red.TLabelframe', background='steelblue3')
+        s.configure('Red.TLabelframe', background='steelblue4')
         s.configure('Red.TLabelframe.Label', font=('helvetica', 12, 'bold'))
         s.configure('Red.TLabelframe.Label', foreground='white')
-        s.configure('Red.TLabelframe.Label', background='steelblue3')
+        s.configure('Red.TLabelframe.Label', background='steelblue4')
 
 
 
@@ -44,9 +44,9 @@ class MagicLeaderBoard(tk.Frame):
 
         self.scrollbar.config(command=self.c_canvas.yview, style='TScrollbar')
         #self.leaderboard.grid(row=0, column=0, sticky=tk.W + tk.E)
-        self.headernamelabel = ttk.Label(self.leaderboard, text="Name", font = ('TkDefaultFont', 16,'bold'),background='white', foreground = 'midnight blue')
-        self.headerbadgelabel = ttk.Label(self.leaderboard, text="Badge", font=('TkDefaultFont', 16,'bold'),background='white', foreground='midnight blue')
-        self.headerpointslabel = ttk.Label(self.leaderboard, text="Points",font=('TkDefaultFont', 16,'bold'),background='white', foreground='midnight blue')
+        self.headernamelabel = ttk.Label(self.leaderboard, text="Name", font = ('TkDefaultFont', 16,'bold'),background='white', foreground = 'royalblue4')
+        self.headerbadgelabel = ttk.Label(self.leaderboard, text="Badge", font=('TkDefaultFont', 16,'bold'),background='white', foreground='royalblue4')
+        self.headerpointslabel = ttk.Label(self.leaderboard, text="Points",font=('TkDefaultFont', 16,'bold'),background='white', foreground='royalblue4')
 
         self.headernamelabel.grid(row=0, column=0, padx=0, pady=2)
         self.headerbadgelabel.grid(row=0, column=1,padx=10, pady=2)
@@ -58,7 +58,7 @@ class MagicLeaderBoard(tk.Frame):
             self.c_canvas.configure(scrollregion=self.c_canvas.bbox("all"),borderwidth=0,width=self.parent.winfo_width()/4,height=self.parent.winfo_height()-300)
         else:
             self.c_canvas.configure(scrollregion=self.c_canvas.bbox("all"), borderwidth=0,width=320,
-                                    height=300)
+                                    height=450)
     def refresh_data(self):
 
         self.spinboxvalue = []
@@ -71,7 +71,7 @@ class MagicLeaderBoard(tk.Frame):
         self.badge_image_medalc = tk.PhotoImage(file='../images/medalc.png')
         for element in list_names:
             self.datanamelabel = ttk.Label(self.leaderboard, text=element[0].strip(), font = ('TkDefaultFont', 12,'bold'),
-                                           foreground = 'midnight blue',wraplength = 80,background='white')
+                                           foreground = 'royalblue4',wraplength = 80,background='white')
             if element[1].strip() == 'a':
                 self.databadgelabel = ttk.Label(self.leaderboard, image=self.badge_image_medala,background='white')
             elif element[1].strip() == 'b':
@@ -84,7 +84,7 @@ class MagicLeaderBoard(tk.Frame):
             points.set(str(element[2]))
             self.spinboxvalue.append(points)
             print("rowindex"+str(rowindex))
-            self.datapointspinner = ttk.Spinbox(self.leaderboard,background='white',foreground='midnight blue',font=('helvetica', 12,"bold"),
+            self.datapointspinner = ttk.Spinbox(self.leaderboard,background='white',foreground='royalblue4',font=('helvetica', 12,"bold"),
                                                 from_=0,to=100,textvariable=self.spinboxvalue[rowindex-2],wrap=True,width=2)
 
             self.list_points.append((element[0],self.spinboxvalue[rowindex-2]))
