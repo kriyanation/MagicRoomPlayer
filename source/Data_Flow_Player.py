@@ -34,6 +34,7 @@ def get_Title():
     return text
  except sqlite3.OperationalError:
      messagebox.showwarning("Title text could not be retrieved")
+     logger.exception("Title text could not be retrieved")
 
 
 def get_Lessons():
@@ -51,7 +52,7 @@ def get_Lessons():
     return list_lessons
  except sqlite3.OperationalError:
      messagebox.showerror("DB Error", "Cannot Connect to Database")
-     sys.exit()
+     logger.exception("Cannot connect to Database")
 
 def get_link():
  try:
@@ -68,7 +69,7 @@ def get_link():
     return external_link
  except sqlite3.OperationalError:
      messagebox.showerror("DB Error", "Cannot Connect to Database")
-     sys.exit()
+     logger.exception("Cannot connect to Database")
 
 #get_Title()
 
@@ -85,7 +86,7 @@ def get_title_image():
     return imageroot+text
  except sqlite3.OperationalError:
      messagebox.showerror("DB Error", "Cannot Connect to Database")
-     sys.exit()
+     logger.exception("Cannot connect to Database")
 
 def get_title_video():
  try:
@@ -102,7 +103,7 @@ def get_title_video():
     return videoroot+text
  except sqlite3.OperationalError:
     messagebox.showerror("DB Error", "Cannot Connect to Database" )
-    sys.exit()
+    logger.exception("Cannot connect to Database")
 
 
 
@@ -120,7 +121,7 @@ def get_Quote():
     return rows[1]
  except sqlite3.OperationalError:
      messagebox.showerror("DB Error", "Cannot Connect to Database")
-     logger.info("Error connecting to database getQuote")
+     logger.exception("Cannot connect to Database")
 
 def get_Running_Notes():
  try:
@@ -138,7 +139,7 @@ def get_Running_Notes():
     return (text, language)
  except sqlite3.OperationalError:
      messagebox.showerror("DB Error", "Cannot Connect to Database")
-     sys.exit()
+     logger.exception("Cannot connect to Database")
 
 
 
@@ -161,7 +162,7 @@ def class_info():
     return list_names
  except sqlite3.OperationalError:
      messagebox.showerror("DB Error", "Cannot Connect to Database")
-     sys.exit()
+     logger.exception("Cannot connect to Database")
 
 
 def get_factual_content():
@@ -182,7 +183,7 @@ def get_factual_content():
     return (factual_terms, factual_descriptions, factual_images)
  except sqlite3.OperationalError:
      messagebox.showerror("DB Error", "Cannot Connect to Database")
-     sys.exit()
+     logger.exception("Cannot connect to Database")
 
 
 def get_experiment_content():
@@ -205,7 +206,7 @@ def get_experiment_content():
     return experiment_steps, experiment_images, experiment_steps_total
  except sqlite3.OperationalError:
      messagebox.showerror("DB Error", "Cannot Connect to Database")
-     sys.exit()
+     logger.exception("Cannot connect to Database")
 
 
 def get_application_video():
@@ -223,7 +224,7 @@ def get_application_video():
     return (video_link,video_info[1])
  except sqlite3.OperationalError:
      messagebox.showerror("DB Error", "Cannot Connect to Database")
-     sys.exit()
+     logger.exception("Cannot connect to Database")
 
 
 def get_ip_data():
@@ -237,7 +238,7 @@ def get_ip_data():
     return ip_info
  except sqlite3.OperationalError:
      messagebox.showerror("DB Error", "Cannot Connect to Database")
-     sys.exit()
+     logger.exception("Cannot connect to Database")
 
 def get_application_mode():
  try:
@@ -250,7 +251,7 @@ def get_application_mode():
     return ap_info
  except sqlite3.OperationalError:
      messagebox.showerror("DB Error", "Cannot Connect to Database")
-     sys.exit()
+     logger.exception("Cannot connect to Database")
 
 
 def save_leader_board_data(list_points):
@@ -285,4 +286,4 @@ def save_leader_board_data(list_points):
     connection.close()
  except sqlite3.OperationalError:
      messagebox.showerror("DB Error", "Cannot Connect to Database")
-     sys.exit()
+     logger.exception("Cannot connect to Database")

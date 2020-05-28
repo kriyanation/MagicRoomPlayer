@@ -1,3 +1,4 @@
+import logging
 import tkinter as tk
 from tkinter import ttk, StringVar
 import tkinter as tk
@@ -12,12 +13,12 @@ _isLinux = sys.platform.startswith('linux')
 DEFAULT_PEN_SIZE = 5.0
 DEFAULT_COLOR = 'black'
 
-
+logger = logging.getLogger("MagicLogger")
 
 class MagicIndenpendentPractice(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
-
+        logger.info("Independent Practice Initialize")
         self.configure(background='steelblue4')
 
 
@@ -52,37 +53,22 @@ class MagicIndenpendentPractice(tk.Frame):
         self.textscroll.grid(row=0,column=3,sticky=tk.NSEW)
         #self.status_text.set("To save an image to images folder use \'s\' key.\nSaved in \'classroom_images\' folder")
 
-        parent.wm_protocol("WM_DELETE_WINDOW", self.onClose)
+
     def resize_t(self,event):
         self.notes_text.configure(width=int(self.winfo_width()/15),height=int(self.winfo_height()/35))
 
 
 
 
+# if __name__== "__main__":
+#         app = tk.Tk()
+#         app.geometry("800x800")
 
 
-
-
-
-
-
-    def onClose(self):
-        # set the stop event, cleanup the camera, and allow the rest of
-        # the quit process to continue
-        print("[INFO] closing...")
-
-        self.quit()
-
-
-if __name__== "__main__":
-        app = tk.Tk()
-        app.geometry("800x800")
-
-
-        frame = MagicIndenpendentPractice(app,outputPath="../videos")
-
-        frame.grid(row=0)
-        app.mainloop()
+        # frame = MagicIndenpendentPractice(app,outputPath="../videos")
+        #
+        # frame.grid(row=0)
+        # app.mainloop()
 
 
 

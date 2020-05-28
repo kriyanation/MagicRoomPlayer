@@ -23,6 +23,7 @@ logger = logging.getLogger("MagicLogger")
 class MagicApplication(tk.Toplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        logger.info("Player container initialized")
         s = ttk.Style(self)
         s.theme_use("clam")
         s.configure('Green.TButton', background='white', foreground='royalblue4',font=('helvetica', 12, 'bold'),bordercolor="royalblue4")
@@ -86,13 +87,14 @@ class MagicApplication(tk.Toplevel):
 
 
     def  launch_timer(self):
+        logger.info("TImer launch in player")
         launch_timer = Timer_Display.TimerDisplay(self)
         launch_timer.geometry("240x250+200+200")
         launch_timer.resizable(width=False,height=False)
         launch_timer.attributes("-topmost", True)
 
     def show_title_page(self):
-
+        logger.info("Player show_title_page")
         if self.page_index == 1:
             self.factual_page.forget()
             self.bframe.pack_forget()
@@ -104,6 +106,7 @@ class MagicApplication(tk.Toplevel):
 
 
     def show_next_page(self, index):
+        logger.info("Player show_next_page")
         ap_mode = Data_Flow_Player.get_application_mode()
         if index == 0:
             self.show_factual_page(ap_mode)
@@ -123,6 +126,7 @@ class MagicApplication(tk.Toplevel):
             self.page_index += 1
 
     def show_previous_page(self, index):
+        logger.info("Player show_previous_page")
         ap_mode = Data_Flow_Player.get_application_mode()
         if index == 1:
             self.show_title_page()
@@ -133,17 +137,15 @@ class MagicApplication(tk.Toplevel):
             self.page_index -= 1
             return
         if index == 3:
-            if ap_mode == "Video":
-                self.show_video_page()
 
-            else:
-                self.show_experiment_page()
+            self.show_experiment_page()
 
             self.page_index -= 1
             return
 
 
     def show_ip_page(self, ap_mode):
+        logger.info("Player show_ip_page")
         self.show_hide_flag = 1
         self.application_experiment_page.save_image_window(self.application_experiment_page.canvas_experiment, random.randint(0,100))
 
@@ -155,13 +157,8 @@ class MagicApplication(tk.Toplevel):
         self.independent_practice.pack(side=tk.LEFT, fill=tk.BOTH, expand=tk.TRUE, anchor=tk.N)
         self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, padx=5,pady=30)
 
-
-
-
-
-
-
     def show_experiment_page(self):
+        logger.info("Player show_experiment_page")
         if self.page_index == 3:
             self.independent_practice.pack_forget()
         else:
@@ -173,10 +170,8 @@ class MagicApplication(tk.Toplevel):
         self.application_experiment_page.pack(side=tk.LEFT, fill=tk.BOTH, expand=tk.TRUE, anchor=tk.N)
 
 
-
-
-
     def show_leaderboard_seperate(self):
+        logger.info("Player show_leaderboard_seperate")
         win = tk.Toplevel()
         win.wm_title("Leaderboard")
         win.wm_geometry('340x500+100+100')
@@ -190,16 +185,10 @@ class MagicApplication(tk.Toplevel):
         b.grid(row=1, column=0,pady=5)
 
     def show_factual_page(self,ap_mode):
+        logger.info("Player show_factual_page")
         if self.page_index == 2:
-            if ap_mode == "Video":
-                #self.application_video_page.player.stop()
-                self.application_video_page.pack_forget()
-            else:
-                self.application_experiment_page.forget()
+            self.application_experiment_page.forget()
         else:
-            if hasattr(self.TitlePage,"player"):
-                 #self.TitlePage.player.stop()
-                  pass
             self.TitlePage.pack_forget()
 
         self.bframe.pack_forget()

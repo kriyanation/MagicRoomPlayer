@@ -21,7 +21,7 @@ logger = logging.getLogger("MagicLogger")
 class MagicTitlePage(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
-
+        logger.info("Player Title page initialize")
 
         s = ttk.Style(self)
         self.video_mode = False
@@ -39,8 +39,6 @@ class MagicTitlePage(tk.Frame):
                                         wrap=tk.WORD, font=('helvetica', 14,'bold'), bd=2, height=2,
                                         foreground='white', background=
                                         'steelblue4')
-        # self.labelframeone = ttk.Labelframe(self, width=parent.screen_width / 2.0, height=parent.screen_height / 2.0,
-        #                                    text="Introduction", relief=tk.RIDGE, style='Red.TLabelframe')
         self.labelframeone = ttk.Labelframe(self,
                                             text="The Ice-Breaker", relief=tk.RIDGE, style='Red.TLabelframe')
 
@@ -60,16 +58,13 @@ class MagicTitlePage(tk.Frame):
         self.title_intro()
 
     def paint_text(self, event):
+        logger.info("Player title page paint_Text")
         answer = simpledialog.askstring("Text to add", "Add text to the location",
                                         parent=self.parent_window)
         self.canvas.create_text(event.x, event.y, font=("comic sans", 15, "bold"), text=answer, fill=self.pen_color)
 
     def paint(self, event):
-
-        # x1, y1 = (event.x - 1), (event.y - 1)
-        # x2, y2 = (event.x + 1), (event.y + 1)
-        # self.canvas.create_oval(x1, y1, x2, y2, fill='white')
-
+        logger.info("Player Title page paint")
         if self.old_x and self.old_y:
             self.canvas.create_line(self.old_x, self.old_y, event.x, event.y,
                                     width=5, fill=self.pen_color,
@@ -77,25 +72,13 @@ class MagicTitlePage(tk.Frame):
         self.old_x = event.x
         self.old_y = event.y
 
-    def play_video(self):
-        try:
-            pass
-             #self.player.play()
-            #self.list_player.play()
-        except (NameError, OSError, AttributeError):
-            messagebox.showwarning("Warning", "VLC is unable to play the file: " + self.title_video_str)
-            logger.exception("VLC could not be launched")
+
 
     def new_window(self):
         #self.player.stop()
         subprocess.Popen(['vlc', '-vvv', self.title_video_str])
 
-    def pause_video(self):
-        pass
-        #self.player.pause()
-        #self.list_player.pause()
 
-    # self.player.set_fullscreen(False)
     def show_overview_image(self):
         print("Down pressed")
         self.title_intro()
@@ -103,19 +86,15 @@ class MagicTitlePage(tk.Frame):
     def show_video_intro(self):
         self.video_mode = True
         self.title_video()
-        try:
-           # self.list_player.play()
-            pass
-        except (NameError, OSError, AttributeError):
-            messagebox.showwarning("Warning", "VLC is unable to play the file: " + self.title_video_str)
-            logger.exception("VLC cannot be launched")
+
     def play_quote_audio(self, text):
+        logger.info("Player Title page play_quote_audio")
         sound_speak = threading.Thread(target=pageutils.playtextsound,args=(text, ))
         sound_speak.start()
        # pageutils.playtextsound(text)
 
     def open_image_window(self, title_image):
-        # subprocess.run([title_image], check=False)
+        logger.info("Player Title page open_image_window")
         if sys.platform == "win32":
             os.startfile(title_image)
         else:
@@ -123,7 +102,7 @@ class MagicTitlePage(tk.Frame):
             subprocess.call([opener, title_image])
 
     def save_image_window(self):
-        # subprocess.run([title_image], check=False)
+        logger.info("Player Title page save_image_window")
         self.canvas.postscript(file='title_image' + self.title_text + ".eps")
         image = Image.open('title_image' + self.title_text + ".eps")
         image.save(Data_Flow_Player.saved_canvas + os.path.sep + "title_image" + self.title_text + '.png', 'png')
@@ -132,11 +111,12 @@ class MagicTitlePage(tk.Frame):
         messagebox.showinfo("Information", "Use Save for saving your interactions on the board in the lesson notes",parent=self)
 
     def show_popup_menu(self, event):
+        logger.info("Player Title page show_popup_menu")
         self.popup_menu.tk_popup(event.x_root, event.y_root)
         self.popup_menu.entryconfig("Text", command=lambda: self.paint_text(event))
 
     def title_intro(self):
-
+        logger.info("Player Title page title_intro")
         self.title_text = Data_Flow_Player.get_Title()
 
         self.topic_label = ttk.Label(self.labelframeone, text=self.title_text, font=('helvetica', 16,'bold'),
@@ -166,9 +146,6 @@ class MagicTitlePage(tk.Frame):
         self.image_save_button.pack(padx=5, side=tk.LEFT)
         self.show_video_button.pack(pady=5, side=tk.LEFT)
         self.image_frame.pack(anchor=tk.CENTER)
-        # self.canvas = tk.Canvas(self.labelframeone,
-        #                width=self.parent_window.screen_width/2.0,
-        #                height=self.parent_window.screen_height/2.5,background='dark slate gray',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
 
         self.canvas = tk.Canvas(self.labelframeone,
                                 background='steelblue4', borderwidth=0, highlightthickness=0, relief=tk.FLAT)
@@ -188,16 +165,13 @@ class MagicTitlePage(tk.Frame):
         try:
             self.img = Image.open(title_image)
 
-        # device = config.get("section1",'device_type')
-
-        # self.img = self.img.resize((400, 400))
-        # self.img1 = ImageTk.PhotoImage(self.img)
 
         except (FileNotFoundError, IsADirectoryError):
             messagebox.showerror("Error", "Title image not found in the path \n" + title_image)
             logger.exception("TItle image  cannot be loaded")
 
     def resize(self, event):
+
         if not self.video_mode:
             self.img = self.img.resize(
                 (int(self.winfo_width() / 2) - 100, int(self.winfo_height() / 2.0) - 100), Image.ANTIALIAS)
@@ -208,18 +182,7 @@ class MagicTitlePage(tk.Frame):
                                                            anchor=tk.NW)
 
     def title_video(self):
-        args = []
-        if _isLinux:
-            args.append('--no-xlib')
-        try:
-            #self.Instance = vlc.Instance(args)
-            pass
-        except (NameError, OSError, AttributeError) as err:
-            print(err)
-            print(err.args)
-
-        #if (self.Instance != None):
-         #   self.player = self.Instance.media_player_new()
+        logger.info("Player Title page title_video")
         self.parent_window.bind("<Configure>", self.OnConfigure)  # catch window resize, etc.
         self.parent_window.update()
 
@@ -228,38 +191,24 @@ class MagicTitlePage(tk.Frame):
         self.canvas.pack_forget()
         self.title_video_str = Data_Flow_Player.get_title_video()
 
-        # self.media = self.Instance.media_new(str(self.title_video_str))  # Path, unicode
-        # self.media_list = self.Instance.media_list_new([self.title_video_str])
-        # self.player.set_media(self.media)
-        #
-        # self.list_player = self.Instance.media_list_player_new()
-        # self.list_player.set_media_player(self.player)
-        # self.list_player.set_media_list(self.media_list)
-        # self.canvas.delete(self.title_image_id)
-
         self.controlframe = tk.Frame(self.labelframeone)
         self.controlframe.configure(background='steelblue4')
-        self.play_button = ttk.Button(self.controlframe, text="Play", command=self.play_video, style='Green.TButton')
-        self.pause_button = ttk.Button(self.controlframe, text="Pause", command=self.pause_video,
-                                       style='Green.TButton')
+        # self.play_button = ttk.Button(self.controlframe, text="Play", command=self.play_video, style='Green.TButton')
+        # self.pause_button = ttk.Button(self.controlframe, text="Pause", command=self.pause_video,
+        #                                style='Green.TButton')
         self.new_screen_button = ttk.Button(self.controlframe, text="Zoom Video", command=self.new_window,
                                             style='Green.TButton')
 
-        self.play_button.pack(side=tk.LEFT)
-        self.pause_button.pack(side=tk.LEFT, padx=10)
+        # self.play_button.pack(side=tk.LEFT)
+        # self.pause_button.pack(side=tk.LEFT, padx=10)
         self.new_screen_button.pack(side=tk.LEFT, padx=10)
         self.controlframe.pack()
         self.canvas.pack(padx=10, fill=tk.BOTH, expand=tk.TRUE, anchor=tk.CENTER)
         self.player_frame_info = self.canvas.winfo_id()  # .winfo_visualid()?
-       # if (_isLinux):
-            #self.player.set_xwindow(self.player_frame_info)
-        #else:
-            #self.player.set_hwnd(self.player_frame_info)
-        # self.player.play()
-        # self.notes_display()
         self.show_video_button.config(state='disabled')
 
     def notes_display(self):
+        logger.info("Player Title page notes_display")
         video_notes_info = Data_Flow_Player.get_Running_Notes()
         video_notes = video_notes_info[0]
         self.text_frame = tk.Frame(self, background="steelblue4")
@@ -293,10 +242,11 @@ class MagicTitlePage(tk.Frame):
         self.old_x, self.old_y = None, None
 
     def animate_text(self, text, counter, label, counter_max):
+        logger.info("Player Title page animate_text")
         print(text)
         label.config(text=text[:counter])
         if counter > counter_max:
-            # self.playtextsound(quote_text)
+
             return
         self.after(100, lambda: self.animate_text(text, counter + 1, label, counter_max))
 

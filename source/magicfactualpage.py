@@ -11,13 +11,16 @@ from PIL import Image, ImageTk
 import Data_Flow_Player
 import pageutils
 import tooltip
+import logging
 
+logger = logging.getLogger("MagicLogger")
 _isLinux = sys.platform.startswith('linux')
 
 class MagicFactualPage(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         #self.config({'bg':'blue'})
+        logger.info("Inside Factual Page Initialize")
         self.parent = parent
         self.configure(background='steelblue4')
         s = ttk.Style(self)
@@ -97,8 +100,7 @@ class MagicFactualPage(tk.Frame):
             print(self.factual_image1)
             print(self.factual_image2)
             print(self.factual_image3)
-            parent.destroy()
-            sys.exit()
+            logger.exception("Factual Images cannot be retrieved")
 
 
         self.bind("<Configure>", self.resize_c)
@@ -118,21 +120,27 @@ class MagicFactualPage(tk.Frame):
 
 
     def paint_text(self,event,canvas):
+        logger.info("Factual Page - Paint Text")
         answer = simpledialog.askstring("Text to add", "Add text to the location",
                                         parent=self.parent)
         canvas.create_text(event.x,event.y,font=("comic sans", 15, "bold"),text=answer,fill=self.pen_color)
 
     def show_popup_menu1(self, event):
+
+        logger.info("Factual Page - Pop-up menu 1")
         self.popup_menu_1.tk_popup(event.x_root, event.y_root)
         self.popup_menu_1.entryconfig("Text",command=lambda:self.paint_text(event,self.canvas_image1))
     def show_popup_menu2(self, event):
+        logger.info("Factual Page - Pop-up menu 2")
         self.popup_menu_2.tk_popup(event.x_root, event.y_root)
         self.popup_menu_2.entryconfig("Text",command=lambda:self.paint_text(event,self.canvas_image2))
     def show_popup_menu3(self, event):
+        logger.info("Factual Page - Pop-up menu 3")
         self.popup_menu_3.tk_popup(event.x_root, event.y_root)
         self.popup_menu_3.entryconfig("Text",command=lambda:self.paint_text(event,self.canvas_image3))
 
     def resize_c(self,event):
+        logger.info("Factual Page - Resize")
         self.canvas_image1.delete("all")
         self.canvas_image2.delete("all")
         self.canvas_image3.delete("all")
@@ -165,6 +173,7 @@ class MagicFactualPage(tk.Frame):
 
     def save_image_window(self,canvas,factualterm):
         # subprocess.run([title_image], check=False)
+        logger.info("Factual Page - save_image_window")
         canvas.postscript(file='fact_image'+factualterm+".eps")
         image = Image.open('fact_image'+factualterm+".eps")
         image.save(Data_Flow_Player.saved_canvas+os.path.sep+"saved_images_fact_image"+factualterm+'.png','png')
@@ -181,6 +190,7 @@ class MagicFactualPage(tk.Frame):
             subprocess.call([opener, image])
 
     def add_factual_panel(self,labelframe,label, description, canvas, button,image,index):
+        logger.info("Factual Page - add_factual_panel")
         labelframe.rowconfigure(0,weight=1)
         #labelframe.grid_columnconfigure(0, weight=1)
 
@@ -230,6 +240,7 @@ class MagicFactualPage(tk.Frame):
 
 
     def nextfact(self, index):
+        logger.info("Factual Page - next fact")
         if index == 0:
             self.factual_index = 1
             self.labelframeone.grid_forget()
@@ -256,9 +267,7 @@ class MagicFactualPage(tk.Frame):
 
     def paint(self, event, canvas):
 
-        # x1, y1 = (event.x - 1), (event.y - 1)
-        # x2, y2 = (event.x + 1), (event.y + 1)
-        # self.canvas.create_oval(x1, y1, x2, y2, fill='white')
+        logger.info("Factual Page - paint")
 
         if self.old_x and self.old_y:
             canvas.create_line(self.old_x, self.old_y, event.x, event.y,
@@ -269,6 +278,7 @@ class MagicFactualPage(tk.Frame):
 
     def   show_text_window(self,label,description):
       #  self.option_add('*Dialog.msg.font', 'Helvetica 30')
+        logger.info("Factual Page - show_text_window")
         top = tk.Toplevel(self)
         top.configure(background="steelblue4")
         top.grab_set()
@@ -287,6 +297,7 @@ class MagicFactualPage(tk.Frame):
         closebutton.pack()
        # self.option_clear()
     def move_previous_fact(self, index):
+        logger.info("Factual Page - move_previous_fact")
         if index == 1:
             self.factual_index = 0
             self.labelframetwo.grid_forget()
@@ -303,6 +314,7 @@ class MagicFactualPage(tk.Frame):
                                    self.voicebutton2, self.factual_image2,1)
 
     def playtextsound(self, text, v):
+        logger.info("Factual Page - playtextsound")
         sound_speak = threading.Thread(target=pageutils.playtextsound, args=(text, v))
         sound_speak.start()
 
