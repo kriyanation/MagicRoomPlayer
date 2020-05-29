@@ -22,7 +22,7 @@ class MagicFactualPage(tk.Frame):
         #self.config({'bg':'blue'})
         logger.info("Inside Factual Page Initialize")
         self.parent = parent
-        self.configure(background='steelblue4')
+        self.configure(background='deepskyblue4')
         s = ttk.Style(self)
 
         self.rowconfigure(0, weight=1)
@@ -41,40 +41,40 @@ class MagicFactualPage(tk.Frame):
         self.labelframeone = ttk.Labelframe(self, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
         self.labelframetwo = ttk.Labelframe(self,text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
         self.labelframethree = ttk.Labelframe(self, text="Did you know?", relief=tk.RIDGE,style='Red.TLabelframe')
-        self.factual_term_label_one = ttk.Label(self.labelframeone, text = factual_content_terms[0], background = 'steelblue4',foreground = 'ivory2', font=("helvetica", 18,'bold'))
-        self.factual_term_label_two = ttk.Label(self.labelframetwo,text=factual_content_terms[1], background = 'steelblue4',foreground = 'ivory2', font=("helvetica", 18,'bold'))
-        self.factual_term_label_three = ttk.Label(self.labelframethree,text=factual_content_terms[2],background = 'steelblue4', foreground = 'ivory2', font=("helvetica", 18,'bold'))
+        self.factual_term_label_one = ttk.Label(self.labelframeone, text = factual_content_terms[0], background = 'deepskyblue4',foreground = 'ivory2', font=("helvetica", 18,'bold'))
+        self.factual_term_label_two = ttk.Label(self.labelframetwo,text=factual_content_terms[1], background = 'deepskyblue4',foreground = 'ivory2', font=("helvetica", 18,'bold'))
+        self.factual_term_label_three = ttk.Label(self.labelframethree,text=factual_content_terms[2],background = 'deepskyblue4', foreground = 'ivory2', font=("helvetica", 18,'bold'))
 
 
-        self.factual_description_label_one = ttk.Label(self.labelframeone, text=factual_content_descriptions[0].strip(), background='steelblue4',foreground='white', font=("helvetica",16,'bold'),wraplength = 600)
-        self.factual_description_label_two = ttk.Label(self.labelframetwo,text=factual_content_descriptions[1],background='steelblue4', foreground='white', font=("helvetica",16,'bold'),wraplength = 600)
-        self.factual_description_label_three = ttk.Label(self.labelframethree,text=factual_content_descriptions[2], background='steelblue4', foreground='white', font=("helvetica",16,'bold'),wraplength = 600)
+        self.factual_description_label_one = ttk.Label(self.labelframeone, text=factual_content_descriptions[0].strip(), background='deepskyblue4',foreground='white', font=("helvetica",16,'bold'),wraplength = 600)
+        self.factual_description_label_two = ttk.Label(self.labelframetwo,text=factual_content_descriptions[1],background='deepskyblue4', foreground='white', font=("helvetica",16,'bold'),wraplength = 600)
+        self.factual_description_label_three = ttk.Label(self.labelframethree,text=factual_content_descriptions[2], background='deepskyblue4', foreground='white', font=("helvetica",16,'bold'),wraplength = 600)
 
         self.factual_image1 = factual_content_images[0]
         self.factual_image2 = factual_content_images[1]
         self.factual_image3 = factual_content_images[2]
         self.canvas_image1 = tk.Canvas(self.labelframeone,
 
-                        bg='steelblue4',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
+                        bg='deepskyblue4',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
                                                          )
-        self.popup_menu_1 = tk.Menu(self.canvas_image1, background='steelblue4', foreground='white')
+        self.popup_menu_1 = tk.Menu(self.canvas_image1, background='deepskyblue4', foreground='white')
         self.popup_menu_1.add_command(label="Dark", command=self.switch_to_dark)
         self.popup_menu_1.add_command(label="Light", command=self.switch_to_light)
         self.popup_menu_1.add_command(label="Text")
         self.canvas_image1.bind('<Button-3>', self.show_popup_menu1)
         self.canvas_image2 = tk.Canvas(self.labelframetwo,
 
-                                    bg='steelblue4',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
+                                    bg='deepskyblue4',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
                                        )
-        self.popup_menu_2 = tk.Menu(self.canvas_image2, background='steelblue4', foreground='white')
+        self.popup_menu_2 = tk.Menu(self.canvas_image2, background='deepskyblue4', foreground='white')
         self.popup_menu_2.add_command(label="Dark", command=self.switch_to_dark)
         self.popup_menu_2.add_command(label="Light", command=self.switch_to_light)
         self.popup_menu_2.add_command(label="Text")
         self.canvas_image2.bind('<Button-3>', self.show_popup_menu2)
         self.canvas_image3 = tk.Canvas(self.labelframethree,
 
-                                   bg='steelblue4',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
-        self.popup_menu_3 = tk.Menu(self.canvas_image3, background='steelblue4', foreground='white')
+                                   bg='deepskyblue4',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
+        self.popup_menu_3 = tk.Menu(self.canvas_image3, background='deepskyblue4', foreground='white')
         self.popup_menu_3.add_command(label="Dark", command=self.switch_to_dark)
         self.popup_menu_3.add_command(label="Light", command=self.switch_to_light)
         self.popup_menu_3.add_command(label="Text")
@@ -196,7 +196,7 @@ class MagicFactualPage(tk.Frame):
 
         labelframe.grid(row=0, column=0, padx=60, pady=0)
         self.image_frame = tk.Frame(labelframe)
-        self.image_frame.configure(background='steelblue4')
+        self.image_frame.configure(background='deepskyblue4')
         self.new_window_image_button = ttk.Button(self.image_frame, text="Zoom Image",
                                                   command=lambda: self.open_image_window(image),
                                                   style='Green.TButton')
@@ -280,11 +280,11 @@ class MagicFactualPage(tk.Frame):
       #  self.option_add('*Dialog.msg.font', 'Helvetica 30')
         logger.info("Factual Page - show_text_window")
         top = tk.Toplevel(self)
-        top.configure(background="steelblue4")
+        top.configure(background="deepskyblue4")
         top.grab_set()
         top.transient(self)
-        termlabel = ttk.Label(top,text=label,background='steelblue4',foreground='ivory2',wraplength=400,font=('courier', 32, 'bold', 'italic'))
-        desclabel = ttk.Label(top,text=description, background='steelblue4', foreground='ivory2',wraplength=1000,font=('courier', 24, 'bold', 'italic'))
+        termlabel = ttk.Label(top,text=label,background='deepskyblue4',foreground='ivory2',wraplength=400,font=('courier', 32, 'bold', 'italic'))
+        desclabel = ttk.Label(top,text=description, background='deepskyblue4', foreground='ivory2',wraplength=1000,font=('courier', 24, 'bold', 'italic'))
         closebutton = ttk.Button(top,text="Close",command=top.destroy,style="Green.TButton")
 
         voicebutton_top= ttk.Button(top, image=self.buttonimage,

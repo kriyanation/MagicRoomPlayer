@@ -27,12 +27,12 @@ class MagicExperimentPage(tk.Frame):
         super().__init__(parent, *args, **kwargs)
         #self.config({'bg':'blue'})
         logger.info("Inside MagicExperimentPage Initialize")
-        self.configure(background='steelblue4')
+        self.configure(background='deepskyblue4')
         self.parent = parent
         s = ttk.Style(self)
 
 
-        s.configure('Horizontal.Green.TScale', background='steelblue4', foreground='white')
+        s.configure('Horizontal.Green.TScale', background='deepskyblue4', foreground='white')
 
 
 
@@ -56,7 +56,7 @@ class MagicExperimentPage(tk.Frame):
        # self.canvas_experiment = tk.Canvas(self.labelframeone,bg="white",width=parent.winfo_width()/1.5,height=parent.winfo_height()/1.5)
 
         self.canvas_experiment = tk.Canvas(self.labelframeone, bg="white")
-        self.popup_menu = tk.Menu(self.canvas_experiment, background='steelblue4', foreground='white')
+        self.popup_menu = tk.Menu(self.canvas_experiment, background='deepskyblue4', foreground='white')
         self.popup_menu.add_command(label="Text")
         self.popup_menu.add_command(label="Move Down")
         self.popup_menu.add_command(label="Move Right")
@@ -132,8 +132,8 @@ class MagicExperimentPage(tk.Frame):
          logger.info("Experiment Page - fill_steps_frame")
          self.index = 1
          self.step_one_label = ttk.Label(self.labelframetwo, text="Step 1", foreground='white',
-                                         font=("helvetica", 14,'bold'), background='steelblue4')
-         self.step_one_desc_label = ttk.Label(self.labelframetwo, text = self.experiment_content_terms[0],foreground = 'white',wraplength=250, font=("helvetica", 14,'bold'),background='steelblue4')
+                                         font=("helvetica", 14,'bold'), background='deepskyblue4')
+         self.step_one_desc_label = ttk.Label(self.labelframetwo, text = self.experiment_content_terms[0],foreground = 'white',wraplength=250, font=("helvetica", 14,'bold'),background='deepskyblue4')
 
          self.stepbutton = ttk.Button(self.labelframetwo, text= "Next Step",style='Green.TButton')
          self.step_one_label.grid(row=1, column=0)
@@ -182,7 +182,7 @@ class MagicExperimentPage(tk.Frame):
 
     def fill_canvas_frame(self,width,height):
         logger.info("Experiment Page - fill_canvas_frame")
-        self.button_frame= tk.Frame(self.labelframeone,background="steelblue4")
+        self.button_frame= tk.Frame(self.labelframeone,background="deepskyblue4")
         self.add_image_icon = tk.PhotoImage(file="../images/image_open.png")
         self.image_button = ttk.Button(self.button_frame, text='Add Image',image=self.add_image_icon, command=self.use_image,style='Green.TButton')
         self.image_button.grid(row=0, column=0,padx=5)
@@ -209,7 +209,7 @@ class MagicExperimentPage(tk.Frame):
         self.eraser_button.tooltip = tooltip.ToolTip(self.eraser_button, "Erase Drawing")
 
         self.choose_size_button = tk.Scale(self.button_frame, orient=tk.HORIZONTAL, from_=1, to=10,
-                                           background='steelblue4', foreground='white')
+                                           background='deepskyblue4', foreground='white')
         self.choose_size_button.tooltip = tooltip.ToolTip(self.choose_size_button, "Line Size of the Pen")
 
         self.clear_image_icon = tk.PhotoImage(file="../images/cls.png")
@@ -423,9 +423,9 @@ class MagicExperimentPage(tk.Frame):
         self.step_descriptions = []
         if self.index < self.experiment_content_list[2]:
             label = ttk.Label(self.labelframetwo, text="Step "+str(self.index+1), foreground='white',
-                                            font=("helvetica", 14,'bold'),background='steelblue4')
+                                            font=("helvetica", 14,'bold'),background='deepskyblue4')
             desc_label = ttk.Label(self.labelframetwo, text=self.experiment_content_terms[self.index],wraplength=250,
-                                                 foreground='white', font=("helvetica", 14,'bold'),background='steelblue4')
+                                                 foreground='white', font=("helvetica", 14,'bold'),background='deepskyblue4')
             label.grid(row=self.index+1, column=0)
             desc_label.grid(row=self.index+1, column=1,sticky=tk.W,columnspan=2, padx = 50)
             self.step_labels.append(label)

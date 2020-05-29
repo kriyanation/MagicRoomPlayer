@@ -30,15 +30,15 @@ class MagicTitlePage(tk.Frame):
         self.parent_window = parent
         self.pen_color = 'bisque2'
         self.old_x, self.old_y = None, None
-        self.configure(background='steelblue4')
+        self.configure(background='deepskyblue4')
         self.quoteframe = tk.Frame(self)
-        self.quoteframe.configure(background='steelblue4')
+        self.quoteframe.configure(background='deepskyblue4')
         self.quoteframe.pack(fill=tk.X, side=tk.TOP, anchor=tk.CENTER)
         self.quote_text = Data_Flow_Player.get_Quote()
         self.quote_textwidget = tk.Text(self.quoteframe, borderwidth=0, highlightthickness=0, relief=tk.FLAT,
                                         wrap=tk.WORD, font=('helvetica', 14,'bold'), bd=2, height=2,
                                         foreground='white', background=
-                                        'steelblue4')
+                                        'deepskyblue4')
         self.labelframeone = ttk.Labelframe(self,
                                             text="The Ice-Breaker", relief=tk.RIDGE, style='Red.TLabelframe')
 
@@ -120,13 +120,13 @@ class MagicTitlePage(tk.Frame):
         self.title_text = Data_Flow_Player.get_Title()
 
         self.topic_label = ttk.Label(self.labelframeone, text=self.title_text, font=('helvetica', 16,'bold'),
-                                     foreground='white', background='steelblue4',
+                                     foreground='white', background='deepskyblue4',
                                      wraplength=self.parent_window.screen_width / 2.5)
         self.topic_label.pack(pady=10, anchor=tk.CENTER)
 
         title_image = Data_Flow_Player.get_title_image()
         self.image_frame = tk.Frame(self.labelframeone)
-        self.image_frame.configure(background='steelblue4')
+        self.image_frame.configure(background='deepskyblue4')
         self.new_window_image_button = ttk.Button(self.image_frame, text="Zoom Image",
                                                   command=lambda: self.open_image_window(title_image),
                                                   style='Green.TButton')
@@ -148,8 +148,8 @@ class MagicTitlePage(tk.Frame):
         self.image_frame.pack(anchor=tk.CENTER)
 
         self.canvas = tk.Canvas(self.labelframeone,
-                                background='steelblue4', borderwidth=0, highlightthickness=0, relief=tk.FLAT)
-        self.popup_menu = Menu(self.canvas, background='steelblue4', foreground='white')
+                                background='deepskyblue4', borderwidth=0, highlightthickness=0, relief=tk.FLAT)
+        self.popup_menu = Menu(self.canvas, background='deepskyblue4', foreground='white')
         self.popup_menu.add_command(label="Dark", command=self.switch_to_dark)
         self.popup_menu.add_command(label="Light", command=self.switch_to_light)
         self.popup_menu.add_command(label="Text")
@@ -174,7 +174,7 @@ class MagicTitlePage(tk.Frame):
 
         if not self.video_mode:
             self.img = self.img.resize(
-                (int(self.winfo_width() / 2) - 100, int(self.winfo_height() / 2.0) - 100), Image.ANTIALIAS)
+                (int(self.winfo_width() / 2.0) - 100, int(self.winfo_height() / 2.0) - 100), Image.ANTIALIAS)
 
             self.img1 = ImageTk.PhotoImage(self.img)
             self.canvas.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 2.0))
@@ -192,7 +192,7 @@ class MagicTitlePage(tk.Frame):
         self.title_video_str = Data_Flow_Player.get_title_video()
 
         self.controlframe = tk.Frame(self.labelframeone)
-        self.controlframe.configure(background='steelblue4')
+        self.controlframe.configure(background='deepskyblue4')
         # self.play_button = ttk.Button(self.controlframe, text="Play", command=self.play_video, style='Green.TButton')
         # self.pause_button = ttk.Button(self.controlframe, text="Pause", command=self.pause_video,
         #                                style='Green.TButton')
@@ -211,7 +211,7 @@ class MagicTitlePage(tk.Frame):
         logger.info("Player Title page notes_display")
         video_notes_info = Data_Flow_Player.get_Running_Notes()
         video_notes = video_notes_info[0]
-        self.text_frame = tk.Frame(self, background="steelblue4")
+        self.text_frame = tk.Frame(self, background="deepskyblue4")
         self.video_note_text = tk.Text(self.text_frame, pady=10, borderwidth=0, highlightthickness=0, relief=tk.SUNKEN,
                                        wrap=tk.WORD, font=("helvetica", 16,'bold'), height=6, foreground="royalblue4",
                                        background='white')

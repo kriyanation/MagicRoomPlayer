@@ -30,20 +30,20 @@ class MagicApplication(tk.Toplevel):
         s.map('Green.TButton', background=[('active', '!disabled', 'cyan'), ('pressed', 'white')],
               foreground=[('pressed', 'royalblue4'), ('active', 'royalblue4')])
 
-        s.configure('TScrollbar', background='royalblue4', foreground='steelblue4')
-        s.map('TScrollbar', background=[('active', '!disabled', 'steelblue4'), ('pressed', 'snow')],
+        s.configure('TScrollbar', background='royalblue4', foreground='deepskyblue4')
+        s.map('TScrollbar', background=[('active', '!disabled', 'deepskyblue4'), ('pressed', 'snow')],
               foreground=[('pressed', 'royalblue4'), ('active', 'royalblue4')])
-        s.configure('Red.TLabelframe', background='steelblue4', bordercolor="royalblue4")
+        s.configure('Red.TLabelframe', background='deepskyblue4', bordercolor="royalblue4")
         s.configure('Red.TLabelframe.Label', font=('helvetica', 15, 'bold'))
         s.configure('Red.TLabelframe.Label', foreground='white')
-        s.configure('Red.TLabelframe.Label', background='steelblue4')
+        s.configure('Red.TLabelframe.Label', background='deepskyblue4')
 
         self.title("Learning Room")
-        self.configure(background='steelblue4')
+        self.configure(background='deepskyblue4')
         self.headerimage = tk.PhotoImage(file="../images/learning.png")
-        ttk.Label(self, text="Learning Room", image=self.headerimage, compound=tk.RIGHT, background='steelblue4',
+        ttk.Label(self, text="Learning Room", image=self.headerimage, compound=tk.RIGHT, background='deepskyblue4',
                   font=("helvetica", 18, 'bold'), foreground='white').pack(side=tk.TOP)
-        self.tool_frame = tk.Frame(self, background="steelblue4")
+        self.tool_frame = tk.Frame(self, background="deepskyblue4")
         self.lbbutton_hide = ttk.Button(self.tool_frame,text="Show/Hide LeaderBoard", command=self.show_leaderboard_seperate,
                                         style='Green.TButton')
         self.timer_button = ttk.Button(self.tool_frame,text="Timer", command=self.launch_timer,
@@ -54,7 +54,7 @@ class MagicApplication(tk.Toplevel):
         self.timer_button.pack(side=tk.RIGHT, anchor=tk.NE, pady=5,padx=5)
         self.show_hide_flag = 1
         app = lesson_list_player.MagicLessonList(parent=self)
-        app.geometry("400x600+50+50")
+        app.geometry("350x600+50+50")
         self.wait_window(app)
         print(self.selected_lessons)
         Data_Flow_Player.TEST_ROW=self.selected_lessons[0]
@@ -69,7 +69,7 @@ class MagicApplication(tk.Toplevel):
         self.screen_width = self.winfo_screenwidth()
         self.screen_height = self.winfo_screenheight()
 
-        self.bframe = tk.Frame(self,background="steelblue4")
+        self.bframe = tk.Frame(self,background="deepskyblue4")
 
         self.nextimage = tk.PhotoImage(file="../images/next.png")
         self.nextbutton = ttk.Button(self.bframe,text="Next Step", image=self.nextimage,
@@ -175,7 +175,7 @@ class MagicApplication(tk.Toplevel):
         win = tk.Toplevel()
         win.wm_title("Leaderboard")
         win.wm_geometry('340x500+100+100')
-        win.configure(background='steelblue4')
+        win.configure(background='deepskyblue4')
         win.resizable(width=False, height=False)
         win.attributes("-topmost", True)
         self.leaderboard = magicleaderboard.MagicLeaderBoard(win,mode="top")

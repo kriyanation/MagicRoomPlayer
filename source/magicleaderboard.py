@@ -10,12 +10,12 @@ class MagicLeaderBoard(tk.Frame):
         super().__init__(parent, *args, **kwargs)
         self.parent=parent
         self.mode = mode
-        self.configure(background='steelblue4',borderwidth=0)
+        self.configure(background='deepskyblue4',borderwidth=0)
         s = ttk.Style(self)
-        s.configure('Red.TLabelframe', background='steelblue4')
+        s.configure('Red.TLabelframe', background='deepskyblue4')
         s.configure('Red.TLabelframe.Label', font=('helvetica', 12, 'bold'))
         s.configure('Red.TLabelframe.Label', foreground='white')
-        s.configure('Red.TLabelframe.Label', background='steelblue4')
+        s.configure('Red.TLabelframe.Label', background='deepskyblue4')
 
 
 
