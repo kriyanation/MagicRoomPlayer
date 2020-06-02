@@ -262,7 +262,7 @@ class MagicExperimentPage(tk.Frame):
             self.canvas_experiment.tag_bind(self.image_canvas_list[len(self.image_canvas_list) - 1], "<ButtonRelease-1>",self.release)
             return self.image1_id
       except (FileNotFoundError, IsADirectoryError):
-            messagebox.showwarning("Warning", "Step Images could not be retrieved \n",parent=self)
+            #messagebox.showwarning("Warning", "Step Images could not be retrieved \n",parent=self)
             logger.exception("Step Images could not be retrieved")
             return None
 

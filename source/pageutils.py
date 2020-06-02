@@ -18,11 +18,13 @@ if not _isLinux:
     import pythoncom
 def animate_text(frame, text, counter, textwidget, counter_max):
     #print(text)
-    textwidget.insert(float(counter+1),text[counter])
+
+
     if counter >= counter_max:
         # self.playtextsound(quote_text)
         textwidget.configure(state="disabled")
         return
+    textwidget.insert(float(counter + 1), text[counter])
     frame.after(100, lambda: animate_text(frame, text, counter + 1, textwidget, counter_max))
 
 
@@ -35,11 +37,12 @@ def playtextsound(text,V='m',L='en'):
     engine.setProperty('voice', 'en+f2')
     engine.setProperty('rate', 130)
     engine.setProperty("volume",0.9)
-    engine.say(text)
-  #  engine.say(text)
-    engine.runAndWait()
-   # voiceoutput = subprocess.check_output('espeak-ng -s150 -v'+L+'+f2 \"'+text+'\"',shell=True)
-   # print("sound"+str(voiceoutput))
+    if text != "" and text is not None:
+        engine.say(text)
+        engine.runAndWait()
+    else:
+        return
+
 
 
 

@@ -170,12 +170,12 @@ class MagicTitlePage(tk.Frame):
 
 
         except (FileNotFoundError, IsADirectoryError):
-            messagebox.showerror("Error", "Title image not found in the path \n" + title_image)
+            #messagebox.showerror("Error", "Title image not found in the path \n" + title_image)
             logger.exception("TItle image  cannot be loaded")
 
     def resize(self, event):
 
-        if not self.video_mode:
+        if not self.video_mode and hasattr(self,"img") and self.img is not None:
             self.img = self.img.resize(
                 (int(self.winfo_width() / 2.0) - 100, int(self.winfo_height() / 2.0) - 100), Image.ANTIALIAS)
 

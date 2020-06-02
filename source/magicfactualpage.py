@@ -88,15 +88,15 @@ class MagicFactualPage(tk.Frame):
         self.canvas_image3.bind('<ButtonRelease-1>', self.reset)
         device = "laptop"
         try:
-
-                self.image1 = Image.open(self.factual_image1)
-
-                self.image2 = Image.open(self.factual_image2)
-
-                self.image3 = Image.open(self.factual_image3)
+            if self.factual_image1 != "" and self.factual_image1 is not None:
+                    self.image1 = Image.open(self.factual_image1)
+            if self.factual_image2 != "" and self.factual_image2 is not None:
+                    self.image2 = Image.open(self.factual_image2)
+            if self.factual_image3 != "" and self.factual_image3 is not None:
+                    self.image3 = Image.open(self.factual_image3)
 
         except (FileNotFoundError , IsADirectoryError):
-            messagebox.showerror("Error", "Factual Images Could not be retrieved \n e.g. "+self.factual_image1)
+            #messagebox.showerror("Error", "Factual Images Could not be retrieved \n e.g. "+self.factual_image1)
             print(self.factual_image1)
             print(self.factual_image2)
             print(self.factual_image3)
@@ -144,19 +144,19 @@ class MagicFactualPage(tk.Frame):
         self.canvas_image1.delete("all")
         self.canvas_image2.delete("all")
         self.canvas_image3.delete("all")
-        if self.factual_index == 0 and self.winfo_width()/2.1 - 100> 0 and self.winfo_height()/1.6 -100 > 0:
+        if hasattr(self,"image1") and self.factual_index == 0 and self.winfo_width()/2.1 - 100> 0 and self.winfo_height()/1.6 -100 > 0:
             self.image1 = self.image1.resize(
                 (int(self.winfo_width()/2.1)-100, int(self.winfo_height()/1.6)-100), Image.ANTIALIAS)
             self.fimage1_display = ImageTk.PhotoImage(self.image1)
             self.canvas_image1.configure(width=int(self.winfo_width() / 2.1), height=int(self.winfo_height() / 1.6))
             self.image1_id = self.canvas_image1.create_image(0, 0, image=self.fimage1_display, anchor=tk.NW)
-        elif self.factual_index == 1 and self.winfo_width()/2.1 - 100> 0 and self.winfo_height()/1.6 -100 > 0:
+        elif hasattr(self,"image2") and  self.factual_index == 1 and self.winfo_width()/2.1 - 100> 0 and self.winfo_height()/1.6 -100 > 0:
             self.image2 = self.image2.resize(
             (int(self.winfo_width() / 2.1)-100, int(self.winfo_height() / 1.6)-100), Image.ANTIALIAS)
             self.fimage2_display = ImageTk.PhotoImage(self.image2)
             self.canvas_image2.configure(width=int(self.winfo_width() / 2.1), height=int(self.winfo_height() / 1.6))
             self.image2_id = self.canvas_image2.create_image(0, 0, image=self.fimage2_display, anchor=tk.NW)
-        elif self.winfo_width()/2.1 - 100> 0 and self.winfo_height()/1.6 -100:
+        elif hasattr(self,"image3") and self.winfo_width()/2.1 - 100> 0 and self.winfo_height()/1.6 -100:
             self.image3 = self.image3.resize(
             (int(self.winfo_width() / 2.1)-100, int(self.winfo_height() / 1.6)-100), Image.ANTIALIAS)
             self.fimage3_display = ImageTk.PhotoImage(self.image3)
