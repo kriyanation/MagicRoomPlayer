@@ -8,6 +8,7 @@ from tkinter import ttk, Menu, simpledialog
 import sys
 
 
+
 from PIL import Image, ImageTk
 
 import Data_Flow_Player, tooltip
@@ -15,6 +16,8 @@ import pageutils
 import subprocess, threading
 
 _isLinux = sys.platform.startswith('linux')
+if not _isLinux:
+    import pythoncom
 
 logger = logging.getLogger("MagicLogger")
 
