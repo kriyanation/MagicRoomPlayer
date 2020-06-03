@@ -176,11 +176,12 @@ class MagicTitlePage(tk.Frame):
     def resize(self, event):
 
         if not self.video_mode and hasattr(self,"img") and self.img is not None:
+
             self.img = self.img.resize(
-                (int(self.winfo_width() / 2.0) - 100, int(self.winfo_height() / 2.0) - 100), Image.ANTIALIAS)
+                 (int(self.winfo_width() / 2.5), int(self.winfo_height() / 2.5)), Image.ANTIALIAS)
 
             self.img1 = ImageTk.PhotoImage(self.img)
-            self.canvas.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 2.0))
+            self.canvas.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 1.5))
             self.title_image_id = self.canvas.create_image(10, 10, image=self.img1,
                                                            anchor=tk.NW)
 

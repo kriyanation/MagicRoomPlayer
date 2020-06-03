@@ -147,7 +147,7 @@ class MagicApplication(tk.Toplevel):
     def show_ip_page(self, ap_mode):
         logger.info("Player show_ip_page")
         self.show_hide_flag = 1
-        self.application_experiment_page.save_image_window(self.application_experiment_page.canvas_experiment, random.randint(0,100))
+        #self.application_experiment_page.save_image_window(self.application_experiment_page.canvas_experiment, random.randint(0,100))
 
         self.bframe.pack_forget()
 
