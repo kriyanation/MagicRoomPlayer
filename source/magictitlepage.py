@@ -43,7 +43,7 @@ class MagicTitlePage(tk.Frame):
                                         foreground='white', background=
                                         'deepskyblue4')
         self.labelframeone = ttk.Labelframe(self,
-                                            text="The Ice-Breaker", relief=tk.RIDGE, style='Red.TLabelframe')
+                                            text="Introduction", relief=tk.RIDGE, style='Red.TLabelframe')
 
         self.counter = 0
         pageutils.animate_text(self.quoteframe, self.quote_text, self.counter, self.quote_textwidget,
@@ -111,7 +111,7 @@ class MagicTitlePage(tk.Frame):
         image.save(Data_Flow_Player.saved_canvas + os.path.sep + "title_image" + self.title_text + '.png', 'png')
         image.close()
         os.remove('title_image' + self.title_text + ".eps")
-        messagebox.showinfo("Information", "Use Save for saving your interactions on the board in the lesson notes",parent=self)
+        messagebox.showinfo("Information", "Your additions will be added to the notes",parent=self)
 
     def show_popup_menu(self, event):
         logger.info("Player Title page show_popup_menu")
@@ -157,14 +157,14 @@ class MagicTitlePage(tk.Frame):
         self.popup_menu.add_command(label="Light", command=self.switch_to_light)
         self.popup_menu.add_command(label="Text")
 
-        self.canvas.pack(padx=10, pady=10)
+        self.canvas.pack(padx=20, pady=10)
         self.canvas.bind('<Button-3>', self.show_popup_menu)
         self.image_save_button.configure(command=self.save_image_window)
         self.canvas.bind("<B1-Motion>", self.paint)
         self.canvas.bind('<ButtonRelease-1>', self.reset)
         self.bind("<Configure>", self.resize)
         self.notes_display()
-        self.labelframeone.pack(padx=80, fill=tk.BOTH, expand=True)
+        self.labelframeone.pack(padx=10)
         try:
             self.img = Image.open(title_image)
 
@@ -174,16 +174,22 @@ class MagicTitlePage(tk.Frame):
             logger.exception("TItle image  cannot be loaded")
 
     def resize(self, event):
+        try:        
+            if not self.video_mode and hasattr(self,"img") and self.img is not None:
 
-        if not self.video_mode and hasattr(self,"img") and self.img is not None:
+                self.img = self.img.resize(
+                     (int(self.winfo_width() / 2.5), int(self.winfo_height() / 2.5)), Image.ANTIALIAS)
 
-            self.img = self.img.resize(
-                 (int(self.winfo_width() / 2.5), int(self.winfo_height() / 2.5)), Image.ANTIALIAS)
-
-            self.img1 = ImageTk.PhotoImage(self.img)
-            self.canvas.configure(width=int(self.winfo_width() / 2), height=int(self.winfo_height() / 1.5))
-            self.title_image_id = self.canvas.create_image(10, 10, image=self.img1,
-                                                           anchor=tk.NW)
+                self.img1 = ImageTk.PhotoImage(self.img)
+                self.canvas.configure(width=int(self.winfo_width() / 2.2), height=int(self.winfo_height() / 1.8))
+                self.title_image_id = self.canvas.create_image(10, 10, image=self.img1,
+                                                               anchor=tk.NW)
+        except:
+	        logger.exception("Title Image resize issue")
+      
+        self.text_width = int(self.winfo_width()/30)
+        self.text_height = int(self.winfo_height()/35)
+        self.video_note_text.configure(width=self.text_width, height=self.text_height)
 
     def title_video(self):
         logger.info("Player Title page title_video")
@@ -216,9 +222,11 @@ class MagicTitlePage(tk.Frame):
         video_notes_info = Data_Flow_Player.get_Running_Notes()
         video_notes = video_notes_info[0]
         self.text_frame = tk.Frame(self, background="deepskyblue4")
+        self.text_width = int(self.winfo_width()/30)
+        self.text_height = int(self.winfo_height()/35)
         self.video_note_text = tk.Text(self.text_frame, pady=10, borderwidth=0, highlightthickness=0, relief=tk.SUNKEN,
-                                       wrap=tk.WORD, font=("helvetica", 16,'bold'), height=6, foreground="royalblue4",
-                                       background='white')
+                                       wrap=tk.WORD,width=self.text_width, height=self.text_height, font=("helvetica", 16,'bold'), foreground="snow",
+                                       background='deepskyblue4')
 
         self.button_notes_image = tk.PhotoImage(file="../images/speaker.png")
 
@@ -233,8 +241,8 @@ class MagicTitlePage(tk.Frame):
         self.video_note_text.config(yscrollcommand=self.scrollbar.set)
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.scrollbar.config(command=self.video_note_text.yview, style='TScrollbar')
-        self.text_frame.pack(side=tk.BOTTOM, fill=tk.X)
-        self.video_note_text.pack(padx=50, anchor = tk.CENTER,fill=tk.X,pady=8)
+        self.text_frame.pack(side=tk.RIGHT)
+        self.video_note_text.pack(padx=50)
 
     def OnConfigure(self, *unused):
         """Some widget configuration changed.

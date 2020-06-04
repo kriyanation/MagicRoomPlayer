@@ -122,9 +122,10 @@ class MagicExperimentPage(tk.Frame):
             image.save(Data_Flow_Player.saved_canvas+os.path.sep+'skill_board'+str(factualterm)+'.png','png')
             image.close()
             os.remove('apply_image'+str(factualterm)+".eps")
+            messagebox.showinfo("Save Board", "You can view the additions in the Notes",parent=self)
         except:
             logger.error("Canvas Image Could Not be Saved")
-            logger.error(traceback.print_exc())
+            logger.exception("Canvas Image Could Not be Saved")
 
 
 
