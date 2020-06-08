@@ -57,7 +57,7 @@ class MagicFactualPage(tk.Frame):
 
                         bg='deepskyblue4',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
                                                          )
-        self.popup_menu_1 = tk.Menu(self.canvas_image1, background='deepskyblue4', foreground='white')
+        self.popup_menu_1 = tk.Menu(self.canvas_image1, background='deepskyblue4', foreground='white',tearoff=0)
         self.popup_menu_1.add_command(label="Dark", command=self.switch_to_dark)
         self.popup_menu_1.add_command(label="Light", command=self.switch_to_light)
         self.popup_menu_1.add_command(label="Text")
@@ -66,7 +66,7 @@ class MagicFactualPage(tk.Frame):
 
                                     bg='deepskyblue4',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
                                        )
-        self.popup_menu_2 = tk.Menu(self.canvas_image2, background='deepskyblue4', foreground='white')
+        self.popup_menu_2 = tk.Menu(self.canvas_image2, background='deepskyblue4', foreground='white',tearoff=0)
         self.popup_menu_2.add_command(label="Dark", command=self.switch_to_dark)
         self.popup_menu_2.add_command(label="Light", command=self.switch_to_light)
         self.popup_menu_2.add_command(label="Text")
@@ -74,7 +74,7 @@ class MagicFactualPage(tk.Frame):
         self.canvas_image3 = tk.Canvas(self.labelframethree,
 
                                    bg='deepskyblue4',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
-        self.popup_menu_3 = tk.Menu(self.canvas_image3, background='deepskyblue4', foreground='white')
+        self.popup_menu_3 = tk.Menu(self.canvas_image3, background='deepskyblue4', foreground='white',tearoff=0)
         self.popup_menu_3.add_command(label="Dark", command=self.switch_to_dark)
         self.popup_menu_3.add_command(label="Light", command=self.switch_to_light)
         self.popup_menu_3.add_command(label="Text")
@@ -123,7 +123,8 @@ class MagicFactualPage(tk.Frame):
         logger.info("Factual Page - Paint Text")
         answer = simpledialog.askstring("Text to add", "Add text to the location",
                                         parent=self.parent)
-        canvas.create_text(event.x,event.y,font=("comic sans", 15, "bold"),text=answer,fill=self.pen_color)
+        if answer is not None:
+            canvas.create_text(event.x,event.y,font=("comic sans", 15, "bold"),text=answer,fill=self.pen_color)
 
     def show_popup_menu1(self, event):
 

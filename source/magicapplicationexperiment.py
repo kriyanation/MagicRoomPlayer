@@ -56,7 +56,7 @@ class MagicExperimentPage(tk.Frame):
        # self.canvas_experiment = tk.Canvas(self.labelframeone,bg="white",width=parent.winfo_width()/1.5,height=parent.winfo_height()/1.5)
 
         self.canvas_experiment = tk.Canvas(self.labelframeone, bg="white")
-        self.popup_menu = tk.Menu(self.canvas_experiment, background='deepskyblue4', foreground='white')
+        self.popup_menu = tk.Menu(self.canvas_experiment, background='deepskyblue4', foreground='white',tearoff=0)
         self.popup_menu.add_command(label="Text")
         self.popup_menu.add_command(label="Move Down")
         self.popup_menu.add_command(label="Move Right")
@@ -105,7 +105,8 @@ class MagicExperimentPage(tk.Frame):
         logger.info("Experiment Page - paint_Text")
         answer = simpledialog.askstring("Text to add", "Add text to the location",
                                         parent=self.parent)
-        canvas.create_text(event.x, event.y, font=("comic sans", 32, "bold"), text=answer, fill=self.color)
+        if answer is not None:
+            canvas.create_text(event.x, event.y, font=("comic sans", 32, "bold"), text=answer, fill=self.color)
     def resize_c(self,event):
         print("frame resized"+str(self.winfo_width()))
 

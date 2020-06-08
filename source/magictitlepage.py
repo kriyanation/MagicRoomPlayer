@@ -64,7 +64,8 @@ class MagicTitlePage(tk.Frame):
         logger.info("Player title page paint_Text")
         answer = simpledialog.askstring("Text to add", "Add text to the location",
                                         parent=self.parent_window)
-        self.canvas.create_text(event.x, event.y, font=("comic sans", 15, "bold"), text=answer, fill=self.pen_color)
+        if answer is not None:
+            self.canvas.create_text(event.x, event.y, font=("comic sans", 15, "bold"), text=answer, fill=self.pen_color)
 
     def paint(self, event):
         logger.info("Player Title page paint")
@@ -152,7 +153,7 @@ class MagicTitlePage(tk.Frame):
 
         self.canvas = tk.Canvas(self.labelframeone,
                                 background='deepskyblue4', borderwidth=0, highlightthickness=0, relief=tk.FLAT)
-        self.popup_menu = Menu(self.canvas, background='deepskyblue4', foreground='white')
+        self.popup_menu = Menu(self.canvas, background='deepskyblue4', foreground='white',tearoff=0)
         self.popup_menu.add_command(label="Dark", command=self.switch_to_dark)
         self.popup_menu.add_command(label="Light", command=self.switch_to_light)
         self.popup_menu.add_command(label="Text")
