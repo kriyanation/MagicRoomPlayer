@@ -20,7 +20,7 @@ def animate_text(frame, text, counter, textwidget, counter_max):
     #print(text)
 
 
-    if counter >= counter_max:
+    if counter > counter_max:
         # self.playtextsound(quote_text)
         textwidget.configure(state="disabled")
         return

@@ -149,14 +149,14 @@ class MagicExperimentPage(tk.Frame):
          imageid = self.draw_image(imagefile, 100, 100,150,150)
          if imageid != None:
              self.image_map[imageid] = imagefile
-             self.audiobutton = ttk.Button(self.labelframetwo, text="Voice-On", style='Green.TButton',command= self.play_step_audio)
+         self.audiobutton = ttk.Button(self.labelframetwo, text="Voice-On", style='Green.TButton',command= self.play_step_audio)
 
-             self.audiooffbutton = ttk.Button(self.labelframetwo, text="Voice-Off", style='Green.TButton',
+         self.audiooffbutton = ttk.Button(self.labelframetwo, text="Voice-Off", style='Green.TButton',
                                       command= self.stop_step_audio)
-             self.audiobutton.grid(row =0,padx = 20,column=1,sticky=tk.NW,pady=5)
-             self.audiooffbutton.grid(row=0, column=2, sticky=tk.NW,pady=5)
+         self.audiobutton.grid(row =0,padx = 20,column=1,sticky=tk.NW,pady=5)
+         self.audiooffbutton.grid(row=0, column=2, sticky=tk.NW,pady=5)
 
-             self.stepbutton.configure(command=lambda: self.addnewstep(width, height))
+         self.stepbutton.configure(command=lambda: self.addnewstep(width, height))
 
     def play_step_audio(self):
         self.sound_flag = True
