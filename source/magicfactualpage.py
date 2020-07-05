@@ -90,16 +90,17 @@ class MagicFactualPage(tk.Frame):
         try:
             if self.factual_image1 != "" and self.factual_image1 is not None:
                     self.image1 = Image.open(self.factual_image1)
+        except (FileNotFoundError, IsADirectoryError):
+            logger.exception("Factual Images cannot be retrieved")
+        try:
             if self.factual_image2 != "" and self.factual_image2 is not None:
                     self.image2 = Image.open(self.factual_image2)
+        except (FileNotFoundError, IsADirectoryError):
+            logger.exception("Factual Images cannot be retrieved")
+        try:
             if self.factual_image3 != "" and self.factual_image3 is not None:
                     self.image3 = Image.open(self.factual_image3)
-
         except (FileNotFoundError , IsADirectoryError):
-            #messagebox.showerror("Error", "Factual Images Could not be retrieved \n e.g. "+self.factual_image1)
-            print(self.factual_image1)
-            print(self.factual_image2)
-            print(self.factual_image3)
             logger.exception("Factual Images cannot be retrieved")
 
 
