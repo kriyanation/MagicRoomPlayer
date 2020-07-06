@@ -55,7 +55,7 @@ class MagicIndenpendentPractice(tk.Frame):
 
 
     def resize_t(self,event):
-        self.notes_text.configure(width=int(self.winfo_width()/15),height=int(self.winfo_height()/35))
+        self.notes_text.configure(width=int(self.winfo_width()/20),height=int(self.winfo_height()/40))
 
 
 

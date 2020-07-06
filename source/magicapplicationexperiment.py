@@ -10,6 +10,7 @@ import webbrowser
 from tkinter import ttk, font, filedialog, messagebox, simpledialog
 from tkinter.colorchooser import askcolor
 
+import pyautogui
 from PIL import Image, ImageTk
 
 import Data_Flow_Player
@@ -118,14 +119,8 @@ class MagicExperimentPage(tk.Frame):
         # subprocess.run([title_image], check=False)
         logger.info("Experiment Page - save_image_window")
         try:
-            canvas.postscript(file='apply_image'+str(factualterm)+".eps")
-            image = Image.open('apply_image'+str(factualterm)+".eps")
-            image.save(Data_Flow_Player.saved_canvas+os.path.sep+'skill_board'+str(factualterm)+'.png','png')
-            image.close()
-            os.remove('apply_image'+str(factualterm)+".eps")
-            messagebox.showinfo("Save Board", "You can view the additions in the Notes",parent=self)
+            image = pyautogui.screenshot(Data_Flow_Player.saved_canvas+os.path.sep+'skill_board'+str(factualterm)+'.png')
         except:
-            logger.error("Canvas Image Could Not be Saved")
             logger.exception("Canvas Image Could Not be Saved")
 
 

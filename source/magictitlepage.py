@@ -6,6 +6,7 @@ from tkinter import messagebox
 from tkinter import ttk, Menu, simpledialog
 
 import sys
+import pyautogui
 
 
 
@@ -80,7 +81,13 @@ class MagicTitlePage(tk.Frame):
 
     def new_window(self):
         #self.player.stop()
-        subprocess.Popen(['vlc', '-vvv', self.title_video_str])
+        #subprocess.Popen(['vlc', '-vvv', self.title_video_str])
+        logger.info("Player Title video new_window")
+        if sys.platform == "win32":
+            os.startfile(self.title_video_str)
+        else:
+            opener = "open" if sys.platform == "darwin" else "xdg-open"
+            subprocess.call([opener, self.title_video_str])
 
 
     def show_overview_image(self):
@@ -107,11 +114,15 @@ class MagicTitlePage(tk.Frame):
 
     def save_image_window(self):
         logger.info("Player Title page save_image_window")
-        self.canvas.postscript(file='title_image' + self.title_text + ".eps")
-        image = Image.open('title_image' + self.title_text + ".eps")
-        image.save(Data_Flow_Player.saved_canvas + os.path.sep + "title_image" + self.title_text + '.png', 'png')
-        image.close()
-        os.remove('title_image' + self.title_text + ".eps")
+        #self.canvas.postscript(file='title_image' + self.title_text + ".eps")
+        #image = Image.open('title_image' + self.title_text + ".eps")
+        try:
+             image = pyautogui.screenshot(Data_Flow_Player.saved_canvas + os.path.sep + "title_image" + self.title_text + '.png')
+        except:
+             logger.exception("Title Image save issue")
+        # image.save(Data_Flow_Player.saved_canvas + os.path.sep + "title_image" + self.title_text + '.png', 'png')
+        # image.close()
+        # os.remove('title_image' + self.title_text + ".eps")
         messagebox.showinfo("Information", "Your additions will be added to the notes",parent=self)
 
     def show_popup_menu(self, event):
@@ -179,7 +190,7 @@ class MagicTitlePage(tk.Frame):
             if not self.video_mode and hasattr(self,"img") and self.img is not None:
 
                 self.img = self.img.resize(
-                     (int(self.winfo_width() / 2.5), int(self.winfo_height() / 2.5)), Image.ANTIALIAS)
+                     (int(self.winfo_width() / 2.8), int(self.winfo_height() / 2.0)), Image.ANTIALIAS)
 
                 self.img1 = ImageTk.PhotoImage(self.img)
                 self.canvas.configure(width=int(self.winfo_width() / 2.2), height=int(self.winfo_height() / 1.8))
@@ -188,7 +199,7 @@ class MagicTitlePage(tk.Frame):
         except:
 	        logger.exception("Title Image resize issue")
       
-        self.text_width = int(self.winfo_width()/30)
+        self.text_width = int(self.winfo_width()/40)
         self.text_height = int(self.winfo_height()/35)
         self.video_note_text.configure(width=self.text_width, height=self.text_height)
 
