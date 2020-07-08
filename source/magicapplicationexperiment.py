@@ -107,7 +107,7 @@ class MagicExperimentPage(tk.Frame):
         answer = simpledialog.askstring("Text to add", "Add text to the location",
                                         parent=self.parent)
         if answer is not None:
-            canvas.create_text(event.x, event.y, font=("comic sans", 32, "bold"), text=answer, fill=self.color)
+            canvas.create_text(event.x, event.y, font=("comic sans", 22, "bold"), text=answer, fill=self.color)
     def resize_c(self,event):
         print("frame resized"+str(self.winfo_width()))
 
@@ -208,6 +208,7 @@ class MagicExperimentPage(tk.Frame):
 
         self.choose_size_button = tk.Scale(self.button_frame, orient=tk.HORIZONTAL, from_=1, to=10,
                                            background='deepskyblue4', foreground='white')
+        self.choose_size_button.set(5)
         self.choose_size_button.tooltip = tooltip.ToolTip(self.choose_size_button, "Line Size of the Pen")
 
         self.clear_image_icon = tk.PhotoImage(file="../images/cls.png")
@@ -219,7 +220,7 @@ class MagicExperimentPage(tk.Frame):
         self.image_save_button = ttk.Button(self.button_frame, text="Save Canvas",image=self.buttonimage,
                                             command=lambda: self.save_image_window(self.canvas_experiment, random.randint(0,100)),
                                             style='Green.TButton')
-        self.image_save_button.tooltip = tooltip.ToolTip(self.image_save_button, "Save Canvas to view in Lesson Notes\n(Moving to Next Page also saves the canvas)")
+        self.image_save_button.tooltip = tooltip.ToolTip(self.image_save_button, "Save Canvas to view in Lesson Notes")
 
         self.choose_size_button.grid(row=0, column=5,padx=5)
         self.clear_button.grid(row=0, column=6,padx=5)
@@ -407,7 +408,7 @@ class MagicExperimentPage(tk.Frame):
         if self.old_x and self.old_y:
             self.canvas_experiment.create_line(self.old_x, self.old_y, event.x, event.y,
                                width=self.line_width, fill=paint_color,
-                               capstyle=tk.ROUND, smooth=tk.TRUE, splinesteps=36)
+                               capstyle=tk.ROUND, smooth=tk.TRUE, splinesteps=56)
         self.old_x = event.x
         self.old_y = event.y
 
