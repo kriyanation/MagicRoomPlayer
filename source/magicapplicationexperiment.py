@@ -120,6 +120,7 @@ class MagicExperimentPage(tk.Frame):
         logger.info("Experiment Page - save_image_window")
         try:
             image = pyautogui.screenshot(Data_Flow_Player.saved_canvas+os.path.sep+'skill_board'+str(factualterm)+'.png')
+            messagebox.showinfo("Save Board", "Board saved into the lesson notes", parent=self)
         except:
             logger.exception("Canvas Image Could Not be Saved")
 
@@ -267,7 +268,6 @@ class MagicExperimentPage(tk.Frame):
 
 
 
-
     def use_image_act(self):
         logger.info("Experiment Page - use_image_act")
         self.activate_button(self.image_act_button)
@@ -371,6 +371,8 @@ class MagicExperimentPage(tk.Frame):
         self.canvas_experiment.bind('<B1-Motion>', "")
         self.canvas_experiment.bind('<ButtonRelease-1>', "")
         self.canvas_experiment.delete("all")
+        self.image_canvas_list.clear()
+        self.image_map.clear()
 
     def setup_canvas(self):
         logger.info("Experiment Page - setup_canvas")
