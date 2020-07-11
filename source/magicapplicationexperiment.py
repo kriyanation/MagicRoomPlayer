@@ -156,6 +156,7 @@ class MagicExperimentPage(tk.Frame):
              self.audiooffbutton.grid(row=0, column=2, sticky=tk.NW,pady=5)
 
              self.stepbutton.configure(command=lambda: self.addnewstep(width, height))
+             self.bind_all('<Control-Key-n>',lambda event,w=width,h=height:self.addnewstep(w,h,event))
 
     def play_step_audio(self):
         self.sound_flag = True
@@ -418,7 +419,7 @@ class MagicExperimentPage(tk.Frame):
 
 
 
-    def addnewstep(self,width,height):
+    def addnewstep(self,width,height,event=None):
         logger.info("Experiment Page - addnewstep")
         self.step_labels = []
         self.step_descriptions = []
@@ -436,7 +437,7 @@ class MagicExperimentPage(tk.Frame):
 
             if imageid != None:
                 self.image_map[imageid] = imagefile
-                self.move_animate(self.canvas_experiment, imageid, self.canvas_experiment.winfo_width()-100,self.canvas_experiment.winfo_height()-100)
+                self.move_animate(self.canvas_experiment, imageid, self.canvas_experiment.winfo_width()-self.index*100,self.canvas_experiment.winfo_height()-100)
                 self.move_flag = False
             if self.sound_flag:
                 sound_speak = threading.Thread(target=pageutils.playtextsound, args=(self.experiment_content_terms[self.index], 'f'))

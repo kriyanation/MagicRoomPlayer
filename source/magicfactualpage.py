@@ -171,7 +171,7 @@ class MagicFactualPage(tk.Frame):
         self.pen_color = 'bisque2'
 
 
-    def save_image_window(self,canvas,factualterm):
+    def save_image_window(self,canvas,factualterm,event=None):
         # subprocess.run([title_image], check=False)
         logger.info("Factual Page - save_image_window")
         canvas.postscript(file='fact_image'+factualterm+".eps")
@@ -181,7 +181,7 @@ class MagicFactualPage(tk.Frame):
         os.remove('fact_image'+factualterm+".eps")
         messagebox.showinfo("Information","You can view the additions in the Notes",parent=self)
 
-    def open_image_window(self, image):
+    def open_image_window(self, image,event=None):
         # subprocess.run([title_image], check=False)
         if sys.platform == "win32":
             os.startfile(image)
@@ -200,15 +200,20 @@ class MagicFactualPage(tk.Frame):
         self.new_window_image_button = ttk.Button(self.image_frame, text="Zoom Image",
                                                   command=lambda: self.open_image_window(image),
                                                   style='Green.TButton')
+        self.bind_all('<Control-Key-z>',lambda event,img=image:self.open_image_window(img,event))
         self.new_window_image_button.tooltip = tooltip.ToolTip(self.new_window_image_button, "Open in new window")
         self.image_save_button = ttk.Button(self.image_frame, text="Save Board",
                                             command=lambda: self.save_image_window(canvas,label.cget("text")),style='Green.TButton')
         self.image_save_button.tooltip = tooltip.ToolTip(self.image_save_button, "Save your additions to the Image.\n(will appear in lesson notes)")
         self.labeltext=label.cget("text")
+        self.bind_all('<Control-Key-s>', lambda event, img=canvas,text=label.cget("text"): self.save_image_window(img,text, event))
         self.desctext=description.cget("text")
         self.text_zoom_button = ttk.Button(self.image_frame, text="Zoom Text",
                                             command=lambda: self.show_text_window(self.labeltext, self.desctext),
                                             style='Green.TButton')
+        self.bind_all('<Control-Key-x>',
+                      lambda event, text1=self.labeltext, text2=self.desctext: self.show_text_window(text1, text2, event))
+
         self.text_zoom_button.tooltip = tooltip.ToolTip(self.text_zoom_button, "View Text in larger size")
         self.text_zoom_button.grid(row=0, column=1, padx=10)
         self.new_window_image_button.grid(row=0,column=0,padx=10)
@@ -223,7 +228,14 @@ class MagicFactualPage(tk.Frame):
         self.backward_button = ttk.Button(labelframe, image = self.buttonbackimage,
                                             command=lambda:self.move_previous_fact(index) ,
                                             style='Green.TButton')
+
         self.backward_button.tooltip = tooltip.ToolTip(self.backward_button, "Previous")
+        self.bind_all('<Control-Key-n>',
+                      lambda event, index=index: self.nextfact(index,event))
+
+        self.bind_all('<Control-Key-b>',
+                      lambda event, index=index: self.move_previous_fact(index, event))
+
         if (index != 2):
             self.forward_button.grid(row=4,column=4,sticky=tk.S)
 
@@ -239,7 +251,7 @@ class MagicFactualPage(tk.Frame):
 
 
 
-    def nextfact(self, index):
+    def nextfact(self, index,event=None):
         logger.info("Factual Page - next fact")
         if index == 0:
             self.factual_index = 1
@@ -276,7 +288,7 @@ class MagicFactualPage(tk.Frame):
         self.old_x = event.x
         self.old_y = event.y
 
-    def   show_text_window(self,label,description):
+    def   show_text_window(self,label,description,event=None):
       #  self.option_add('*Dialog.msg.font', 'Helvetica 30')
         logger.info("Factual Page - show_text_window")
         top = tk.Toplevel(self)
@@ -296,7 +308,7 @@ class MagicFactualPage(tk.Frame):
         voicebutton_top.pack(side=tk.RIGHT)
         closebutton.pack()
        # self.option_clear()
-    def move_previous_fact(self, index):
+    def move_previous_fact(self, index,event=None):
         logger.info("Factual Page - move_previous_fact")
         if index == 1:
             self.factual_index = 0
