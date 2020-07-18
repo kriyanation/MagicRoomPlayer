@@ -20,7 +20,7 @@ class MagicIndenpendentPractice(tk.Frame):
         super().__init__(parent, *args, **kwargs)
         logger.info("Independent Practice Initialize")
         self.configure(background='deepskyblue4')
-
+        self.unbind_all('<Control-Key-n>')
 
         self.bind("<Configure>",self.resize_t)
         self.cameraoff = False

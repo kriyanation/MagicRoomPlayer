@@ -48,7 +48,8 @@ class MagicApplication(tk.Toplevel):
                                         style='Green.TButton')
         self.timer_button = ttk.Button(self.tool_frame,text="Timer", command=self.launch_timer,
                                         style='Green.TButton')
-        self.timer_button.tooltip = tooltip.ToolTip(self.timer_button, "Launch Timer App")
+        self.timer_button.tooltip = tooltip.ToolTip(self.timer_button, "Launch Timer\nctrl-t")
+        self.lbbutton_hide.tooltip = tooltip.ToolTip(self.lbbutton_hide, "Launch Leaderboard\nctrl-l")
         self.tool_frame.pack(side=tk.TOP, anchor=tk.NE, pady=5, padx=5)
         self.lbbutton_hide.pack(side=tk.RIGHT, anchor=tk.NE, pady=5,padx=5)
         self.timer_button.pack(side=tk.RIGHT, anchor=tk.NE, pady=5,padx=5)
@@ -85,10 +86,12 @@ class MagicApplication(tk.Toplevel):
         self.backbutton.pack(side=tk.TOP, anchor=tk.NE,padx = 10)
         self.show_title_page()
 
+        self.bind_all('<Control-Key-t>', self.launch_timer)
+        self.bind_all('<Control-Key-l>', self.show_leaderboard_seperate)
+        self.bind_all('<Right>', lambda event,index=self.page_index:self.show_next_page(self.page_index,event))
+        self.bind_all('<Left>', lambda event, index=self.page_index: self.show_previous_page(self.page_index, event))
 
-
-
-    def  launch_timer(self):
+    def  launch_timer(self,event=None):
         logger.info("TImer launch in player")
         launch_timer = Timer_Display.TimerDisplay(self)
         launch_timer.geometry("240x250+200+200")
@@ -109,7 +112,7 @@ class MagicApplication(tk.Toplevel):
 
 
 
-    def show_next_page(self, index):
+    def show_next_page(self, index,event=None):
         logger.info("Player show_next_page")
         ap_mode = Data_Flow_Player.get_application_mode()
         if index == 0:
@@ -129,7 +132,7 @@ class MagicApplication(tk.Toplevel):
             self.show_ip_page(ap_mode)
             self.page_index += 1
 
-    def show_previous_page(self, index):
+    def show_previous_page(self, index,event=None):
         logger.info("Player show_previous_page")
         ap_mode = Data_Flow_Player.get_application_mode()
         if index == 1:
@@ -176,7 +179,7 @@ class MagicApplication(tk.Toplevel):
         self.application_experiment_page.pack(side=tk.LEFT, fill=tk.BOTH, expand=tk.TRUE, anchor=tk.N)
 
 
-    def show_leaderboard_seperate(self):
+    def show_leaderboard_seperate(self,event=None):
         logger.info("Player show_leaderboard_seperate")
         win = tk.Toplevel()
         win.wm_title("Leaderboard")

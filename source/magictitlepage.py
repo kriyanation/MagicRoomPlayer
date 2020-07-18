@@ -79,7 +79,7 @@ class MagicTitlePage(tk.Frame):
 
 
 
-    def new_window(self):
+    def new_window(self,event=None):
         #self.player.stop()
         #subprocess.Popen(['vlc', '-vvv', self.title_video_str])
         logger.info("Player Title video new_window")
@@ -104,7 +104,7 @@ class MagicTitlePage(tk.Frame):
         sound_speak.start()
        # pageutils.playtextsound(text)
 
-    def open_image_window(self, title_image):
+    def open_image_window(self, title_image,event=None):
         logger.info("Player Title page open_image_window")
         if sys.platform == "win32":
             os.startfile(title_image)
@@ -112,7 +112,7 @@ class MagicTitlePage(tk.Frame):
             opener = "open" if sys.platform == "darwin" else "xdg-open"
             subprocess.call([opener, title_image])
 
-    def save_image_window(self):
+    def save_image_window(self,event=None):
         logger.info("Player Title page save_image_window")
         #self.canvas.postscript(file='title_image' + self.title_text + ".eps")
         #image = Image.open('title_image' + self.title_text + ".eps")
@@ -130,6 +130,9 @@ class MagicTitlePage(tk.Frame):
         self.popup_menu.tk_popup(event.x_root, event.y_root)
         self.popup_menu.entryconfig("Text", command=lambda: self.paint_text(event))
 
+    def print_check(self,event=None):
+        print("evented")
+
     def title_intro(self):
         logger.info("Player Title page title_intro")
         self.title_text = Data_Flow_Player.get_Title()
@@ -139,29 +142,31 @@ class MagicTitlePage(tk.Frame):
                                      wraplength=self.parent_window.screen_width / 2.5)
         self.topic_label.pack(pady=10, anchor=tk.CENTER)
 
-        title_image = Data_Flow_Player.get_title_image()
+        self.title_image = Data_Flow_Player.get_title_image()
         self.image_frame = tk.Frame(self.labelframeone)
         self.image_frame.configure(background='deepskyblue4')
+
         self.new_window_image_button = ttk.Button(self.image_frame, text="Zoom Image",
-                                                  command=lambda: self.open_image_window(title_image),
+                                                  command=lambda: self.open_image_window(self.title_image),
                                                   style='Green.TButton')
-        self.new_window_image_button.tooltip = tooltip.ToolTip(self.new_window_image_button, "Open in new window")
+        self.new_window_image_button.tooltip = tooltip.ToolTip(self.new_window_image_button, "Open in new window\nctrl-z")
 
         self.image_save_button = ttk.Button(self.image_frame, text="Save Board",
                                             style='Green.TButton')
-        self.image_save_button.tooltip = tooltip.ToolTip(self.image_save_button, "Save your additions to the Image.\n(will appear in lesson notes)")
+        self.image_save_button.tooltip = tooltip.ToolTip(self.image_save_button, "Save your additions to the Image.\n(will appear in lesson notes)\nctrl-s")
 
         self.show_video_button = ttk.Button(self.image_frame, text="Show Video",
                                             command=self.new_window,
                                             style='Green.TButton')
         self.show_video_button.tooltip = tooltip.ToolTip(self.show_video_button,
-                                                         "Launches VLC video player")
-
+                                                         "Launches video player\nctrl-v")
+        self.bind_all('<Control-Key-v>', lambda event: self.new_window(event))
         self.new_window_image_button.pack(pady=5, side=tk.LEFT)
         self.image_save_button.pack(padx=5, side=tk.LEFT)
         self.show_video_button.pack(pady=5, side=tk.LEFT)
         self.image_frame.pack(anchor=tk.CENTER)
-
+        self.bind_all('<Control-Key-z>', lambda event,img=self.title_image:self.open_image_window(img,event))
+        self.bind_all('<Control-Key-s>', lambda event: self.save_image_window(event))
         self.canvas = tk.Canvas(self.labelframeone,
                                 background='deepskyblue4', borderwidth=0, highlightthickness=0, relief=tk.FLAT)
         self.popup_menu = Menu(self.canvas, background='deepskyblue4', foreground='white',tearoff=0)
@@ -178,7 +183,7 @@ class MagicTitlePage(tk.Frame):
         self.notes_display()
         self.labelframeone.pack(padx=10)
         try:
-            self.img = Image.open(title_image)
+            self.img = Image.open(self.title_image)
 
 
         except (FileNotFoundError, IsADirectoryError):
