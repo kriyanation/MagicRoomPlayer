@@ -12,6 +12,7 @@ import webbrowser
 from tkinter import ttk, font, filedialog, messagebox, simpledialog
 from tkinter.colorchooser import askcolor
 
+import pyautogui
 from PIL import Image, ImageTk
 
 import Data_Flow_Player
@@ -61,7 +62,7 @@ class MagicExperimentPage(tk.Frame):
        # self.canvas_experiment = tk.Canvas(self.labelframeone,bg="white",width=parent.winfo_width()/1.5,height=parent.winfo_height()/1.5)
 
         self.canvas_experiment = tk.Canvas(self.labelframeone, bg="white")
-        self.popup_menu = tk.Menu(self.canvas_experiment, background='deepskyblue4', foreground='white')
+        self.popup_menu = tk.Menu(self.canvas_experiment, background='deepskyblue4', foreground='white',tearoff=0)
         self.popup_menu.add_command(label="Text")
         self.popup_menu.add_command(label="Move Down")
         self.popup_menu.add_command(label="Move Right")
@@ -110,7 +111,8 @@ class MagicExperimentPage(tk.Frame):
         logger.info("Experiment Page - paint_Text")
         answer = simpledialog.askstring("Text to add", "Add text to the location",
                                         parent=self.parent)
-        canvas.create_text(event.x, event.y, font=("comic sans", 32, "bold"), text=answer, fill=self.color)
+        if answer is not None:
+            canvas.create_text(event.x, event.y, font=("comic sans", 22, "bold"), text=answer, fill=self.color)
     def resize_c(self,event):
         print("frame resized"+str(self.winfo_width()))
 
@@ -122,14 +124,9 @@ class MagicExperimentPage(tk.Frame):
         # subprocess.run([title_image], check=False)
         logger.info("Experiment Page - save_image_window")
         try:
-            canvas.postscript(file='apply_image'+str(factualterm)+".eps")
-            image = Image.open('apply_image'+str(factualterm)+".eps")
-            image.save(Data_Flow_Player.saved_canvas+os.path.sep+'skill_board'+str(factualterm)+'.png','png')
-            image.close()
-            os.remove('apply_image'+str(factualterm)+".eps")
-            messagebox.showinfo("Save Board", "You can view the additions in the Notes",parent=self)
+            image = pyautogui.screenshot(Data_Flow_Player.saved_canvas+os.path.sep+'skill_board'+str(factualterm)+'.png')
+            messagebox.showinfo("Save Board", "Board saved into the lesson notes", parent=self)
         except:
-            logger.error("Canvas Image Could Not be Saved")
             logger.exception("Canvas Image Could Not be Saved")
 
 
@@ -154,15 +151,15 @@ class MagicExperimentPage(tk.Frame):
          imageid = self.draw_image(imagefile, 100, 100,150,150)
          if imageid != None:
              self.image_map[imageid] = imagefile
-             self.audiobutton = ttk.Button(self.labelframetwo, text="Voice-On", style='Green.TButton',command= self.play_step_audio)
+         self.audiobutton = ttk.Button(self.labelframetwo, text="Voice-On", style='Green.TButton',command= self.play_step_audio)
 
-             self.audiooffbutton = ttk.Button(self.labelframetwo, text="Voice-Off", style='Green.TButton',
+         self.audiooffbutton = ttk.Button(self.labelframetwo, text="Voice-Off", style='Green.TButton',
                                       command= self.stop_step_audio)
-             self.audiobutton.grid(row =0,padx = 20,column=1,sticky=tk.NW,pady=5)
-             self.audiooffbutton.grid(row=0, column=2, sticky=tk.NW,pady=5)
+         self.audiobutton.grid(row =0,padx = 20,column=1,sticky=tk.NW,pady=5)
+         self.audiooffbutton.grid(row=0, column=2, sticky=tk.NW,pady=5)
+         self.stepbutton.configure(command=lambda: self.addnewstep(width, height))
+         self.bind_all('<Control-Key-n>',lambda event,w=width,h=height:self.addnewstep(w,h,event))
 
-             self.stepbutton.configure(command=lambda: self.addnewstep(width, height))
-             self.bind_all('<Control-Key-n>',lambda event,w=width,h=height:self.addnewstep(w,h,event))
 
     def play_step_audio(self):
         self.sound_flag = True
@@ -223,6 +220,7 @@ class MagicExperimentPage(tk.Frame):
 
         self.choose_size_button = tk.Scale(self.button_frame, orient=tk.HORIZONTAL, from_=1, to=10,
                                            background='deepskyblue4', foreground='white')
+        self.choose_size_button.set(5)
         self.choose_size_button.tooltip = tooltip.ToolTip(self.choose_size_button, "Line Size of the Pen")
 
         self.clear_image_icon = tk.PhotoImage(file="../images/cls.png")
@@ -234,7 +232,9 @@ class MagicExperimentPage(tk.Frame):
         self.image_save_button = ttk.Button(self.button_frame, text="Save Canvas",image=self.buttonimage,
                                             command=lambda: self.save_image_window(self.canvas_experiment, random.randint(0,100)),
                                             style='Green.TButton')
-        self.image_save_button.tooltip = tooltip.ToolTip(self.image_save_button, "Save Canvas to view in Lesson Notes\n")
+
+        self.image_save_button.tooltip = tooltip.ToolTip(self.image_save_button, "Save Canvas to view in Lesson Notes")
+
 
         self.choose_size_button.grid(row=0, column=6,padx=5)
         self.clear_button.grid(row=0, column=7,padx=5)
@@ -328,7 +328,6 @@ class MagicExperimentPage(tk.Frame):
             #messagebox.showwarning("Warning", "Step Images could not be retrieved \n",parent=self)
             logger.exception("Step Images could not be retrieved")
             return None
-
 
 
 
@@ -437,6 +436,8 @@ class MagicExperimentPage(tk.Frame):
         self.canvas_experiment.bind('<B1-Motion>', "")
         self.canvas_experiment.bind('<ButtonRelease-1>', "")
         self.canvas_experiment.delete("all")
+        self.image_canvas_list.clear()
+        self.image_map.clear()
 
     def setup_canvas(self):
         logger.info("Experiment Page - setup_canvas")
@@ -471,7 +472,7 @@ class MagicExperimentPage(tk.Frame):
         if self.old_x and self.old_y:
             self.canvas_experiment.create_line(self.old_x, self.old_y, event.x, event.y,
                                width=self.line_width, fill=paint_color,
-                               capstyle=tk.ROUND, smooth=tk.TRUE, splinesteps=36)
+                               capstyle=tk.ROUND, smooth=tk.TRUE, splinesteps=56)
         self.old_x = event.x
         self.old_y = event.y
 

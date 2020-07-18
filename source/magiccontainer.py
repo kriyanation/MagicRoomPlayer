@@ -106,8 +106,9 @@ class MagicApplication(tk.Toplevel):
             self.bframe.pack_forget()
 
         self.TitlePage = magictitlepage.MagicTitlePage(self)
-        self.TitlePage.pack(side=tk.LEFT, anchor=tk.N, fill=tk.BOTH, expand=True)
         self.bframe.pack(side=tk.BOTTOM, anchor=tk.NE, padx=5, pady=20)
+        self.TitlePage.pack(side=tk.LEFT, anchor=tk.N, fill=tk.BOTH, expand=True)
+
 
 
 

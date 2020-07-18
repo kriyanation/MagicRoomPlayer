@@ -6,6 +6,7 @@ import sys
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
 
+import pyautogui
 from PIL import Image, ImageTk
 
 import Data_Flow_Player
@@ -59,7 +60,7 @@ class MagicFactualPage(tk.Frame):
 
                         bg='deepskyblue4',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
                                                          )
-        self.popup_menu_1 = tk.Menu(self.canvas_image1, background='deepskyblue4', foreground='white')
+        self.popup_menu_1 = tk.Menu(self.canvas_image1, background='deepskyblue4', foreground='white',tearoff=0)
         self.popup_menu_1.add_command(label="Dark", command=self.switch_to_dark)
         self.popup_menu_1.add_command(label="Light", command=self.switch_to_light)
         self.popup_menu_1.add_command(label="Text")
@@ -68,7 +69,7 @@ class MagicFactualPage(tk.Frame):
 
                                     bg='deepskyblue4',borderwidth = 0, highlightthickness=0,relief=tk.FLAT
                                        )
-        self.popup_menu_2 = tk.Menu(self.canvas_image2, background='deepskyblue4', foreground='white')
+        self.popup_menu_2 = tk.Menu(self.canvas_image2, background='deepskyblue4', foreground='white',tearoff=0)
         self.popup_menu_2.add_command(label="Dark", command=self.switch_to_dark)
         self.popup_menu_2.add_command(label="Light", command=self.switch_to_light)
         self.popup_menu_2.add_command(label="Text")
@@ -76,7 +77,7 @@ class MagicFactualPage(tk.Frame):
         self.canvas_image3 = tk.Canvas(self.labelframethree,
 
                                    bg='deepskyblue4',borderwidth = 0, highlightthickness=0,relief=tk.FLAT)
-        self.popup_menu_3 = tk.Menu(self.canvas_image3, background='deepskyblue4', foreground='white')
+        self.popup_menu_3 = tk.Menu(self.canvas_image3, background='deepskyblue4', foreground='white',tearoff=0)
         self.popup_menu_3.add_command(label="Dark", command=self.switch_to_dark)
         self.popup_menu_3.add_command(label="Light", command=self.switch_to_light)
         self.popup_menu_3.add_command(label="Text")
@@ -92,16 +93,17 @@ class MagicFactualPage(tk.Frame):
         try:
             if self.factual_image1 != "" and self.factual_image1 is not None:
                     self.image1 = Image.open(self.factual_image1)
+        except (FileNotFoundError, IsADirectoryError):
+            logger.exception("Factual Images cannot be retrieved")
+        try:
             if self.factual_image2 != "" and self.factual_image2 is not None:
                     self.image2 = Image.open(self.factual_image2)
+        except (FileNotFoundError, IsADirectoryError):
+            logger.exception("Factual Images cannot be retrieved")
+        try:
             if self.factual_image3 != "" and self.factual_image3 is not None:
                     self.image3 = Image.open(self.factual_image3)
-
         except (FileNotFoundError , IsADirectoryError):
-            #messagebox.showerror("Error", "Factual Images Could not be retrieved \n e.g. "+self.factual_image1)
-            print(self.factual_image1)
-            print(self.factual_image2)
-            print(self.factual_image3)
             logger.exception("Factual Images cannot be retrieved")
 
 
@@ -125,7 +127,8 @@ class MagicFactualPage(tk.Frame):
         logger.info("Factual Page - Paint Text")
         answer = simpledialog.askstring("Text to add", "Add text to the location",
                                         parent=self.parent)
-        canvas.create_text(event.x,event.y,font=("comic sans", 15, "bold"),text=answer,fill=self.pen_color)
+        if answer is not None:
+            canvas.create_text(event.x,event.y,font=("comic sans", 15, "bold"),text=answer,fill=self.pen_color)
 
     def show_popup_menu1(self, event):
 
@@ -146,23 +149,23 @@ class MagicFactualPage(tk.Frame):
         self.canvas_image1.delete("all")
         self.canvas_image2.delete("all")
         self.canvas_image3.delete("all")
-        if hasattr(self,"image1") and self.factual_index == 0 and self.winfo_width()/2.1 - 100> 0 and self.winfo_height()/1.6 -100 > 0:
+        if hasattr(self,"image1") and self.factual_index == 0 and self.winfo_width()/2.1 - 100> 0 and self.winfo_height()/1.7 -100 > 0:
             self.image1 = self.image1.resize(
-                (int(self.winfo_width()/2.1)-100, int(self.winfo_height()/1.6)-100), Image.ANTIALIAS)
+                (int(self.winfo_width()/2.1)-100, int(self.winfo_height()/1.7)-100), Image.ANTIALIAS)
             self.fimage1_display = ImageTk.PhotoImage(self.image1)
-            self.canvas_image1.configure(width=int(self.winfo_width() / 2.1), height=int(self.winfo_height() / 1.6))
+            self.canvas_image1.configure(width=int(self.winfo_width() / 2.1), height=int(self.winfo_height() / 1.8))
             self.image1_id = self.canvas_image1.create_image(0, 0, image=self.fimage1_display, anchor=tk.NW)
-        elif hasattr(self,"image2") and  self.factual_index == 1 and self.winfo_width()/2.1 - 100> 0 and self.winfo_height()/1.6 -100 > 0:
+        elif hasattr(self,"image2") and  self.factual_index == 1 and self.winfo_width()/2.1 - 100> 0 and self.winfo_height()/1.7 -100 > 0:
             self.image2 = self.image2.resize(
-            (int(self.winfo_width() / 2.1)-100, int(self.winfo_height() / 1.6)-100), Image.ANTIALIAS)
+            (int(self.winfo_width() / 2.1)-100, int(self.winfo_height() / 1.7)-100), Image.ANTIALIAS)
             self.fimage2_display = ImageTk.PhotoImage(self.image2)
-            self.canvas_image2.configure(width=int(self.winfo_width() / 2.1), height=int(self.winfo_height() / 1.6))
+            self.canvas_image2.configure(width=int(self.winfo_width() / 2.1), height=int(self.winfo_height() / 1.7))
             self.image2_id = self.canvas_image2.create_image(0, 0, image=self.fimage2_display, anchor=tk.NW)
-        elif hasattr(self,"image3") and self.winfo_width()/2.1 - 100> 0 and self.winfo_height()/1.6 -100:
+        elif hasattr(self,"image3") and self.winfo_width()/2.1 - 100> 0 and self.winfo_height()/1.7 -100:
             self.image3 = self.image3.resize(
-            (int(self.winfo_width() / 2.1)-100, int(self.winfo_height() / 1.6)-100), Image.ANTIALIAS)
+            (int(self.winfo_width() / 2.1)-100, int(self.winfo_height() / 1.7)-100), Image.ANTIALIAS)
             self.fimage3_display = ImageTk.PhotoImage(self.image3)
-            self.canvas_image3.configure(width=int(self.winfo_width() / 2.1), height=int(self.winfo_height() / 1.6))
+            self.canvas_image3.configure(width=int(self.winfo_width() / 2.1), height=int(self.winfo_height() / 1.7))
             self.image3_id = self.canvas_image3.create_image(0, 0, image=self.fimage3_display, anchor=tk.NW)
 
 
@@ -176,11 +179,15 @@ class MagicFactualPage(tk.Frame):
     def save_image_window(self,canvas,factualterm,event=None):
         # subprocess.run([title_image], check=False)
         logger.info("Factual Page - save_image_window")
-        canvas.postscript(file='fact_image'+factualterm+".eps")
-        image = Image.open('fact_image'+factualterm+".eps")
-        image.save(Data_Flow_Player.saved_canvas+os.path.sep+"saved_images_fact_image"+factualterm+'.png','png')
-        image.close()
-        os.remove('fact_image'+factualterm+".eps")
+        # canvas.postscript(file='fact_image'+factualterm+".eps")
+        # image = Image.open('fact_image'+factualterm+".eps")
+        # image.save(Data_Flow_Player.saved_canvas+os.path.sep+"saved_images_fact_image"+factualterm+'.png','png')
+        # image.close()
+        # os.remove('fact_image'+factualterm+".eps")
+        try:
+             image = pyautogui.screenshot(Data_Flow_Player.saved_canvas+os.path.sep+"saved_images_fact_image"+factualterm+'.png')
+        except:
+             logger.exception("Title Image save issue")
         messagebox.showinfo("Information","You can view the additions in the Notes",parent=self)
 
     def open_image_window(self, image,event=None):
