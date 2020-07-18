@@ -48,7 +48,8 @@ class MagicApplication(tk.Toplevel):
                                         style='Green.TButton')
         self.timer_button = ttk.Button(self.tool_frame,text="Timer", command=self.launch_timer,
                                         style='Green.TButton')
-        self.timer_button.tooltip = tooltip.ToolTip(self.timer_button, "Launch Timer App")
+        self.timer_button.tooltip = tooltip.ToolTip(self.timer_button, "Launch Timer\nctrl-t")
+        self.lbbutton_hide.tooltip = tooltip.ToolTip(self.lbbutton_hide, "Launch Leaderboard\nctrl-l")
         self.tool_frame.pack(side=tk.TOP, anchor=tk.NE, pady=5, padx=5)
         self.lbbutton_hide.pack(side=tk.RIGHT, anchor=tk.NE, pady=5,padx=5)
         self.timer_button.pack(side=tk.RIGHT, anchor=tk.NE, pady=5,padx=5)

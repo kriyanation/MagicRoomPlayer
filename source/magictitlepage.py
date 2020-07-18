@@ -137,17 +137,17 @@ class MagicTitlePage(tk.Frame):
         self.new_window_image_button = ttk.Button(self.image_frame, text="Zoom Image",
                                                   command=lambda: self.open_image_window(self.title_image),
                                                   style='Green.TButton')
-        self.new_window_image_button.tooltip = tooltip.ToolTip(self.new_window_image_button, "Open in new window")
+        self.new_window_image_button.tooltip = tooltip.ToolTip(self.new_window_image_button, "Open in new window\nctrl-z")
 
         self.image_save_button = ttk.Button(self.image_frame, text="Save Board",
                                             style='Green.TButton')
-        self.image_save_button.tooltip = tooltip.ToolTip(self.image_save_button, "Save your additions to the Image.\n(will appear in lesson notes)")
+        self.image_save_button.tooltip = tooltip.ToolTip(self.image_save_button, "Save your additions to the Image.\n(will appear in lesson notes)\nctrl-s")
 
         self.show_video_button = ttk.Button(self.image_frame, text="Show Video",
                                             command=self.new_window,
                                             style='Green.TButton')
         self.show_video_button.tooltip = tooltip.ToolTip(self.show_video_button,
-                                                         "Launches video player")
+                                                         "Launches video player\nctrl-v")
         self.bind_all('<Control-Key-v>', lambda event: self.new_window(event))
         self.new_window_image_button.pack(pady=5, side=tk.LEFT)
         self.image_save_button.pack(padx=5, side=tk.LEFT)

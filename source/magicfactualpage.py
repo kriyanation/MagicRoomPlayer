@@ -24,7 +24,9 @@ class MagicFactualPage(tk.Frame):
         self.parent = parent
         self.configure(background='deepskyblue4')
         s = ttk.Style(self)
-
+        self.unbind_all('<Control-Key-z>')
+        self.unbind_all('<Control-Key-s>')
+        self.unbind_all('<Control-Key-v>')
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
         factual_content_list = Data_Flow_Player.get_factual_content()
@@ -201,10 +203,10 @@ class MagicFactualPage(tk.Frame):
                                                   command=lambda: self.open_image_window(image),
                                                   style='Green.TButton')
         self.bind_all('<Control-Key-z>',lambda event,img=image:self.open_image_window(img,event))
-        self.new_window_image_button.tooltip = tooltip.ToolTip(self.new_window_image_button, "Open in new window")
+        self.new_window_image_button.tooltip = tooltip.ToolTip(self.new_window_image_button, "Open in new window\nctrl-z")
         self.image_save_button = ttk.Button(self.image_frame, text="Save Board",
                                             command=lambda: self.save_image_window(canvas,label.cget("text")),style='Green.TButton')
-        self.image_save_button.tooltip = tooltip.ToolTip(self.image_save_button, "Save your additions to the Image.\n(will appear in lesson notes)")
+        self.image_save_button.tooltip = tooltip.ToolTip(self.image_save_button, "Save your additions to the Image.\n(will appear in lesson notes)\nctrl-s")
         self.labeltext=label.cget("text")
         self.bind_all('<Control-Key-s>', lambda event, img=canvas,text=label.cget("text"): self.save_image_window(img,text, event))
         self.desctext=description.cget("text")
@@ -214,7 +216,7 @@ class MagicFactualPage(tk.Frame):
         self.bind_all('<Control-Key-x>',
                       lambda event, text1=self.labeltext, text2=self.desctext: self.show_text_window(text1, text2, event))
 
-        self.text_zoom_button.tooltip = tooltip.ToolTip(self.text_zoom_button, "View Text in larger size")
+        self.text_zoom_button.tooltip = tooltip.ToolTip(self.text_zoom_button, "View Text in larger size\nctrl-x")
         self.text_zoom_button.grid(row=0, column=1, padx=10)
         self.new_window_image_button.grid(row=0,column=0,padx=10)
         self.image_save_button.grid(row=0,column=2,padx=10)
@@ -224,12 +226,12 @@ class MagicFactualPage(tk.Frame):
         self.forward_button = ttk.Button(labelframe, image =self.buttonnextimage,
                                             command=lambda:self.nextfact(index) ,
                                             style='Green.TButton')
-        self.forward_button.tooltip = tooltip.ToolTip(self.forward_button, "Next")
+        self.forward_button.tooltip = tooltip.ToolTip(self.forward_button, "Next\nctrl-n")
         self.backward_button = ttk.Button(labelframe, image = self.buttonbackimage,
                                             command=lambda:self.move_previous_fact(index) ,
                                             style='Green.TButton')
 
-        self.backward_button.tooltip = tooltip.ToolTip(self.backward_button, "Previous")
+        self.backward_button.tooltip = tooltip.ToolTip(self.backward_button, "Previous\nctrl-b")
         self.bind_all('<Control-Key-n>',
                       lambda event, index=index: self.nextfact(index,event))
 
@@ -300,7 +302,7 @@ class MagicFactualPage(tk.Frame):
         closebutton = ttk.Button(top,text="Close",command=top.destroy,style="Green.TButton")
 
         voicebutton_top= ttk.Button(top, image=self.buttonimage,
-                                   command=lambda: pageutils.playtextsound(description),
+                                   command=lambda: self.playtextsound(description,'f'),
                                    style='Green.TButton')
 
         termlabel.pack()

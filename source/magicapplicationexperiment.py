@@ -2,9 +2,11 @@ import logging
 import os
 import random
 import threading
+import time
 import traceback
 
 import sys
+import cv2
 import tkinter as tk
 import webbrowser
 from tkinter import ttk, font, filedialog, messagebox, simpledialog
@@ -30,6 +32,9 @@ class MagicExperimentPage(tk.Frame):
         self.configure(background='deepskyblue4')
         self.parent = parent
         s = ttk.Style(self)
+        self.unbind_all('<Control-Key-z>')
+        self.unbind_all('<Control-Key-s>')
+        self.unbind_all('<Control-Key-x>')
 
 
         s.configure('Horizontal.Green.TScale', background='deepskyblue4', foreground='white')
@@ -137,6 +142,7 @@ class MagicExperimentPage(tk.Frame):
          self.step_one_desc_label = ttk.Label(self.labelframetwo, text = self.experiment_content_terms[0],foreground = 'white',wraplength=250, font=("helvetica", 14,'bold'),background='deepskyblue4')
 
          self.stepbutton = ttk.Button(self.labelframetwo, text= "Next Step",style='Green.TButton')
+         self.stepbutton.tooltip = tooltip.ToolTip(self.stepbutton, "Next Step\nctrl-n")
          self.step_one_label.grid(row=1, column=0)
          self.step_one_desc_label.grid(row=1, column=1,sticky=tk.W,columnspan=2, padx = 50)
          self.stepbutton.grid(row=0, column = 0,pady=5, sticky=tk.NW,padx=5)
@@ -186,28 +192,33 @@ class MagicExperimentPage(tk.Frame):
         logger.info("Experiment Page - fill_canvas_frame")
         self.button_frame= tk.Frame(self.labelframeone,background="deepskyblue4")
         self.add_image_icon = tk.PhotoImage(file="../images/image_open.png")
+        self.add_camera_icon = tk.PhotoImage(file="../images/camera.png")
         self.image_button = ttk.Button(self.button_frame, text='Add Image',image=self.add_image_icon, command=self.use_image,style='Green.TButton')
         self.image_button.grid(row=0, column=0,padx=5)
         self.image_button.tooltip = tooltip.ToolTip(self.image_button, "Open an image file")
+        self.camera_button = ttk.Button(self.button_frame, text='Add Image', image=self.add_camera_icon,
+                                       command=self.use_camera, style='Green.TButton')
+        self.camera_button.grid(row=0, column=1, padx=5)
+        self.camera_button.tooltip = tooltip.ToolTip(self.camera_button, "Capture from Camera")
 
         self.move_image_icon = tk.PhotoImage(file="../images/image_move.png")
         self.image_act_button = ttk.Button(self.button_frame, text='Move Image', image = self.move_image_icon,command=self.use_image_act,style='Green.TButton')
-        self.image_act_button.grid(row=0, column=1,padx=5)
+        self.image_act_button.grid(row=0, column=2,padx=5)
         self.image_act_button.tooltip = tooltip.ToolTip(self.image_act_button, "Enable Moving of Images")
 
         self.pen_image_icon = tk.PhotoImage(file="../images/pen_brush.png")
         self.pen_button = ttk.Button(self.button_frame, text='Pen',image = self.pen_image_icon, command=self.use_pen,style='Green.TButton')
-        self.pen_button.grid(row=0, column=2,padx=5)
+        self.pen_button.grid(row=0, column=3,padx=5)
         self.pen_button.tooltip = tooltip.ToolTip(self.pen_button, "Draw with a Pen")
 
         self.color_image_icon = tk.PhotoImage(file="../images/color_pal.png")
         self.color_button = ttk.Button(self.button_frame, text='Color', image= self.color_image_icon,command=self.choose_color,style='Green.TButton')
-        self.color_button.grid(row=0, column=3,padx=5)
+        self.color_button.grid(row=0, column=4,padx=5)
         self.color_button.tooltip = tooltip.ToolTip(self.color_button, "Choose a Color")
 
         self.eraser_image_icon = tk.PhotoImage(file="../images/erase.png")
         self.eraser_button = ttk.Button(self.button_frame, text='Eraser',image=self.eraser_image_icon, command=self.use_eraser,style='Green.TButton')
-        self.eraser_button.grid(row=0, column=4,padx=5)
+        self.eraser_button.grid(row=0, column=5,padx=5)
         self.eraser_button.tooltip = tooltip.ToolTip(self.eraser_button, "Erase Drawing")
 
         self.choose_size_button = tk.Scale(self.button_frame, orient=tk.HORIZONTAL, from_=1, to=10,
@@ -223,10 +234,10 @@ class MagicExperimentPage(tk.Frame):
         self.image_save_button = ttk.Button(self.button_frame, text="Save Canvas",image=self.buttonimage,
                                             command=lambda: self.save_image_window(self.canvas_experiment, random.randint(0,100)),
                                             style='Green.TButton')
-        self.image_save_button.tooltip = tooltip.ToolTip(self.image_save_button, "Save Canvas to view in Lesson Notes\n(Moving to Next Page also saves the canvas)")
+        self.image_save_button.tooltip = tooltip.ToolTip(self.image_save_button, "Save Canvas to view in Lesson Notes\n")
 
-        self.choose_size_button.grid(row=0, column=5,padx=5)
-        self.clear_button.grid(row=0, column=6,padx=5)
+        self.choose_size_button.grid(row=0, column=6,padx=5)
+        self.clear_button.grid(row=0, column=7,padx=5)
         self.button_frame.grid(row=0,column=0,columnspan=7,pady=8)
         self.canvas_experiment.grid(row=1, pady=5, padx=20, columnspan = 7)
         self.image_save_button.grid(row=0,column=8,sticky=tk.N)
@@ -236,7 +247,7 @@ class MagicExperimentPage(tk.Frame):
 
     def use_image(self):
         logger.info("Experiment Page - use_image")
-        self.activate_button(self.image_button)
+        self.activate_button(self.camera_button)
         self.canvas_experiment.bind('<B1-Motion>', "")
         self.canvas_experiment.bind('<ButtonRelease-1>', "")
        # tk.Tk().withdraw()  # avoids window accompanying tkinter FileChooser
@@ -247,6 +258,56 @@ class MagicExperimentPage(tk.Frame):
         self.image_map[imageid] = img
 
         self.move_flag = False
+    def use_camera(self):
+        logger.info("Experiment Page - use_camera")
+        messagebox.showinfo("Camera Info","Camera will now open.\nPress the key 's' to capture image\nPress 'esc'"
+                                          "to close the camera",parent=self)
+        self.activate_button(self.image_button)
+        self.canvas_experiment.bind('<B1-Motion>', "")
+        self.canvas_experiment.bind('<ButtonRelease-1>', "")
+        # tk.Tk().withdraw()  # avoids window accompanying tkinter FileChooser
+        self.capture_view()
+        #capture_cam = threading.Thread(target= self.capture_view)
+        #capture_cam.start()
+        #capture_cam.join()
+        imageid = self.draw_image("savedone.png", self.canvas_experiment.winfo_width() - 100,
+                                  self.canvas_experiment.winfo_height() - 100, 150, 150)
+        self.image_map[imageid] = "savedone.png"
+
+        self.move_flag = False
+
+    def capture_view(self):
+        if os.path.exists("savedone.png"):
+            os.remove("savedone.png")
+        save_image = cv2.VideoCapture(0)
+
+        while (True):
+
+            # Capture the video frame
+            # by frame
+            ret, frame = save_image.read()
+            if not ret:
+                print("failed to grab frame")
+                break
+            # Display the resulting frame
+            cv2.imshow('Take a Pic', frame)
+
+            # the 'q' button is set as the
+            # quitting button you may use any
+            # desired button of your choice
+            k=cv2.waitKey(1)
+            if k == 27:
+               # cv2.imwrite("savedone.p ng", frame)
+                break
+            if k == ord('s'):
+
+                cv2.imwrite("savedone.png",frame)
+                break
+            if cv2.getWindowProperty('Take a Pic', cv2.WND_PROP_VISIBLE) < 1:
+                break
+
+        save_image.release()
+        cv2.destroyAllWindows()
 
     def draw_image(self, imagefile,xpos, ypos,scale1,scale2):
       logger.info("Experiment Page - draw_image")
