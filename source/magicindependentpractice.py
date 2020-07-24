@@ -42,7 +42,8 @@ class MagicIndenpendentPractice(tk.Frame):
         self.labelframeone.grid(row=0, pady=0, padx = 20,sticky = tk.NSEW)
 
         self.notes_text = tk.Text(self.labelframeone,borderwidth=3,highlightthickness=0,
-                                     font=("helvetica", 16,'bold'), foreground="royalblue4",background='white', wrap=tk.WORD)
+                                     font=("helvetica", 14
+                                           ,'bold'), foreground="royalblue4",background='white', wrap=tk.WORD)
 
         self.notes_text.insert(1.0,self.ip_questions)
         self.textscroll = ttk.Scrollbar(self.labelframeone)
@@ -55,7 +56,7 @@ class MagicIndenpendentPractice(tk.Frame):
 
 
     def resize_t(self,event):
-        self.notes_text.configure(width=int(self.winfo_width()/20),height=int(self.winfo_height()/40))
+        self.notes_text.configure(width=int(self.winfo_width()/25),height=int(self.winfo_height()/45))
 
 
 

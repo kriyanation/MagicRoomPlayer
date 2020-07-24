@@ -55,7 +55,7 @@ class MagicApplication(tk.Toplevel):
         self.timer_button.pack(side=tk.RIGHT, anchor=tk.NE, pady=5,padx=5)
         self.show_hide_flag = 1
         app = lesson_list_player.MagicLessonList(parent=self)
-        app.geometry("350x600+50+50")
+        app.geometry("350x750+50+50")
         self.wait_window(app)
         if hasattr(self,"selected_lessons") is False:
             self.destroy()

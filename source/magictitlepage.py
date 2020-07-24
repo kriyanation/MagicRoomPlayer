@@ -242,7 +242,7 @@ class MagicTitlePage(tk.Frame):
         self.text_width = int(self.winfo_width()/30)
         self.text_height = int(self.winfo_height()/35)
         self.video_note_text = tk.Text(self.text_frame, pady=10, borderwidth=0, highlightthickness=0, relief=tk.SUNKEN,
-                                       wrap=tk.WORD,width=self.text_width, height=self.text_height, font=("helvetica", 16,'bold'), foreground="snow",
+                                       wrap=tk.WORD,width=self.text_width, height=self.text_height, font=("helvetica", 14,'bold'), foreground="snow",
                                        background='deepskyblue4')
 
         self.button_notes_image = tk.PhotoImage(file="../images/speaker.png")
