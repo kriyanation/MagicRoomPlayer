@@ -55,7 +55,7 @@ class MagicApplication(tk.Toplevel):
         self.timer_button.pack(side=tk.RIGHT, anchor=tk.NE, pady=5,padx=5)
         self.show_hide_flag = 1
         app = lesson_list_player.MagicLessonList(parent=self)
-        app.geometry("350x750+50+50")
+        app.geometry("350x700+50+50")
         self.wait_window(app)
         if hasattr(self,"selected_lessons") is False:
             self.destroy()
@@ -90,6 +90,7 @@ class MagicApplication(tk.Toplevel):
         self.bind_all('<Control-Key-l>', self.show_leaderboard_seperate)
         self.bind_all('<Right>', lambda event,index=self.page_index:self.show_next_page(self.page_index,event))
         self.bind_all('<Left>', lambda event, index=self.page_index: self.show_previous_page(self.page_index, event))
+        self.protocol("WM_DELETE_WINDOW", self.close)
 
     def  launch_timer(self,event=None):
         logger.info("TImer launch in player")
@@ -208,6 +209,10 @@ class MagicApplication(tk.Toplevel):
         self.bframe.pack(side=tk.BOTTOM, anchor=tk.SE, padx=5,pady=30)
 
 
+    def close(self):
+        self.unbind_all('<Control-Key-t>')
+        self.unbind_all('<Control-Key-l>')
+        self.destroy()
 
 
     def  Configure(self,event):
