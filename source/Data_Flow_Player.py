@@ -4,6 +4,7 @@ import os
 import random
 import sqlite3
 import sys
+import traceback
 from pathlib import Path
 from tkinter import StringVar, messagebox
 
@@ -98,7 +99,10 @@ def get_title_video():
     #print(text)
     connection.commit()
     connection.close()
-    if("/" in text):
+    if text is None or text is "":
+        text = ""
+        return ""
+    if ("/" in text):
         return text
     return videoroot+text
  except sqlite3.OperationalError:
@@ -112,7 +116,7 @@ def get_Quote():
  try:
     connection = sqlite3.connect(db)
     cur = connection.cursor()
-    sql = "select * from Magic_Quotes where Theme_ID = 1"
+    sql = "select * from Magic_Teacher_Data where Class_No = 1"
     cur.execute(sql)
     rows = cur.fetchone()
 
@@ -133,7 +137,7 @@ def get_Running_Notes():
     text = qret[0]
     language = qret[1]
 
-    print(language+text)
+
     connection.commit()
     connection.close()
     return (text, language)
@@ -287,3 +291,32 @@ def save_leader_board_data(list_points):
  except sqlite3.OperationalError:
      messagebox.showerror("DB Error", "Cannot Connect to Database")
      logger.exception("Cannot connect to Database")
+
+
+def set_answer(answer_text):
+    try:
+        connection = sqlite3.connect(db)
+        cur = connection.cursor()
+        sql = 'update Magic_Science_Lessons set Answers="'+answer_text+'" where Lesson_ID=?'
+        cur.execute(sql, (TEST_ROW,))
+        connection.commit()
+        connection.close()
+
+    except sqlite3.OperationalError:
+        messagebox.showerror("DB Error", "Cannot Connect to Database")
+        traceback.print_exc()
+        logger.exception("Cannot connect to Database")
+
+
+def get_answer():
+    try:
+        connection = sqlite3.connect(db)
+        cur = connection.cursor()
+        sql = 'select Answers from Magic_Science_Lessons where Lesson_ID=?'
+        ap_info_c = cur.execute(sql, (TEST_ROW,))
+        ap_info = ap_info_c.fetchone()[0]
+        connection.close()
+        return ap_info
+    except sqlite3.OperationalError:
+        messagebox.showerror("DB Error", "Cannot Connect to Database")
+        logger.exception("Cannot connect to Database")

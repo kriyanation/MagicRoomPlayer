@@ -39,16 +39,17 @@ class MagicTitlePage(tk.Frame):
         self.quoteframe.configure(background='deepskyblue4')
         self.quoteframe.pack(fill=tk.X, side=tk.TOP, anchor=tk.CENTER)
         self.quote_text = Data_Flow_Player.get_Quote()
-        self.quote_textwidget = tk.Text(self.quoteframe, borderwidth=0, highlightthickness=0, relief=tk.FLAT,
+        self.quote_textwidget = tk.Text(self.quoteframe,borderwidth=0, highlightthickness=0, relief=tk.FLAT,
                                         wrap=tk.WORD, font=('helvetica', 14,'bold'), bd=2, height=2,
                                         foreground='white', background=
                                         'deepskyblue4')
+        self.quote_textwidget.insert("1.0",self.quote_text)
         self.labelframeone = ttk.Labelframe(self,
                                             text="Introduction", relief=tk.RIDGE, style='Red.TLabelframe')
 
         self.counter = 0
-        pageutils.animate_text(self.quoteframe, self.quote_text, self.counter, self.quote_textwidget,
-                               len(self.quote_text) - 1)
+        # pageutils.animate_text(self.quoteframe, self.quote_text, self.counter, self.quote_textwidget,
+        #                        len(self.quote_text) - 1)
 
         self.quote_textwidget.pack(pady=5, side=tk.TOP, anchor=tk.CENTER)
         self.buttonimage = tk.PhotoImage(file="../images/speaker.png")
@@ -83,11 +84,14 @@ class MagicTitlePage(tk.Frame):
         #self.player.stop()
         #subprocess.Popen(['vlc', '-vvv', self.title_video_str])
         logger.info("Player Title video new_window")
-        if sys.platform == "win32":
-            os.startfile(self.title_video_str)
+        if self.title_video_str is None or self.title_video_str == "":
+            messagebox.showinfo("Video","No Video Link Available")
         else:
-            opener = "open" if sys.platform == "darwin" else "xdg-open"
-            subprocess.call([opener, self.title_video_str])
+            if sys.platform == "win32":
+                os.startfile(self.title_video_str)
+            else:
+                opener = "open" if sys.platform == "darwin" else "xdg-open"
+                subprocess.call([opener, self.title_video_str])
 
 
     def show_overview_image(self):

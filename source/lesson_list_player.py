@@ -25,7 +25,7 @@ class MagicLessonList(Toplevel):
         self.configure(background="deepskyblue4")
         self.grab_set()
 
-        self.choice_label = ttk.Label(self, text="Select the Lesson to Learn",
+        self.choice_label = ttk.Label(self, text="Select Mini Lesson",
                                       font=("helvetica", 14, 'bold'), background="deepskyblue4", foreground="white")
         self.scroll_frame = ttk.Frame(self)
         self.choice_list = tk.Listbox(self.scroll_frame, selectmode=tk.SINGLE, background="white",font=("helvetica",10,"bold"),

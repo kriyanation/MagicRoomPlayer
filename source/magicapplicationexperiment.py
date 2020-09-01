@@ -45,7 +45,7 @@ class MagicExperimentPage(tk.Frame):
         self.move_animation_Steps = 12
         self.move_flag=False
         self.rowconfigure(0,weight=1)
-        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
         self.bind("<Configure>",self.resize_c)
         self.image_list = []
         self.image_canvas_list = []
@@ -70,8 +70,8 @@ class MagicExperimentPage(tk.Frame):
         self.canvas_experiment.bind('<Button-3>', self.show_popup_menu)
 
 
-        self.labelframeone.grid(row=0,column=0, pady=5, padx = 20)
-        self.labelframetwo.grid(row=0,column=1, pady= 10, padx = 20,sticky=tk.N)
+        self.labelframeone.grid(row=0,column=1, pady=5, padx = 20)
+        self.labelframetwo.grid(row=0,column=0, pady= 10, padx = 20,sticky=tk.N)
         self.sound_flag = True
 
         self.fill_steps_frame(parent.screen_width,parent.screen_height)
@@ -134,7 +134,7 @@ class MagicExperimentPage(tk.Frame):
     def fill_steps_frame(self,width,height):
          logger.info("Experiment Page - fill_steps_frame")
          self.index = 1
-         self.step_one_label = ttk.Label(self.labelframetwo, text="Step 1", foreground='white',
+         self.step_one_label = ttk.Label(self.labelframetwo, text="1", foreground='white',
                                          font=("helvetica", 14,'bold'), background='deepskyblue4')
          self.step_one_desc_label = ttk.Label(self.labelframetwo, text = self.experiment_content_terms[0],foreground = 'white',wraplength=250, font=("helvetica", 14,'bold'),background='deepskyblue4')
 
@@ -486,7 +486,7 @@ class MagicExperimentPage(tk.Frame):
         self.step_labels = []
         self.step_descriptions = []
         if self.index < self.experiment_content_list[2]:
-            label = ttk.Label(self.labelframetwo, text="Step "+str(self.index+1), foreground='white',
+            label = ttk.Label(self.labelframetwo, text=str(self.index+1), foreground='white',
                                             font=("helvetica", 14,'bold'),background='deepskyblue4')
             desc_label = ttk.Label(self.labelframetwo, text=self.experiment_content_terms[self.index],wraplength=250,
                                                  foreground='white', font=("helvetica", 14,'bold'),background='deepskyblue4')

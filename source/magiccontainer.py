@@ -4,6 +4,8 @@ import os
 import tkinter as tk
 from tkinter import ttk
 
+import requests
+
 import Data_Flow_Player
 
 import Timer_Display
@@ -26,7 +28,8 @@ class MagicApplication(tk.Toplevel):
         logger.info("Player container initialized")
         s = ttk.Style(self)
         s.theme_use("clam")
-        s.configure('Green.TButton', background='white', foreground='royalblue4',font=('helvetica', 12, 'bold'),bordercolor="royalblue4")
+        s.configure('Green.TButton', background='deepskyblue4', foreground='snow',font=('helvetica', 12, 'bold'),bordercolor="royalblue4")
+
         s.map('Green.TButton', background=[('active', '!disabled', 'cyan'), ('pressed', 'white')],
               foreground=[('pressed', 'royalblue4'), ('active', 'royalblue4')])
 
@@ -212,6 +215,9 @@ class MagicApplication(tk.Toplevel):
     def close(self):
         self.unbind_all('<Control-Key-t>')
         self.unbind_all('<Control-Key-l>')
+        self.unbind_all('<Control-Key-n>')
+        self.unbind_all('<Right>')
+        self.unbind_all('<Left>')
         self.destroy()
 
 
@@ -222,8 +228,6 @@ class MagicApplication(tk.Toplevel):
        #                                      height=self.winfo_height() / 2)
 
        # print(str(self.screen_width) + ',' + str(self.screen_height))
-
-
 
 
 
